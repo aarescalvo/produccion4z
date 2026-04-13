@@ -20,6 +20,7 @@ import autoTable from 'jspdf-autotable'
 import { ExportButton } from '@/components/ui/export-button'
 import { ExcelExporter } from '@/lib/export-excel'
 import { PDFExporter } from '@/lib/export-pdf'
+import { ReportePlanilla01Bovino } from '@/components/reportes/reporte-planilla01-bovino'
 
 interface Operador {
   id: string
@@ -594,7 +595,7 @@ export function ReportesModule({ operador }: { operador: Operador }) {
 
         {/* Tabs de Reportes */}
         <Tabs defaultValue="busqueda" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-5 h-auto">
+          <TabsList className="grid w-full grid-cols-6 h-auto">
             <TabsTrigger value="busqueda" className="py-2">
               <Search className="w-4 h-4 mr-2" />
               Búsqueda
@@ -610,6 +611,10 @@ export function ReportesModule({ operador }: { operador: Operador }) {
             <TabsTrigger value="planilla01" className="py-2">
               <ClipboardList className="w-4 h-4 mr-2" />
               Planilla 01
+            </TabsTrigger>
+            <TabsTrigger value="planilla01bovino" className="py-2">
+              <Beef className="w-4 h-4 mr-2" />
+              Planilla Vol.4
             </TabsTrigger>
             <TabsTrigger value="romaneos" className="py-2">
               <FileText className="w-4 h-4 mr-2" />
@@ -1015,6 +1020,11 @@ export function ReportesModule({ operador }: { operador: Operador }) {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          {/* TAB: PLANILLA 01 BOVINO VOL.4 */}
+          <TabsContent value="planilla01bovino">
+            <ReportePlanilla01Bovino />
           </TabsContent>
 
           {/* TAB: ROMANEOS DE FAENA */}
