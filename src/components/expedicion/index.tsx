@@ -79,6 +79,8 @@ interface Despacho {
   cantidadMedias: number
   estado: string
   operador?: string
+  facturado?: boolean
+  fechaFacturacion?: Date | null
 }
 
 interface Props {
@@ -491,6 +493,7 @@ export function ExpedicionModule({ operador }: Props) {
                       <TableHead className="text-right">Kg</TableHead>
                       <TableHead className="text-right">Medias</TableHead>
                       <TableHead>Estado</TableHead>
+                      <TableHead>Facturación</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -512,6 +515,43 @@ export function ExpedicionModule({ operador }: Props) {
                           }>
                             {d.estado}
                           </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {d.facturado ? (
+                            <Badge className="bg-emerald-100 text-emerald-700 flex items-center gap-1">
+                              <CheckCircle className="w-3 h-3" />
+                              Facturado
+                            </Badge>
+                          ) : d.estado === 'DESPACHADO' ? (
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              className="h-7 text-xs bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100"
+                              onClick={async () => {
+                                try {
+                                  const res = await fetch('/api/facturacion/despacho', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ despachoId: d.id, operadorId: operador.id })
+                                  })
+                                  const data = await res.json()
+                                  if (data.success) {
+                                    toast.success('Factura generada correctamente')
+                                    fetchDespachos()
+                                  } else {
+                                    toast.error(data.error || 'Error al generar factura')
+                                  }
+                                } catch (error) {
+                                  console.error('Error:', error)
+                                  toast.error('Error de conexión al facturar')
+                                }
+                              }}
+                            >
+                              Facturar
+                            </Button>
+                          ) : (
+                            <span className="text-xs text-stone-400">-</span>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}

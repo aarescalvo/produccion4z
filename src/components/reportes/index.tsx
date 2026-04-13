@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { 
   FileText, TrendingUp, Package, Calendar, Download, Filter, Printer, RefreshCw,
   Search, Truck, User, Building2, Eye, FileSpreadsheet, FileDown, Beef,
-  Warehouse, ClipboardList, ArrowLeft
+  Warehouse, ClipboardList, ArrowLeft, CheckCircle, AlertTriangle, Users
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -21,6 +21,10 @@ import { ExportButton } from '@/components/ui/export-button'
 import { ExcelExporter } from '@/lib/export-excel'
 import { PDFExporter } from '@/lib/export-pdf'
 import { ReportePlanilla01Bovino } from '@/components/reportes/reporte-planilla01-bovino'
+import { ReporteConciliacionFaenaFactura } from '@/components/reportes/ReporteConciliacionFaenaFactura'
+import { ReporteFaenaPendienteFacturar } from '@/components/reportes/ReporteFaenaPendienteFacturar'
+import { ReporteResumenClienteFaena } from '@/components/reportes/ReporteResumenClienteFaena'
+import { ReporteLiquidacionProductor } from '@/components/reportes/ReporteLiquidacionProductor'
 
 interface Operador {
   id: string
@@ -595,7 +599,7 @@ export function ReportesModule({ operador }: { operador: Operador }) {
 
         {/* Tabs de Reportes */}
         <Tabs defaultValue="busqueda" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-6 h-auto">
+          <TabsList className="grid w-full grid-cols-10 h-auto">
             <TabsTrigger value="busqueda" className="py-2">
               <Search className="w-4 h-4 mr-2" />
               Búsqueda
@@ -619,6 +623,22 @@ export function ReportesModule({ operador }: { operador: Operador }) {
             <TabsTrigger value="romaneos" className="py-2">
               <FileText className="w-4 h-4 mr-2" />
               Romaneos
+            </TabsTrigger>
+            <TabsTrigger value="conciliacion" className="py-2">
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Conciliación
+            </TabsTrigger>
+            <TabsTrigger value="pendienteFacturar" className="py-2">
+              <AlertTriangle className="w-4 h-4 mr-2" />
+              Pend. Facturar
+            </TabsTrigger>
+            <TabsTrigger value="resumenCliente" className="py-2">
+              <Users className="w-4 h-4 mr-2" />
+              Clientes
+            </TabsTrigger>
+            <TabsTrigger value="liquidacion" className="py-2">
+              <FileSpreadsheet className="w-4 h-4 mr-2" />
+              Liquidación
             </TabsTrigger>
           </TabsList>
 
@@ -1081,6 +1101,26 @@ export function ReportesModule({ operador }: { operador: Operador }) {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* TAB: CONCILIACIÓN FAENA-FACTURA */}
+          <TabsContent value="conciliacion">
+            <ReporteConciliacionFaenaFactura operador={operador} />
+          </TabsContent>
+
+          {/* TAB: PENDIENTE FACTURAR */}
+          <TabsContent value="pendienteFacturar">
+            <ReporteFaenaPendienteFacturar operador={operador} />
+          </TabsContent>
+
+          {/* TAB: RESUMEN CLIENTE */}
+          <TabsContent value="resumenCliente">
+            <ReporteResumenClienteFaena operador={operador} />
+          </TabsContent>
+
+          {/* TAB: LIQUIDACIÓN PRODUCTOR */}
+          <TabsContent value="liquidacion">
+            <ReporteLiquidacionProductor operador={operador} />
           </TabsContent>
         </Tabs>
       </div>

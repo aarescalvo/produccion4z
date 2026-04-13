@@ -793,6 +793,10 @@ model MediaRes {
   
   despachoItems DespachoItem[]
   
+  // Facturación
+  facturado        Boolean        @default(false)  // Si ya fue facturada
+  facturaId        String?                         // ID de la factura donde se facturó
+  
   @@unique([romaneoId, lado, sigla])
   @@index([estado])
   @@index([usuarioFaenaId])
@@ -1095,6 +1099,7 @@ model Factura {
   
   // Despacho relacionado (si aplica)
   despachoId        String?
+  despacho          Despacho?      @relation(fields: [despachoId], references: [id])
   
   // Observaciones
   observaciones     String?
@@ -1669,6 +1674,11 @@ model Despacho {
   updatedAt         DateTime        @updatedAt
   
   items             DespachoItem[]
+
+  // Facturación
+  facturado        Boolean        @default(false)  // Si ya fue facturado (todas las medias)
+  fechaFacturacion DateTime?                      // Fecha en que se generó la factura
+  facturas         Factura[]      // Facturas generadas desde este despacho
   
   @@index([fecha])
   @@index([estado])
