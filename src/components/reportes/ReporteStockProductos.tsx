@@ -42,7 +42,7 @@ export function ReporteStockProductos() {
     setLoading(true)
     try {
       const params = new URLSearchParams()
-      if (camaraId) params.append('camaraId', camaraId)
+      if (camaraId && camaraId !== 'TODAS') params.append('camaraId', camaraId)
       const res = await fetch(`/api/reportes/stock-productos?${params.toString()}`)
       const json = await res.json()
       if (json.success) setData(json.data)

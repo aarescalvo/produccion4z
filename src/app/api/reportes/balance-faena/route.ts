@@ -25,10 +25,10 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Romaneos
+    // Romaneos (no need to include mediasRes, we only use romaneo-level fields)
     const romaneos = await db.romaneo.findMany({
       where: { ...(Object.keys(dateFilter).length > 0 && { fecha: dateFilter }) },
-      include: { mediasRes: true },
+      select: { tropaCodigo: true, pesoVivo: true, pesoTotal: true },
     })
 
     const totalAnimales = romaneos.length

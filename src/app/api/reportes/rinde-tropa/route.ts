@@ -17,17 +17,39 @@ export async function GET(request: NextRequest) {
       dateFilter.lte = hasta
     }
 
+    // Build where for romaneos - Romaneo does NOT have a tropa relation,
+    // only tropaCodigo (string). So we filter by especie via Tropa if needed.
+    const romaneoWhere: Record<string, unknown> = {}
+    if (Object.keys(dateFilter).length > 0) {
+      romaneoWhere.fecha = dateFilter
+    }
+
+    // If especie filter, find tropa codes for that especie first
+    let tropaCodigosEspecie: string[] | null = null
+    if (especie && especie !== 'todas') {
+      const tropasEspecie = await db.tropa.findMany({
+        where: { especie: especie.toUpperCase() as Especie },
+        select: { codigo: true },
+      })
+      tropaCodigosEspecie = tropasEspecie.map(t => t.codigo)
+      romaneoWhere.tropaCodigo = { in: tropaCodigosEspecie }
+    }
+
     const romaneos = await db.romaneo.findMany({
-      where: {
-        ...(Object.keys(dateFilter).length > 0 && { fecha: dateFilter }),
-        ...(especie && especie !== 'todas' && { tropa: { especie: especie.toUpperCase() as Especie } }),
-      },
+      where: romaneoWhere,
       include: {
         tipificador: true,
-        tropa: { include: { productor: true } },
       },
       orderBy: { fecha: 'desc' },
     })
+
+    // Fetch all relevant tropas to get productor names
+    const tropaCodigos = [...new Set(romaneos.map(r => r.tropaCodigo).filter(Boolean))] as string[]
+    const tropas = await db.tropa.findMany({
+      where: { codigo: { in: tropaCodigos } },
+      include: { productor: true },
+    })
+    const tropaMap = new Map(tropas.map(t => [t.codigo, t]))
 
     const rindesPorTropa = romaneos.reduce((acc, r) => {
       const codigo = r.tropaCodigo || 'SIN_TROPA'
@@ -37,9 +59,11 @@ export async function GET(request: NextRequest) {
         existente.pesoVivoTotal += r.pesoVivo || 0
         existente.pesoCanalTotal += r.pesoTotal || 0
       } else {
+        const tropa = tropaMap.get(codigo)
         acc.push({
           tropaCodigo: codigo,
-          productor: r.tropa?.productor?.nombre || '-',
+          productor: tropa?.productor?.nombre || '-',
+          especie: tropa?.especie || especie || '-',
           cantidad: 1,
           pesoVivoTotal: r.pesoVivo || 0,
           pesoCanalTotal: r.pesoTotal || 0,
@@ -47,7 +71,7 @@ export async function GET(request: NextRequest) {
         })
       }
       return acc
-    }, [] as { tropaCodigo: string; productor: string; cantidad: number; pesoVivoTotal: number; pesoCanalTotal: number; rinde: number }[])
+    }, [] as { tropaCodigo: string; productor: string; especie: string; cantidad: number; pesoVivoTotal: number; pesoCanalTotal: number; rinde: number }[])
 
     rindesPorTropa.forEach(t => {
       t.rinde = t.pesoVivoTotal > 0 ? Number(((t.pesoCanalTotal / t.pesoVivoTotal) * 100).toFixed(2)) : 0

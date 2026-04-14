@@ -5,8 +5,6 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const camaraId = searchParams.get('camaraId')
-    const tipo = searchParams.get('tipo')
-    const estado = searchParams.get('estado')
 
     // Stock de medias reses por cámara
     const mediasRes = await db.mediaRes.findMany({
