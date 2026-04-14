@@ -60,17 +60,41 @@ export async function GET(request: NextRequest) {
       orderBy: { fechaFaena: 'desc' }
     })
 
+    // Buscar precios sugeridos desde PrecioServicio para tropas sin precio
+    const tropasConPrecio = await Promise.all(
+      tropas.map(async (tropa) => {
+        if (!tropa.precioServicioKg && tropa.usuarioFaenaId) {
+          const precioVigente = await db.precioServicio.findFirst({
+            where: {
+              clienteId: tropa.usuarioFaenaId,
+              tipoServicio: { codigo: 'FAENA' },
+              fechaHasta: null,
+            },
+            orderBy: { fechaDesde: 'desc' }
+          })
+          return {
+            ...tropa,
+            precioSugerido: precioVigente?.precio || null,
+          }
+        }
+        return {
+          ...tropa,
+          precioSugerido: null,
+        }
+      })
+    )
+
     // Calcular resumen
-    const totalCabezas = tropas.reduce((sum, t) => sum + t.cantidadCabezas, 0)
-    const totalKgPie = tropas.reduce((sum, t) => sum + (t.pesoTotalIndividual || 0), 0)
-    const totalKgGancho = tropas.reduce((sum, t) => sum + (t.kgGancho || 0), 0)
-    const totalServicioFaena = tropas.reduce((sum, t) => sum + (t.montoServicioFaena || 0), 0)
-    const totalFacturado = tropas.reduce((sum, t) => sum + (t.montoFactura || 0), 0)
-    const totalPagado = tropas
+    const totalCabezas = tropasConPrecio.reduce((sum, t) => sum + t.cantidadCabezas, 0)
+    const totalKgPie = tropasConPrecio.reduce((sum, t) => sum + (t.pesoTotalIndividual || 0), 0)
+    const totalKgGancho = tropasConPrecio.reduce((sum, t) => sum + (t.kgGancho || 0), 0)
+    const totalServicioFaena = tropasConPrecio.reduce((sum, t) => sum + (t.montoServicioFaena || 0), 0)
+    const totalFacturado = tropasConPrecio.reduce((sum, t) => sum + (t.montoFactura || 0), 0)
+    const totalPagado = tropasConPrecio
       .filter(t => t.estadoPago === 'PAGADO' || t.estadoPago === 'PAGO PARCIAL')
       .reduce((sum, t) => sum + (t.montoDepositado || 0), 0)
-    const pendienteFacturar = tropas.filter(t => !t.numeroFactura).length
-    const pendienteCobrar = tropas.filter(t => t.numeroFactura && t.estadoPago !== 'PAGADO').length
+    const pendienteFacturar = tropasConPrecio.filter(t => !t.numeroFactura).length
+    const pendienteCobrar = tropasConPrecio.filter(t => t.numeroFactura && t.estadoPago !== 'PAGADO').length
 
     // Resumen por cliente
     const porCliente: Record<string, {
@@ -86,7 +110,7 @@ export async function GET(request: NextRequest) {
       pendiente: number
     }> = {}
 
-    for (const tropa of tropas) {
+    for (const tropa of tropasConPrecio) {
       const cid = tropa.usuarioFaenaId
       if (!porCliente[cid]) {
         porCliente[cid] = {
@@ -114,9 +138,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: {
-        tropas,
+        tropas: tropasConPrecio,
         resumen: {
-          totalTropas: tropas.length,
+          totalTropas: tropasConPrecio.length,
           totalCabezas,
           totalKgPie,
           totalKgGancho,

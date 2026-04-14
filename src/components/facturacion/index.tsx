@@ -5,7 +5,7 @@ import {
   FileText, DollarSign, CheckCircle, XCircle, Eye, 
   Plus, Search, Loader2, Printer, RefreshCw, CreditCard,
   Building2, Receipt, Calendar, User, Package, Beef,
-  ArrowDownToLine, FileSpreadsheet
+  ArrowDownToLine, FileSpreadsheet, History, Pencil
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
+import { HistorialPreciosModule } from '@/components/historial-precios'
 
 interface Operador { id: string; nombre: string; rol: string }
 
@@ -128,6 +129,8 @@ export function FacturacionModule({ operador }: Props) {
   const [tropasSeleccionadas, setTropasSeleccionadas] = useState<Set<string>>(new Set())
   const [editTropaId, setEditTropaId] = useState<string | null>(null)
   const [editTropaData, setEditTropaData] = useState<any>({})
+  const [precioEditOpen, setPrecioEditOpen] = useState(false)
+  const [precioEditData, setPrecioEditData] = useState<any>(null)
 
   const [formData, setFormData] = useState({
     clienteId: '',
@@ -556,12 +559,15 @@ ${factura.iva > 0 ? `<p>IVA (${factura.porcentajeIva}%): $${factura.iva?.toLocal
 
         {/* Tabs */}
         <Tabs value={tabActivo} onValueChange={setTabActivo} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 max-w-lg">
+          <TabsList className="grid w-full grid-cols-4 max-w-xl">
             <TabsTrigger value="servicioFaena" className="gap-1">
               <Beef className="w-4 h-4" />Servicio Faena
             </TabsTrigger>
             <TabsTrigger value="facturas">Facturas</TabsTrigger>
             <TabsTrigger value="cuentas">Cta. Cte.</TabsTrigger>
+            <TabsTrigger value="historialPrecios" className="gap-1">
+              <History className="w-4 h-4" />Hist. Precios
+            </TabsTrigger>
           </TabsList>
 
           {/* TAB SERVICIO FAENA BOVINO */}
@@ -698,6 +704,7 @@ ${factura.iva > 0 ? `<p>IVA (${factura.porcentajeIva}%): $${factura.iva?.toLocal
                           <TableHead className="font-semibold text-xs">Fecha Pago</TableHead>
                           <TableHead className="font-semibold text-xs text-right">Monto Dep.</TableHead>
                           <TableHead className="font-semibold text-xs">Estado</TableHead>
+                          <TableHead className="font-semibold text-xs text-center">Acciones</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -717,7 +724,13 @@ ${factura.iva > 0 ? `<p>IVA (${factura.porcentajeIva}%): $${factura.iva?.toLocal
                               <TableCell>{tropa.fechaFaena ? new Date(tropa.fechaFaena).toLocaleDateString('es-AR') : '-'}</TableCell>
                               <TableCell className="text-right font-medium">{tropa.kgGancho?.toLocaleString('es-AR', {maximumFractionDigits:1}) || '-'}</TableCell>
                               <TableCell className="text-right">{tropa.rinde ? tropa.rinde.toFixed(2) : '-'}</TableCell>
-                              <TableCell className="text-right">{tropa.precioServicioKg ? formatCurrency(tropa.precioServicioKg) : '-'}</TableCell>
+                              <TableCell className="text-right">
+                                {tropa.precioServicioKg ? formatCurrency(tropa.precioServicioKg) : (
+                                  tropa.precioSugerido ? (
+                                    <span className="text-amber-500" title="Precio sugerido">{formatCurrency(tropa.precioSugerido)}*</span>
+                                  ) : '-'
+                                )}
+                              </TableCell>
                               <TableCell className="text-right font-medium">{tropa.montoServicioFaena ? formatCurrency(tropa.montoServicioFaena) : '-'}</TableCell>
                               <TableCell className="text-right font-medium">{tropa.montoFactura ? formatCurrency(tropa.montoFactura) : '-'}</TableCell>
                               <TableCell className="font-mono">{tropa.numeroFactura || <span className="text-red-400">Sin facturar</span>}</TableCell>
@@ -734,6 +747,29 @@ ${factura.iva > 0 ? `<p>IVA (${factura.porcentajeIva}%): $${factura.iva?.toLocal
                                 ) : (
                                   <Badge className="bg-stone-100 text-stone-500 text-xs">-</Badge>
                                 )}
+                              </TableCell>
+                              <TableCell className="text-center">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-7 w-7"
+                                  title="Editar precios"
+                                  onClick={() => {
+                                    setPrecioEditData({
+                                      id: tropa.id,
+                                      codigo: tropa.codigo,
+                                      usuario: tropa.usuarioFaena?.nombre || '-',
+                                      kgGancho: tropa.kgGancho || 0,
+                                      precioServicioKg: tropa.precioServicioKg || tropa.precioSugerido || 0,
+                                      precioServicioKgConRecupero: tropa.precioServicioKgConRecupero || 0,
+                                      tasaInspVet: tropa.tasaInspVet || 0,
+                                      arancelIpcva: tropa.arancelIpcva || 0,
+                                    })
+                                    setPrecioEditOpen(true)
+                                  }}
+                                >
+                                  <Pencil className="w-3.5 h-3.5 text-amber-600" />
+                                </Button>
                               </TableCell>
                             </TableRow>
                           )
@@ -932,6 +968,11 @@ ${factura.iva > 0 ? `<p>IVA (${factura.porcentajeIva}%): $${factura.iva?.toLocal
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* TAB HISTORIAL PRECIOS */}
+          <TabsContent value="historialPrecios">
+            <HistorialPreciosModule />
+          </TabsContent>
         </Tabs>
 
         {/* Dialog Nueva Factura */}
@@ -1128,6 +1169,148 @@ ${factura.iva > 0 ? `<p>IVA (${factura.porcentajeIva}%): $${factura.iva?.toLocal
             <DialogFooter className="flex gap-2">
               <Button variant="outline" onClick={() => setDeleteOpen(false)}>Cancelar</Button>
               <Button onClick={handleAnular} disabled={saving} className="bg-red-600 hover:bg-red-700">{saving ? 'Anulando...' : 'Anular Factura'}</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Dialog Editar Precios Tropa */}
+        <Dialog open={precioEditOpen} onOpenChange={setPrecioEditOpen}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Pencil className="w-5 h-5 text-amber-600" />
+                Editar Precios - Tropa {precioEditData?.codigo}
+              </DialogTitle>
+              <DialogDescription>
+                {precioEditData?.usuario} — Kg Gancho: {precioEditData?.kgGancho?.toLocaleString('es-AR', {maximumFractionDigits:1}) || '0'}
+              </DialogDescription>
+            </DialogHeader>
+            {precioEditData && (
+              <div className="space-y-4 py-2">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Precio/kg Servicio</Label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={precioEditData.precioServicioKg || ''}
+                      onChange={(e) => setPrecioEditData({ ...precioEditData, precioServicioKg: parseFloat(e.target.value) || 0 })}
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Precio/kg con Recupero</Label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={precioEditData.precioServicioKgConRecupero || ''}
+                      onChange={(e) => setPrecioEditData({ ...precioEditData, precioServicioKgConRecupero: parseFloat(e.target.value) || 0 })}
+                      placeholder="0.00"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Tasa Inspección Veterinaria ($/kg)</Label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={precioEditData.tasaInspVet || ''}
+                      onChange={(e) => setPrecioEditData({ ...precioEditData, tasaInspVet: parseFloat(e.target.value) || 0 })}
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Arancel IPCVA ($/kg)</Label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={precioEditData.arancelIpcva || ''}
+                      onChange={(e) => setPrecioEditData({ ...precioEditData, arancelIpcva: parseFloat(e.target.value) || 0 })}
+                      placeholder="0.00"
+                    />
+                  </div>
+                </div>
+                {/* Auto-calculated preview */}
+                <div className="bg-stone-50 rounded-lg p-4 space-y-2">
+                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Cálculo automático</p>
+                  {(() => {
+                    const kgGancho = precioEditData.kgGancho || 0
+                    const precioKg = precioEditData.precioServicioKg || 0
+                    const tasaVet = precioEditData.tasaInspVet || 0
+                    const arancel = precioEditData.arancelIpcva || 0
+                    const montoServicioFaena = kgGancho * precioKg * 1.21
+                    const montoFactura = montoServicioFaena + (kgGancho * tasaVet) + (kgGancho * arancel)
+                    return (
+                      <>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-stone-600">Monto Servicio Faena (IVA 21%):</span>
+                          <span className="font-medium">{formatCurrency(montoServicioFaena)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm text-stone-500">
+                          <span>= {kgGancho.toLocaleString('es-AR', {maximumFractionDigits:1})} kg × {formatCurrency(precioKg)} × 1.21</span>
+                        </div>
+                        <div className="border-t pt-2 mt-2 flex justify-between text-sm">
+                          <span className="text-stone-600">Total Factura:</span>
+                          <span className="font-bold text-amber-700 text-base">{formatCurrency(montoFactura)}</span>
+                        </div>
+                        <div className="flex justify-between text-xs text-stone-400">
+                          <span>Serv+IVA + ({kgGancho.toLocaleString('es-AR', {maximumFractionDigits:1})} × Tasa Vet) + ({kgGancho.toLocaleString('es-AR', {maximumFractionDigits:1})} × Arancel)</span>
+                        </div>
+                      </>
+                    )
+                  })()}
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setPrecioEditOpen(false)}>Cancelar</Button>
+              <Button
+                onClick={async () => {
+                  if (!precioEditData) return
+                  setSaving(true)
+                  try {
+                    const kgGancho = precioEditData.kgGancho || 0
+                    const precioKg = precioEditData.precioServicioKg || 0
+                    const tasaVet = precioEditData.tasaInspVet || 0
+                    const arancel = precioEditData.arancelIpcva || 0
+                    const montoServicioFaena = kgGancho * precioKg * 1.21
+                    const montoFactura = montoServicioFaena + (kgGancho * tasaVet) + (kgGancho * arancel)
+
+                    const res = await fetch('/api/facturacion/servicio-faena', {
+                      method: 'PUT',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        tropaId: precioEditData.id,
+                        precioServicioKg: precioEditData.precioServicioKg,
+                        precioServicioKgConRecupero: precioEditData.precioServicioKgConRecupero,
+                        tasaInspVet: precioEditData.tasaInspVet,
+                        arancelIpcva: precioEditData.arancelIpcva,
+                        montoServicioFaena,
+                        montoFactura,
+                      })
+                    })
+                    const data = await res.json()
+                    if (data.success) {
+                      toast.success('Precios actualizados correctamente')
+                      setPrecioEditOpen(false)
+                      setPrecioEditData(null)
+                      fetchServicioFaena()
+                    } else {
+                      toast.error(data.error || 'Error al actualizar precios')
+                    }
+                  } catch {
+                    toast.error('Error al actualizar precios')
+                  } finally {
+                    setSaving(false)
+                  }
+                }}
+                disabled={saving}
+                className="bg-amber-500 hover:bg-amber-600"
+              >
+                {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Pencil className="w-4 h-4 mr-2" />}
+                {saving ? 'Guardando...' : 'Guardar Precios'}
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
