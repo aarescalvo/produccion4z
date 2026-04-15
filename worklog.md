@@ -1,15 +1,51 @@
 ---
-Task ID: 1600
+Task ID: 1601
 Agent: main
-Task: Implementar impresión de rótulos para pesaje individual con Datamax Mark II
+Task: Guardar PLAN MAESTRO CICLO II (Desposte y Logistica) como archivo de futura implementacion
 
 Work Log:
 
-#### 1. Rótulo DPL Creado
+#### 1. Archivo Actualizado
+**Archivo:** `PLAN_CICLO_II_DESPOSTE_LOGISTICA.md`
+- Contenido completo del plan maestro de Ciclo II guardado
+- Corregido "Laravel" por "Next.js/TypeScript" en seccion de prompt tecnico (el proyecto usa Next.js, no Laravel)
+- Secciones incluidas:
+  * Objetivo del modulo
+  * Arquitectura de base de datos (11 nuevas tablas c2_*)
+  * 5 etapas de implementacion
+  * Reportes y rendimientos (rindes)
+  * Prompt de programacion para generacion de codigo
+- Version del plan: v3.8.0
+- Estado: PLANIFICACION (implementacion futura)
+
+#### 2. Estructura de Tablas Planificadas (prefijo c2_)
+- c2_rubros, c2_productos, c2_insumos, c2_bom (Maestros)
+- c2_cuarteo_pesos, c2_ingreso_desposte (Transformacion)
+- c2_produccion_cajas, c2_movimientos_degradacion, c2_subproductos_pesaje (Produccion/Empaque)
+- c2_pallets, c2_expedicion_ordenes, c2_expedicion_items (Logistica)
+
+#### 3. Version Bump
+- package.json: 3.7.32 -> 3.8.0
+- Justificacion: Incorporacion del plan maestro de Ciclo II como documento de referencia
+
+Stage Summary:
+- **PLAN CICLO II guardado como archivo de referencia** OK
+- **Corregida referencia a framework (Laravel -> Next.js)** OK
+- **Version bump: 3.7.32 -> 3.8.0** OK
+- **Push a GitHub pendiente**
+
+---
+Task ID: 1600
+Agent: main
+Task: Implementar impresiÃ³n de rÃ³tulos para pesaje individual con Datamax Mark II
+
+Work Log:
+
+#### 1. RÃ³tulo DPL Creado
 **Archivo:** `scripts/seed-rotulo-pesaje.ts`
 - Tipo: PESAJE_INDIVIDUAL
 - Impresora: Datamax Mark II (DPL)
-- Tamaño: 10cm x 5cm (203 DPI)
+- TamaÃ±o: 10cm x 5cm (203 DPI)
 - Variables: {TROPA}, {NUMERO}, {PESO}
 
 **Contenido DPL:**
@@ -26,52 +62,52 @@ T200,300,3,30,25,N,"{PESO} KG"
 #### 2. Componente Actualizado
 **Archivo:** `src/components/pesaje-individual-module.tsx`
 - Agregado estado para IP de impresora (guardada en localStorage)
-- Agregado diálogo de configuración de impresora
-- Agregado botón flotante de impresora (icono Printer)
+- Agregado diÃ¡logo de configuraciÃ³n de impresora
+- Agregado botÃ³n flotante de impresora (icono Printer)
   - Rojo si no hay IP configurada
-  - Blanco si ya está configurada
-- Función imprimirRotulo actualizada para:
+  - Blanco si ya estÃ¡ configurada
+- FunciÃ³n imprimirRotulo actualizada para:
   - Verificar que exista IP configurada
   - Enviar datos: TROPA, NUMERO, PESO
   - Puerto: 9100
 
-#### 3. Verificación
-- API `/api/rotulos?tipo=PESAJE_INDIVIDUAL`: ✅ Retorna rótulo
-- API `/api/rotulos/imprimir`: ✅ Genera DPL con variables reemplazadas
-- Variables reemplazadas correctamente: {TROPA} → "B 2026 0100", {NUMERO} → "0015", {PESO} → "450"
+#### 3. VerificaciÃ³n
+- API `/api/rotulos?tipo=PESAJE_INDIVIDUAL`: â Retorna rÃ³tulo
+- API `/api/rotulos/imprimir`: â Genera DPL con variables reemplazadas
+- Variables reemplazadas correctamente: {TROPA} â "B 2026 0100", {NUMERO} â "0015", {PESO} â "450"
 
-#### 4. Cómo Usar
+#### 4. CÃ³mo Usar
 1. Ir a Pesaje Individual
-2. Click en botón de impresora (esquina superior derecha)
+2. Click en botÃ³n de impresora (esquina superior derecha)
 3. Ingresar IP de la impresora (ej: 192.168.1.100)
 4. Guardar
-5. Al registrar un animal, se imprimirá automáticamente el rótulo
+5. Al registrar un animal, se imprimirÃ¡ automÃ¡ticamente el rÃ³tulo
 
 Stage Summary:
-- **Rótulo DPL creado para Datamax Mark II** ✅
-- **Diálogo de configuración de impresora** ✅
-- **Variables funcionando: TROPA, NUMERO, PESO** ✅
+- **RÃ³tulo DPL creado para Datamax Mark II** â
+- **DiÃ¡logo de configuraciÃ³n de impresora** â
+- **Variables funcionando: TROPA, NUMERO, PESO** â
 - **Sistema listo para imprimir**
 
 ---
 Task ID: 1544
 Agent: main
-Task: Corrección de todos los errores críticos restantes y simulación final
+Task: CorrecciÃ³n de todos los errores crÃ­ticos restantes y simulaciÃ³n final
 
 Work Log:
 
 #### 1. Correcciones en CICLO II - Movimientos Despostada
 - **Interfaz Movimiento**: Corregida para coincidir con modelo Prisma
-  * `pesoOriginal` → `pesoBruto`
-  * `pesoLimpio` → `pesoNeto` (opcional)
-  * `nombreCorte` → `productoNombre`
+  * `pesoOriginal` â `pesoBruto`
+  * `pesoLimpio` â `pesoNeto` (opcional)
+  * `nombreCorte` â `productoNombre`
   * Eliminados campos inexistentes: `esHueso`, `esGrasa`
 - **Interfaz Lote**: Sincronizada con modelo `LoteDespostada`
   * Eliminados: `anio`, `kgIngresados`, `kgProducidos`, `kgMermas`
   * Agregado: `totalKg`
 - **TIPOS_MOVIMIENTO**: Actualizado enum
-  * `LIMPIEZA` → eliminado
-  * `DESPERDICIO` → `DESECHO`
+  * `LIMPIEZA` â eliminado
+  * `DESPERDICIO` â `DESECHO`
   * Agregado: `MERMA`
 - **handleRegistrarCorte**: Corregido para enviar campos correctos
 - **handleRegistrarHuesoGrasa**: Corregido para enviar campos correctos
@@ -81,351 +117,351 @@ Work Log:
 - **Tabla**: Actualizada para usar `registro.createdAt` en lugar de `registro.fecha`
 
 #### 3. Correcciones en API Despachos
-- **pesajeCamion** → **ticketPesaje** (campo correcto del modelo)
-- **pesoTotal** → **kgTotal** (campo correcto del modelo)
+- **pesajeCamion** â **ticketPesaje** (campo correcto del modelo)
+- **pesoTotal** â **kgTotal** (campo correcto del modelo)
 - Eliminadas referencias a campos inexistentes `fechaDespacho`, `fechaEntrega`
 
-#### 4. Correcciones en API Búsqueda
-- **db.expedicion** → **db.despacho** (modelo correcto)
+#### 4. Correcciones en API BÃºsqueda
+- **db.expedicion** â **db.despacho** (modelo correcto)
 - Actualizado para usar campos del modelo `Despacho`
 
 #### 5. Correcciones en Validaciones
-- **API Transportistas**: Agregada validación de CUIT único (POST y PUT)
-- **API Insumos**: Agregada validación de código único
+- **API Transportistas**: Agregada validaciÃ³n de CUIT Ãºnico (POST y PUT)
+- **API Insumos**: Agregada validaciÃ³n de cÃ³digo Ãºnico
 - **API Productos**: Cambiado `any` por `Record<string, unknown>`
 - **API Reportes**: Agregado cast de `especie` a `Especie` enum
 
 #### 6. Correcciones en Schema Prisma
 - **RegistroCuarteo**: Agregado campo `observaciones`
 
-#### 7. Verificación
-- DB Push: Exitoso ✓
-- Lint: Sin errores ✓
-- Dev server: Funcionando ✓
+#### 7. VerificaciÃ³n
+- DB Push: Exitoso â
+- Lint: Sin errores â
+- Dev server: Funcionando â
 
 Stage Summary:
-- **13 errores críticos corregidos** en esta sesión
-- **7 errores coríticos corregidos** en sesión anterior
-- **Total: 20 errores críticos resueltos**
-- Sistema listo para simulación final
-- Versión actualizada a 0.16.0
+- **13 errores crÃ­ticos corregidos** en esta sesiÃ³n
+- **7 errores corÃ­ticos corregidos** en sesiÃ³n anterior
+- **Total: 20 errores crÃ­ticos resueltos**
+- Sistema listo para simulaciÃ³n final
+- VersiÃ³n actualizada a 0.16.0
 
 ---
 Task ID: 1545
 Agent: main
-Task: Simulación completa del sistema y verificación final
+Task: SimulaciÃ³n completa del sistema y verificaciÃ³n final
 
 Work Log:
 
-#### 1. Verificación de Endpoints
+#### 1. VerificaciÃ³n de Endpoints
 - **Total endpoints probados**: 37
 - **Exitosos**: 33 (89%)
 - **Comportamientos esperados (no errores)**: 4
 
 #### 2. Endpoints con respuesta 4xx (comportamiento esperado)
-- `/api/animales` (400) - Requiere `tropaId` como parámetro
+- `/api/animales` (400) - Requiere `tropaId` como parÃ¡metro
 - `/api/movimiento-camaras` (405) - Solo acepta POST, no GET
 - `/api/planilla01` (405) - Solo acepta POST, no GET  
-- `/api/auth` (400) - Requiere `operadorId` para validar sesión
+- `/api/auth` (400) - Requiere `operadorId` para validar sesiÃ³n
 
-#### 3. Correcciones realizadas durante esta sesión
+#### 3. Correcciones realizadas durante esta sesiÃ³n
 - **Prisma Client**: Regenerado para incluir modelos nuevos
 - **Next.js Cache**: Invalidado para forzar recarga
 - **db.ts**: Modificado para crear nueva instancia en desarrollo
 
-#### 4. Módulos verificados exitosamente
+#### 4. MÃ³dulos verificados exitosamente
 
-**CICLO I - Recepción y Faena:**
-- ✅ Dashboard
-- ✅ Tropas
-- ✅ Pesaje Camión
-- ✅ Corrales
-- ✅ Lista Faena
-- ✅ Garrones Asignados
-- ✅ Cuarteo
+**CICLO I - RecepciÃ³n y Faena:**
+- â Dashboard
+- â Tropas
+- â Pesaje CamiÃ³n
+- â Corrales
+- â Lista Faena
+- â Garrones Asignados
+- â Cuarteo
 
 **CICLO II - Despostada:**
-- ✅ Lotes Despostada
-- ✅ Ingreso Despostada
-- ✅ Movimientos Despostada
-- ✅ Productos
+- â Lotes Despostada
+- â Ingreso Despostada
+- â Movimientos Despostada
+- â Productos
 
 **Subproductos:**
-- ✅ Menudencias
-- ✅ Rendering
-- ✅ Cueros
+- â Menudencias
+- â Rendering
+- â Cueros
 
-**Stock y Cámaras:**
-- ✅ Cámaras
-- ✅ Despachos
-- ✅ Empaque
-- ✅ Expedición
+**Stock y CÃ¡maras:**
+- â CÃ¡maras
+- â Despachos
+- â Empaque
+- â ExpediciÃ³n
 
-**Configuración:**
-- ✅ Insumos
-- ✅ Clientes
-- ✅ Operadores
-- ✅ Configuración
-- ✅ Transportistas
+**ConfiguraciÃ³n:**
+- â Insumos
+- â Clientes
+- â Operadores
+- â ConfiguraciÃ³n
+- â Transportistas
 
-**Documentación:**
-- ✅ Reportes
-- ✅ CCIR
-- ✅ Declaración Jurada
-- ✅ Facturación
-- ✅ Auditoría
+**DocumentaciÃ³n:**
+- â Reportes
+- â CCIR
+- â DeclaraciÃ³n Jurada
+- â FacturaciÃ³n
+- â AuditorÃ­a
 
 **Calidad y Trazabilidad:**
-- ✅ Búsqueda
-- ✅ Código de Barras
-- ✅ Calidad Reclamos
-- ✅ Condiciones Embalaje
-- ✅ Ingreso Cajón
+- â BÃºsqueda
+- â CÃ³digo de Barras
+- â Calidad Reclamos
+- â Condiciones Embalaje
+- â Ingreso CajÃ³n
 
 Stage Summary:
-- **Sistema 100% funcional** - Todos los módulos operativos
+- **Sistema 100% funcional** - Todos los mÃ³dulos operativos
 - **89% de endpoints respondiendo correctamente**
 - **11% restante son comportamientos esperados de la API**
-- Versión actualizada a 2.0.1
-- Sistema listo para producción
+- VersiÃ³n actualizada a 2.0.1
+- Sistema listo para producciÃ³n
 
 ---
 Task ID: 1546
 Agent: main
-Task: Simulación funcional completa y corrección de errores
+Task: SimulaciÃ³n funcional completa y correcciÃ³n de errores
 
 Work Log:
 
-#### 1. Errores Encontrados en Simulación Funcional
-- **Stock API**: Usaba `db.stockCamara` (modelo inexistente) → Corregido a `db.stockMediaRes`
-- **VB Romaneo**: Usaba `activo: true` (campo inexistente en Animal) → Corregido a `estado: 'RECIBIDO'`
-- **Menudencias**: Requería `tipoMenudenciaId` que podía no existir → Ahora acepta `tipoMenudenciaNombre` y lo crea si no existe
-- **Romaneos**: No tenía método POST → Agregado POST completo con creación de medias reses
+#### 1. Errores Encontrados en SimulaciÃ³n Funcional
+- **Stock API**: Usaba `db.stockCamara` (modelo inexistente) â Corregido a `db.stockMediaRes`
+- **VB Romaneo**: Usaba `activo: true` (campo inexistente en Animal) â Corregido a `estado: 'RECIBIDO'`
+- **Menudencias**: RequerÃ­a `tipoMenudenciaId` que podÃ­a no existir â Ahora acepta `tipoMenudenciaNombre` y lo crea si no existe
+- **Romaneos**: No tenÃ­a mÃ©todo POST â Agregado POST completo con creaciÃ³n de medias reses
 
 #### 2. Correcciones Realizadas
 1. `src/app/api/stock/route.ts`:
-   - GET: Cambiado `db.stockCamara` → `db.stockMediaRes`
+   - GET: Cambiado `db.stockCamara` â `db.stockMediaRes`
    - POST: Actualizado para usar modelo correcto
 
 2. `src/app/api/vb-romaneo/route.ts`:
-   - Línea 48: `where: { activo: true }` → `where: { estado: 'RECIBIDO' }`
+   - LÃ­nea 48: `where: { activo: true }` â `where: { estado: 'RECIBIDO' }`
 
 3. `src/app/api/menudencias/route.ts`:
    - POST: Ahora acepta `tipoMenudenciaNombre` y crea el tipo si no existe
    - Crea tipo "Sin tipo" por defecto si no se especifica
 
 4. `src/app/api/romaneos/route.ts`:
-   - Agregado método POST completo
-   - Calcula peso total y rinde automáticamente
-   - Crea medias reses con código de barras si hay pesos
+   - Agregado mÃ©todo POST completo
+   - Calcula peso total y rinde automÃ¡ticamente
+   - Crea medias reses con cÃ³digo de barras si hay pesos
 
-#### 3. Resultados de la Simulación Funcional V2
+#### 3. Resultados de la SimulaciÃ³n Funcional V2
 - **Pruebas exitosas**: 15/16 (94%)
-- **Prueba fallida**: 1 (Crear tropa - por diseño se crea desde pesaje-camion)
+- **Prueba fallida**: 1 (Crear tropa - por diseÃ±o se crea desde pesaje-camion)
 
-#### 4. Módulos Verificados Funcionalmente
-✅ Autenticación (login admin)
-✅ Corrales (crear)
-✅ Clientes (crear, validación CUIT único)
-✅ Cámaras (crear)
-✅ Pesaje de camión
-✅ Romaneos (crear con medias reses)
-✅ VB Romaneo (consultar pendientes)
-✅ Stock (consultar stockMediaRes)
-✅ Menudencias (crear con tipo auto-creado)
-✅ Cueros (crear con pesoKg)
-✅ Rendering (crear con pesoKg)
-✅ Lotes despostada (crear)
-✅ Movimientos despostada (crear)
-✅ Validaciones (CUIT único, login inválido)
+#### 4. MÃ³dulos Verificados Funcionalmente
+â AutenticaciÃ³n (login admin)
+â Corrales (crear)
+â Clientes (crear, validaciÃ³n CUIT Ãºnico)
+â CÃ¡maras (crear)
+â Pesaje de camiÃ³n
+â Romaneos (crear con medias reses)
+â VB Romaneo (consultar pendientes)
+â Stock (consultar stockMediaRes)
+â Menudencias (crear con tipo auto-creado)
+â Cueros (crear con pesoKg)
+â Rendering (crear con pesoKg)
+â Lotes despostada (crear)
+â Movimientos despostada (crear)
+â Validaciones (CUIT Ãºnico, login invÃ¡lido)
 
 Stage Summary:
 - **Sistema funcionando al 94%** en pruebas funcionales
-- **4 errores críticos corregidos** en APIs
+- **4 errores crÃ­ticos corregidos** en APIs
 - **Validaciones funcionando** correctamente
 - **Flujo de trabajo completo** verificado
-- Versión actualizada a 2.0.2
+- VersiÃ³n actualizada a 2.0.2
 
 ---
 Task ID: 1547
 Agent: main
-Task: Simulación de pesajes completa (camión, particular, salida)
+Task: SimulaciÃ³n de pesajes completa (camiÃ³n, particular, salida)
 
 Work Log:
 
 #### 1. Tipos de Pesaje Verificados
 
 **A. INGRESO_HACIENDA:**
-- ✅ Crea pesaje de camión
-- ✅ Crea tropa automáticamente si tiene usuarioFaenaId
-- ✅ Crea animales individuales según cantidadCabezas
-- ✅ Genera código de tropa correlativo (B 2026 0103)
-- ✅ Asocia pesaje con tropa (pesajeCamionId)
+- â Crea pesaje de camiÃ³n
+- â Crea tropa automÃ¡ticamente si tiene usuarioFaenaId
+- â Crea animales individuales segÃºn cantidadCabezas
+- â Genera cÃ³digo de tropa correlativo (B 2026 0103)
+- â Asocia pesaje con tropa (pesajeCamionId)
 
 **B. PESAJE_PARTICULAR:**
-- ✅ Crea pesaje sin tropa (correcto)
-- ✅ Registra pesos bruto y tara
-- ✅ No crea animales
+- â Crea pesaje sin tropa (correcto)
+- â Registra pesos bruto y tara
+- â No crea animales
 
 **C. SALIDA_MERCADERIA:**
-- ✅ Crea pesaje de salida sin tropa (correcto)
-- ✅ Registra destino, remito, factura, precintos
-- ✅ No crea animales
+- â Crea pesaje de salida sin tropa (correcto)
+- â Registra destino, remito, factura, precintos
+- â No crea animales
 
 #### 2. Flujo Completo Verificado
 
-1. Login admin → ✅
-2. Crear cliente (productor/usuarioFaena) → ✅
-3. Crear corral → ✅
-4. Crear pesaje INGRESO_HACIENDA con usuarioFaenaId → ✅
-5. Tropa creada automáticamente con código B 2026 0103 → ✅
-6. 10 animales creados automáticamente → ✅
-7. Tropa visible en /api/tropas → ✅
-8. Pesaje particular funciona sin tropa → ✅
-9. Salida de mercadería funciona sin tropa → ✅
+1. Login admin â â
+2. Crear cliente (productor/usuarioFaena) â â
+3. Crear corral â â
+4. Crear pesaje INGRESO_HACIENDA con usuarioFaenaId â â
+5. Tropa creada automÃ¡ticamente con cÃ³digo B 2026 0103 â â
+6. 10 animales creados automÃ¡ticamente â â
+7. Tropa visible en /api/tropas â â
+8. Pesaje particular funciona sin tropa â â
+9. Salida de mercaderÃ­a funciona sin tropa â â
 
 #### 3. Resultados
 - **Pesajes de ingreso hacienda**: 7
 - **Pesajes particulares**: 2
-- **Salidas de mercadería**: 2
+- **Salidas de mercaderÃ­a**: 2
 - **Total tropas**: 125
-- **Flujo completo**: ✅ Funcionando
+- **Flujo completo**: â Funcionando
 
 Stage Summary:
 - **Sistema de pesajes 100% funcional**
-- **Creación automática de tropas funciona correctamente**
+- **CreaciÃ³n automÃ¡tica de tropas funciona correctamente**
 - **Integridad de datos verificada entre pesaje-camion y tropas**
 - **Todos los tipos de pesaje operativos**
 
 ---
 Task ID: 1548
 Agent: main
-Task: Simulación exhaustiva final del sistema completo
+Task: SimulaciÃ³n exhaustiva final del sistema completo
 
 Work Log:
 
-#### 1. Resultados de la Simulación Exhaustiva v2.0.4
+#### 1. Resultados de la SimulaciÃ³n Exhaustiva v2.0.4
 - **Pruebas exitosas**: 46/47 (98%)
 - **Pruebas fallidas**: 1 (falso positivo - problema de parsing)
 - **Total pruebas**: 47
 
 #### 2. Endpoints Verificados (37 endpoints)
-✅ Dashboard
-✅ Tropas  
-✅ Corrales  
-✅ Cámaras  
-✅ Clientes  
-✅ Operadores  
-✅ Transportistas  
-✅ Productos  
-✅ Insumos  
-✅ Configuración  
-✅ Pesaje Camión
-✅ Lista Faena
-✅ Garrones Asignados
-✅ Romaneos  
-✅ VB Romaneo
-✅ Menudencias  
-✅ Rendering  
-✅ Cueros  
-✅ Stock
-✅ Despachos
-✅ Empaque
-✅ Expedición
-✅ Lotes Despostada
-✅ Movimientos Despostada
-✅ Ingreso Despostada
-✅ Reportes
-✅ CCIR
-✅ Declaración Jurada
-✅ Facturación
-✅ Auditoría
-✅ Búsqueda
-✅ Código Barras
-✅ Calidad Reclamos
-✅ Condiciones Embalaje
-✅ Ingreso Cajón
+â Dashboard
+â Tropas  
+â Corrales  
+â CÃ¡maras  
+â Clientes  
+â Operadores  
+â Transportistas  
+â Productos  
+â Insumos  
+â ConfiguraciÃ³n  
+â Pesaje CamiÃ³n
+â Lista Faena
+â Garrones Asignados
+â Romaneos  
+â VB Romaneo
+â Menudencias  
+â Rendering  
+â Cueros  
+â Stock
+â Despachos
+â Empaque
+â ExpediciÃ³n
+â Lotes Despostada
+â Movimientos Despostada
+â Ingreso Despostada
+â Reportes
+â CCIR
+â DeclaraciÃ³n Jurada
+â FacturaciÃ³n
+â AuditorÃ­a
+â BÃºsqueda
+â CÃ³digo Barras
+â Calidad Reclamos
+â Condiciones Embalaje
+â Ingreso CajÃ³n
 
 #### 3. Operaciones CRUD Verificadas
-✅ Crear corral
-✅ Crear cliente
-✅ Crear tropa via pesaje (con animales)
-✅ Crear romaneo
-✅ Crear menudencia
-✅ Crear rendering
-✅ Crear cuero
-✅ Crear lote despostada
-✅ Crear movimiento despostada
+â Crear corral
+â Crear cliente
+â Crear tropa via pesaje (con animales)
+â Crear romaneo
+â Crear menudencia
+â Crear rendering
+â Crear cuero
+â Crear lote despostada
+â Crear movimiento despostada
 
 #### 4. Validaciones Verificadas
-✅ CUIT único validado
-✅ Login inválido rechazado
+â CUIT Ãºnico validado
+â Login invÃ¡lido rechazado
 
-#### 5. Verificación de Integridad
-- Tropa creada con código: B 2026 0107
-- 5 animales creados automáticamente
+#### 5. VerificaciÃ³n de Integridad
+- Tropa creada con cÃ³digo: B 2026 0107
+- 5 animales creados automÃ¡ticamente
 - Relaciones: productor, usuarioFaena, corral funcionando
 - PesajeCamion vinculado a Tropa
 
 #### 6. Flujos de Trabajo Verificados
-**CICLO I - Recepción y Faena:**
-- Pesaje de camión → Crear tropa → Asignar corral → Crear animales
-- Lista de faena → Asignar garrones → Romaneo → VB Romaneo
+**CICLO I - RecepciÃ³n y Faena:**
+- Pesaje de camiÃ³n â Crear tropa â Asignar corral â Crear animales
+- Lista de faena â Asignar garrones â Romaneo â VB Romaneo
 
 **CICLO II - Despostada:**
-- Ingreso despostada → Lotes → Movimientos → Empaque
+- Ingreso despostada â Lotes â Movimientos â Empaque
 
 **Subproductos:**
-- Menudencias → Rendering → Cueros
+- Menudencias â Rendering â Cueros
 
-**Stock y Cámaras:**
-- Stock por cámara → Despachos → Expedición
+**Stock y CÃ¡maras:**
+- Stock por cÃ¡mara â Despachos â ExpediciÃ³n
 
 Stage Summary:
 - **Sistema 100% funcional**
 - **46 de 47 pruebas pasaron (98%)**
 - **1 falso positivo por parsing**
-- **Todos los módulos visibles y operativos**
+- **Todos los mÃ³dulos visibles y operativos**
 - **Validaciones funcionando correctamente**
 - **Integridad referencial verificada**
-- **Sistema listo para producción con PostgreSQL**
+- **Sistema listo para producciÃ³n con PostgreSQL**
 
 ---
 Task ID: 1549
 Agent: main
-Task: Implementar módulo de balanzas y puestos de trabajo con persistencia real
+Task: Implementar mÃ³dulo de balanzas y puestos de trabajo con persistencia real
 
 Work Log:
 
-#### 1. Análisis del Estado Actual
-- **Módulo de Rótulos**: ✅ Completo y funcional
+#### 1. AnÃ¡lisis del Estado Actual
+- **MÃ³dulo de RÃ³tulos**: â Completo y funcional
   - API: GET, POST, PUT, DELETE
   - Subida de plantillas ZPL/DPL
-  - Vinculación con romaneo para imprimir etiquetas
+  - VinculaciÃ³n con romaneo para imprimir etiquetas
   - Sistema de variables {{VARIABLE}} completo
   
-- **Módulo de Balanzas**: ❌ Usaba datos mock sin persistencia
-  - No existía modelo Balanza en Prisma
-  - No existía modelo PuestoTrabajo
+- **MÃ³dulo de Balanzas**: â Usaba datos mock sin persistencia
+  - No existÃ­a modelo Balanza en Prisma
+  - No existÃ­a modelo PuestoTrabajo
   - Datos hardcodeados en el componente
 
 #### 2. Modelos Agregados a Prisma
 
 **Modelo Balanza:**
-- nombre, codigo (único)
+- nombre, codigo (Ãºnico)
 - tipoConexion: SERIAL | TCP | SIMULADA
-- Configuración serial: puerto, baudRate, dataBits, parity, stopBits
-- Configuración TCP: ip, puertoTcp
+- ConfiguraciÃ³n serial: puerto, baudRate, dataBits, parity, stopBits
+- ConfiguraciÃ³n TCP: ip, puertoTcp
 - protocolo: GENERICO | TOLEDO | METTLER | OHAUS | DIGI | ADAM | CUSTOM
 - capacidadMax, division, unidad
-- Calibración: fechaCalibracion, proximaCalibracion
+- CalibraciÃ³n: fechaCalibracion, proximaCalibracion
 - Estado: activa, estado (DESCONECTADA | CONECTADA | ERROR | CALIBRANDO | LISTA)
 
 **Modelo PuestoTrabajo:**
-- nombre, codigo (único), sector, ubicacion
-- Relación con Balanza (balanzaId)
-- Configuración impresora rótulos: impresoraIp, impresoraPuerto, impresoraModelo, rotuloDefaultId
-- Configuración impresora tickets: impresoraTicketsIp, impresoraTicketsPuerto
+- nombre, codigo (Ãºnico), sector, ubicacion
+- RelaciÃ³n con Balanza (balanzaId)
+- ConfiguraciÃ³n impresora rÃ³tulos: impresoraIp, impresoraPuerto, impresoraModelo, rotuloDefaultId
+- ConfiguraciÃ³n impresora tickets: impresoraTicketsIp, impresoraTicketsPuerto
 - Scanner: scannerHabilitado, scannerPuerto
 - Estado: activo, operativo, operadorActualId
 
@@ -433,35 +469,35 @@ Work Log:
 - `/api/balanzas` - CRUD completo (GET, POST, PUT, DELETE)
 - `/api/puestos-trabajo` - CRUD completo (GET, POST, PUT, DELETE)
 
-#### 4. Módulo config-balanzas Actualizado
+#### 4. MÃ³dulo config-balanzas Actualizado
 - Eliminados datos mock
 - Ahora usa API real para persistencia
 - Agregado tabs para Balanzas y Puestos de Trabajo
 - Formularios completos con todos los campos
-- Vinculación balanza-puesto funcionando
+- VinculaciÃ³n balanza-puesto funcionando
 
-#### 5. Vinculación Rótulos-Etiquetas Verificada
-- El módulo de Romaneo busca rótulos de tipo MEDIA_RES
-- Usa el rótulo marcado como `esDefault` o el primero
+#### 5. VinculaciÃ³n RÃ³tulos-Etiquetas Verificada
+- El mÃ³dulo de Romaneo busca rÃ³tulos de tipo MEDIA_RES
+- Usa el rÃ³tulo marcado como `esDefault` o el primero
 - Procesa variables con datos reales del pesaje
 - Imprime 3 etiquetas por media (una por cada sigla: A, T, D)
-- API `/api/rotulos/imprimir` envía a impresora por IP/puerto
+- API `/api/rotulos/imprimir` envÃ­a a impresora por IP/puerto
 
 Stage Summary:
-- **Modelos Balanza y PuestoTrabajo agregados a Prisma** ✅
-- **APIs REST completas creadas** ✅
-- **Módulo config-balanzas refactorizado** ✅
-- **Vinculación rótulos-producción verificada** ✅
-- **Sistema de configuración de hardware completo**
+- **Modelos Balanza y PuestoTrabajo agregados a Prisma** â
+- **APIs REST completas creadas** â
+- **MÃ³dulo config-balanzas refactorizado** â
+- **VinculaciÃ³n rÃ³tulos-producciÃ³n verificada** â
+- **Sistema de configuraciÃ³n de hardware completo**
 
 ---
 Task ID: 1550
 Agent: main
-Task: Migrar todos los módulos mock a persistencia real y limpieza de redundantes
+Task: Migrar todos los mÃ³dulos mock a persistencia real y limpieza de redundantes
 
 Work Log:
 
-#### 1. Módulos Identificados en MOCK
+#### 1. MÃ³dulos Identificados en MOCK
 - **config-impresoras** - Datos hardcodeados, sin API
 - **config-terminales** - Datos hardcodeados, sin API
 - **reportes-senasa** - REPORTES_SIMULADOS hardcodeados
@@ -478,63 +514,63 @@ Work Log:
 - fechaEnvio, fechaConfirmacion
 - mensajeError, reintentos
 - archivoNombre, archivoUrl, datosReporte
-- operadorId (relación con Operador)
+- operadorId (relaciÃ³n con Operador)
 
 #### 3. APIs Creadas
 - `/api/reportes-senasa` - CRUD completo (GET, POST, PUT, DELETE)
 
-#### 4. Módulos Actualizados a API Real
-- **reportes-senasa** → Ahora usa `/api/reportes-senasa`
-- **config-tipos-producto** → Ahora usa `/api/tipos-producto` (API existente)
+#### 4. MÃ³dulos Actualizados a API Real
+- **reportes-senasa** â Ahora usa `/api/reportes-senasa`
+- **config-tipos-producto** â Ahora usa `/api/tipos-producto` (API existente)
 
-#### 5. Módulos Eliminados (Redundantes)
-- **config-impresoras** → ELIMINADO (ya cubierto por PuestoTrabajo)
-- **config-terminales** → ELIMINADO (ya cubierto por PuestoTrabajo)
+#### 5. MÃ³dulos Eliminados (Redundantes)
+- **config-impresoras** â ELIMINADO (ya cubierto por PuestoTrabajo)
+- **config-terminales** â ELIMINADO (ya cubierto por PuestoTrabajo)
 
 El modelo PuestoTrabajo ya incluye:
-- impresoraIp, impresoraPuerto, impresoraModelo (impresoras de rótulos)
+- impresoraIp, impresoraPuerto, impresoraModelo (impresoras de rÃ³tulos)
 - impresoraTicketsIp, impresoraTicketsPuerto (impresoras de tickets)
 - scannerHabilitado, scannerPuerto (scanner)
-- Nombre, sector, ubicación, operadorActualId (terminales)
+- Nombre, sector, ubicaciÃ³n, operadorActualId (terminales)
 
-#### 6. Módulos Pendientes de Migración (mock → API)
+#### 6. MÃ³dulos Pendientes de MigraciÃ³n (mock â API)
 - **config-insumos** - Tiene API `/api/insumos` pero el componente usa datos mock
-- **config-codigobarras** - Tiene API `/api/codigo-barras` pero devuelve datos estáticos
+- **config-codigobarras** - Tiene API `/api/codigo-barras` pero devuelve datos estÃ¡ticos
 
 #### 7. Commit Realizado
 - `feat: Remove mock modules, add ReporteSenasa model, update components to use real APIs`
 
 Stage Summary:
-- **Modelo ReporteSenasa agregado a Prisma** ✅
-- **API reportes-senasa creada** ✅
-- **reportes-senasa ahora usa API real** ✅
-- **config-tipos-producto ahora usa API real** ✅
-- **config-impresoras ELIMINADO** (redundante con PuestoTrabajo) ✅
-- **config-terminales ELIMINADO** (redundante con PuestoTrabajo) ✅
-- **Pendiente: config-insumos y config-codigobarras** necesitan migración a API
+- **Modelo ReporteSenasa agregado a Prisma** â
+- **API reportes-senasa creada** â
+- **reportes-senasa ahora usa API real** â
+- **config-tipos-producto ahora usa API real** â
+- **config-impresoras ELIMINADO** (redundante con PuestoTrabajo) â
+- **config-terminales ELIMINADO** (redundante con PuestoTrabajo) â
+- **Pendiente: config-insumos y config-codigobarras** necesitan migraciÃ³n a API
 
 ---
 Task ID: 1551
 Agent: main
-Task: Corrección de errores de imports eliminados y subida a GitHub
+Task: CorrecciÃ³n de errores de imports eliminados y subida a GitHub
 
 Work Log:
 
 #### 1. Error Identificado
 - **Error**: Import de componentes eliminados en page.tsx
-- **Causa**: `config-impresoras` y `config-terminales` fueron eliminados pero los imports y referencias permanecían en page.tsx
+- **Causa**: `config-impresoras` y `config-terminales` fueron eliminados pero los imports y referencias permanecÃ­an en page.tsx
 - **Mensaje de error**: `Failed to read source code from /home/z/my-project/src/components/config-impresoras/index.tsx - No such file or directory`
 
 #### 2. Correcciones Realizadas
-1. **Imports eliminados** (líneas 29-30):
+1. **Imports eliminados** (lÃ­neas 29-30):
    - Removido: `import { ConfigImpresorasModule } from '@/components/config-impresoras'`
    - Removido: `import { ConfigTerminalesModule } from '@/components/config-terminales'`
    - Agregado comentario: `// config-impresoras y config-terminales eliminados - ahora se usa PuestoTrabajo`
 
-2. **Tipo Page actualizado** (línea 110):
+2. **Tipo Page actualizado** (lÃ­nea 110):
    - Removidos: `'configImpresoras'` y `'configTerminales'` del union type
 
-3. **Navegación actualizada** (NAV_GROUPS):
+3. **NavegaciÃ³n actualizada** (NAV_GROUPS):
    - Removido item: `{ id: 'configImpresoras', label: 'Impresoras', ... }`
    - Removido item: `{ id: 'configTerminales', label: 'Terminales', ... }`
    - Agregados comentarios explicativos
@@ -543,55 +579,55 @@ Work Log:
    - Removidos cases para `configImpresoras` y `configTerminales`
    - Agregado comentario: `// configImpresoras y configTerminales eliminados`
 
-#### 3. Verificación
-- **Lint**: Sin errores ✓
-- **Dev server**: Funcionando correctamente ✓
-- **GET /**: 200 OK ✓
-- **APIs**: Todas respondiendo correctamente ✓
+#### 3. VerificaciÃ³n
+- **Lint**: Sin errores â
+- **Dev server**: Funcionando correctamente â
+- **GET /**: 200 OK â
+- **APIs**: Todas respondiendo correctamente â
 
 #### 4. Estado Final del Sistema
-- **Módulos eliminados**: config-impresoras, config-terminales
-- **Funcionalidad migrada a**: PuestoTrabajo (incluye configuración de impresoras y terminales)
+- **MÃ³dulos eliminados**: config-impresoras, config-terminales
+- **Funcionalidad migrada a**: PuestoTrabajo (incluye configuraciÃ³n de impresoras y terminales)
 - **Sistema**: 100% operativo
 
 Stage Summary:
-- **Error de imports corregido** ✅
-- **Tipo Page actualizado** ✅
-- **Navegación limpiada** ✅
-- **Lint sin errores** ✅
+- **Error de imports corregido** â
+- **Tipo Page actualizado** â
+- **NavegaciÃ³n limpiada** â
+- **Lint sin errores** â
 - **Sistema listo para subir a GitHub**
 
 ---
 Task ID: 1552
 Agent: main
-Task: Actualización de versión del sistema
+Task: ActualizaciÃ³n de versiÃ³n del sistema
 
 Work Log:
 
-#### 1. Versión Anterior
+#### 1. VersiÃ³n Anterior
 - **package.json**: 0.15.1
 - **page.tsx**: v2.0.1
 
-#### 2. Versión Actualizada
+#### 2. VersiÃ³n Actualizada
 - **package.json**: 2.1.0
 - **page.tsx**: v2.1.0
 
-#### 3. Justificación del bump
-Cambios significativos desde la última versión:
-- Modelo **Balanza** agregado con configuración completa
+#### 3. JustificaciÃ³n del bump
+Cambios significativos desde la Ãºltima versiÃ³n:
+- Modelo **Balanza** agregado con configuraciÃ³n completa
 - Modelo **PuestoTrabajo** agregado (absorbe impresoras y terminales)
 - Modelo **ReporteSenasa** agregado
-- Módulos mock migrados a API real (balanzas, reportes-senasa, tipos-producto)
-- Módulos redundantes eliminados (config-impresoras, config-terminales)
+- MÃ³dulos mock migrados a API real (balanzas, reportes-senasa, tipos-producto)
+- MÃ³dulos redundantes eliminados (config-impresoras, config-terminales)
 - Correcciones de errores de imports
 
 #### 4. Commit
 - `chore: Bump version to 2.1.0`
 
 Stage Summary:
-- **Versión actualizada a 2.1.0** ✅
-- **Sincronizado en package.json y page.tsx** ✅
-- **Push a GitHub completado** ✅
+- **VersiÃ³n actualizada a 2.1.0** â
+- **Sincronizado en package.json y page.tsx** â
+- **Push a GitHub completado** â
 
 ---
 Task ID: 1553
@@ -603,83 +639,83 @@ Work Log:
 #### 1. Sistema de Logs Estructurados
 **Archivo:** `src/lib/logger.ts`
 - Niveles: DEBUG, INFO, WARN, ERROR
-- Formato JSON en producción para logging centralizado
+- Formato JSON en producciÃ³n para logging centralizado
 - Formato legible con colores en desarrollo
-- Medición de tiempo de ejecución con `time()`
+- MediciÃ³n de tiempo de ejecuciÃ³n con `time()`
 - Soporte para requestId, userId, ip, duration
 
 #### 2. Rate Limiting
 **Archivo:** `src/lib/rate-limit.ts`
-- Store en memoria con limpieza automática
+- Store en memoria con limpieza automÃ¡tica
 - Configuraciones predefinidas:
   * AUTH_LOGIN: 5 intentos/min, bloqueo 15 min
   * AUTH_PIN: 3 intentos/min, bloqueo 30 min
   * API_GENERAL: 100 requests/min
-- Headers estándar: Retry-After, X-RateLimit-Limit, X-RateLimit-Remaining
-- Función `resetRateLimit()` para limpiar después de login exitoso
+- Headers estÃ¡ndar: Retry-After, X-RateLimit-Limit, X-RateLimit-Remaining
+- FunciÃ³n `resetRateLimit()` para limpiar despuÃ©s de login exitoso
 
 #### 3. Sistema de Cache
 **Archivo:** `src/lib/cache.ts`
 - TTLs predefinidos: SHORT (30s), MEDIUM (5min), LONG (30min), HOUR, DAY
 - Funciones: `cacheGet`, `cacheSet`, `cacheOrFetch`, `cacheInvalidate`
-- Patrón cache-aside con `cacheOrFetch`
-- Estadísticas: hits, misses, hitRate
+- PatrÃ³n cache-aside con `cacheOrFetch`
+- EstadÃ­sticas: hits, misses, hitRate
 - Keys predefinidas para entidades del sistema
 
-#### 4. Backup Automático
+#### 4. Backup AutomÃ¡tico
 **Archivo:** `src/lib/backup.ts`
 - Backup de SQLite (copia de archivo)
 - Nombres con timestamp: `backup_auto_2026-01-15_10-30-00.db`
-- Limpieza automática: mantener últimos 30 backups
-- Separación de backups automáticos y manuales
-- Función `scheduleAutoBackups()` para programar backups periódicos
+- Limpieza automÃ¡tica: mantener Ãºltimos 30 backups
+- SeparaciÃ³n de backups automÃ¡ticos y manuales
+- FunciÃ³n `scheduleAutoBackups()` para programar backups periÃ³dicos
 
 #### 5. APIs del Sistema
 **Nuevo:** `src/app/api/sistema/backup/route.ts`
-- GET: Listar backups / estadísticas
+- GET: Listar backups / estadÃ­sticas
 - POST: Crear backup manual
 - PUT: Restaurar backup
 - DELETE: Eliminar backup
-- Autorización: solo ADMIN
+- AutorizaciÃ³n: solo ADMIN
 
 **Nuevo:** `src/app/api/sistema/status/route.ts`
 - GET: Estado completo del sistema
-  * Versión, uptime, memoria
-  * Tamaño BD y conteos de tablas
-  * Estadísticas de cache
-  * Estadísticas de rate limiting
-  * Estadísticas de backup
+  * VersiÃ³n, uptime, memoria
+  * TamaÃ±o BD y conteos de tablas
+  * EstadÃ­sticas de cache
+  * EstadÃ­sticas de rate limiting
+  * EstadÃ­sticas de backup
 - DELETE: Limpiar cache
 
 #### 6. API Auth Actualizada
 **Archivo:** `src/app/api/auth/route.ts`
 - Rate limiting en login (usuario/password y PIN)
-- Obtención de IP del cliente (x-forwarded-for)
+- ObtenciÃ³n de IP del cliente (x-forwarded-for)
 - Reset de rate limit en login exitoso
 - Logs estructurados
-- IP registrada en auditoría
+- IP registrada en auditorÃ­a
 
 #### 7. Dashboard con Cache
 **Archivo:** `src/app/api/dashboard/route.ts`
-- Cache de 30 segundos para estadísticas
+- Cache de 30 segundos para estadÃ­sticas
 - Logs de rendimiento
 
 Stage Summary:
-- **Logger estructurado implementado** ✅
-- **Rate limiting en autenticación** ✅
-- **Sistema de cache implementado** ✅
-- **Backup automático implementado** ✅
-- **APIs de sistema creadas** ✅
-- **Módulos mock migrados a API** ✅ (config-insumos, config-codigobarras)
+- **Logger estructurado implementado** â
+- **Rate limiting en autenticaciÃ³n** â
+- **Sistema de cache implementado** â
+- **Backup automÃ¡tico implementado** â
+- **APIs de sistema creadas** â
+- **MÃ³dulos mock migrados a API** â (config-insumos, config-codigobarras)
 
 ---
 Task ID: 1554
 Agent: main
-Task: Migrar módulos mock restantes a API real
+Task: Migrar mÃ³dulos mock restantes a API real
 
 Work Log:
 
-#### 1. config-insumos → API Real
+#### 1. config-insumos â API Real
 **Archivo:** `src/components/config-insumos/index.tsx`
 - Eliminados `datosIniciales` hardcodeados (10 insumos mock)
 - Agregado `useEffect` para cargar desde `/api/insumos`
@@ -688,20 +724,20 @@ Work Log:
   * POST: Crear insumo
   * PUT: Actualizar insumo
   * DELETE: Eliminar insumo
-- Integración con logger estructurado
+- IntegraciÃ³n con logger estructurado
 - Datos persistidos en base de datos
 
-#### 2. config-codigobarras → API Real
+#### 2. config-codigobarras â API Real
 **Modelo agregado:** `CodigoBarrasConfig` en `prisma/schema.prisma`
 - Campos: id, tipo, prefijo, formato, descripcion, variables, activo, esDefault
-- Índices en tipo y activo
+- Ãndices en tipo y activo
 
 **Archivo:** `src/app/api/codigo-barras/route.ts`
 - GET: Listar configuraciones activas
-- POST: Crear nueva configuración
-- PUT: Actualizar configuración
-- DELETE: Eliminar configuración
-- Inicialización automática con datos por defecto
+- POST: Crear nueva configuraciÃ³n
+- PUT: Actualizar configuraciÃ³n
+- DELETE: Eliminar configuraciÃ³n
+- InicializaciÃ³n automÃ¡tica con datos por defecto
 
 **Archivo:** `src/components/config-codigobarras/index.tsx`
 - Eliminados datos mock
@@ -717,52 +753,52 @@ Work Log:
 - Subproducto: SB-CODIGO-FECHA
 - Menudencia: MN-CODIGO-BOLSA-FECHA
 
-#### 4. Verificación
-- **Lint**: Sin errores ✓
-- **DB Push**: Exitoso ✓
-- **APIs**: Todas funcionando ✓
+#### 4. VerificaciÃ³n
+- **Lint**: Sin errores â
+- **DB Push**: Exitoso â
+- **APIs**: Todas funcionando â
 
 Stage Summary:
-- **config-insumos migrado a API real** ✅
-- **config-codigobarras migrado a API real** ✅
-- **Modelo CodigoBarrasConfig creado en Prisma** ✅
-- **Sistema 100% sin datos mock** ✅
-- **Todos los módulos con persistencia real** ✅
+- **config-insumos migrado a API real** â
+- **config-codigobarras migrado a API real** â
+- **Modelo CodigoBarrasConfig creado en Prisma** â
+- **Sistema 100% sin datos mock** â
+- **Todos los mÃ³dulos con persistencia real** â
 
 ---
 Task ID: 1555
 Agent: main
-Task: Finalización y verificación completa del sistema
+Task: FinalizaciÃ³n y verificaciÃ³n completa del sistema
 
 Work Log:
 
-#### 1. Verificación Final
-- **Versión actualizada**: 2.1.0 → 2.2.0
-- **Todos los módulos mock migrados**: ✅
-- **Sistema de logs estructurados**: ✅ Funcionando
-- **Rate limiting**: ✅ Activo en autenticación
-- **Cache**: ✅ Funcionando en dashboard
-- **Backup**: ✅ Sistema implementado
+#### 1. VerificaciÃ³n Final
+- **VersiÃ³n actualizada**: 2.1.0 â 2.2.0
+- **Todos los mÃ³dulos mock migrados**: â
+- **Sistema de logs estructurados**: â Funcionando
+- **Rate limiting**: â Activo en autenticaciÃ³n
+- **Cache**: â Funcionando en dashboard
+- **Backup**: â Sistema implementado
 
 #### 2. Estado del Sistema
 | Componente | Estado |
 |------------|--------|
-| Lint | Sin errores ✅ |
-| Dev server | Funcionando ✅ |
-| Base de datos | Sincronizada ✅ |
-| APIs | Todas operativas ✅ |
-| Módulos mock | 0 (todos migrados) ✅ |
+| Lint | Sin errores â |
+| Dev server | Funcionando â |
+| Base de datos | Sincronizada â |
+| APIs | Todas operativas â |
+| MÃ³dulos mock | 0 (todos migrados) â |
 
 #### 3. Funcionalidades Implementadas
-- Sistema de gestión frigorífica completo
+- Sistema de gestiÃ³n frigorÃ­fica completo
 - CRUD para todas las entidades
-- Autenticación con rate limiting
-- Auditoría de cambios
+- AutenticaciÃ³n con rate limiting
+- AuditorÃ­a de cambios
 - Logs estructurados
 - Cache para consultas frecuentes
-- Backup automático de BD
-- Sistema de rótulos ZPL/DPL
-- Configuración de balanzas y puestos de trabajo
+- Backup automÃ¡tico de BD
+- Sistema de rÃ³tulos ZPL/DPL
+- ConfiguraciÃ³n de balanzas y puestos de trabajo
 - Reportes SENASA
 
 #### 4. Commits Realizados
@@ -771,31 +807,31 @@ Work Log:
 3. `28b63ff` - Fix EstadoTropa value
 
 Stage Summary:
-- **Sistema 100% funcional** ✅
-- **Sin módulos mock** ✅
-- **Versión 2.2.0** ✅
-- **Subido a GitHub** ✅
+- **Sistema 100% funcional** â
+- **Sin mÃ³dulos mock** â
+- **VersiÃ³n 2.2.0** â
+- **Subido a GitHub** â
 
 ---
-## RESUMEN FINAL - Sistema Frigorífico v2.2.0
+## RESUMEN FINAL - Sistema FrigorÃ­fico v2.2.0
 
-### Módulos del Sistema (todos con persistencia real)
-1. **CICLO I**: Pesaje Camiones, Pesaje Individual, Movimiento Hacienda, Lista Faena, Ingreso Cajón, Romaneo, VB Romaneo, Movimiento Cámaras, Expedición
+### MÃ³dulos del Sistema (todos con persistencia real)
+1. **CICLO I**: Pesaje Camiones, Pesaje Individual, Movimiento Hacienda, Lista Faena, Ingreso CajÃ³n, Romaneo, VB Romaneo, Movimiento CÃ¡maras, ExpediciÃ³n
 2. **CICLO II**: Cuarteo, Ingreso Despostada, Movimientos Despostada, Cortes Despostada, Empaque
 3. **Subproductos**: Menudencias, Cueros, Rendering (Grasa, Desperdicios, Fondo Digestor)
-4. **Reportes**: Stocks Corrales, Stocks Cámaras, Planilla 01, Rindes Tropa, Búsqueda, Reportes SENASA
-5. **Administración**: Facturación, Insumos, Stocks Insumos
-6. **Configuración**: Rótulos, Insumos, Usuarios, Código Barras, Balanzas, Operadores, Productos, Subproductos, Listado Insumos, Condiciones Embalaje, Tipos Producto
+4. **Reportes**: Stocks Corrales, Stocks CÃ¡maras, Planilla 01, Rindes Tropa, BÃºsqueda, Reportes SENASA
+5. **AdministraciÃ³n**: FacturaciÃ³n, Insumos, Stocks Insumos
+6. **ConfiguraciÃ³n**: RÃ³tulos, Insumos, Usuarios, CÃ³digo Barras, Balanzas, Operadores, Productos, Subproductos, Listado Insumos, Condiciones Embalaje, Tipos Producto
 7. **Calidad**: Registro Usuarios
 
-### Librerías del Sistema
+### LibrerÃ­as del Sistema
 - `src/lib/logger.ts` - Logs estructurados
 - `src/lib/rate-limit.ts` - Rate limiting
 - `src/lib/cache.ts` - Sistema de cache
-- `src/lib/backup.ts` - Backup automático
+- `src/lib/backup.ts` - Backup automÃ¡tico
 
 ### APIs del Sistema
-- `/api/sistema/backup` - Gestión de backups
+- `/api/sistema/backup` - GestiÃ³n de backups
 - `/api/sistema/status` - Estado del sistema
 
 ### Modelo de Datos
@@ -804,73 +840,73 @@ Stage Summary:
 - Relaciones completas con integridad referencial
 
 ### Seguridad
-- Auditoría de todos los cambios
-- Rate limiting en autenticación
-- Validación de permisos por rol
+- AuditorÃ­a de todos los cambios
+- Rate limiting en autenticaciÃ³n
+- ValidaciÃ³n de permisos por rol
 - IP tracking en logs
 
 ---
 Task ID: 1556
 Agent: main
-Task: Unificación de versiones v3.0.0 - Permisos ADMINISTRADOR corregidos
+Task: UnificaciÃ³n de versiones v3.0.0 - Permisos ADMINISTRADOR corregidos
 
 Work Log:
 
 #### 1. Problema Detectado
-- **Issue**: Usuarios con rol ADMINISTRADOR no podían ver el módulo "Ingreso a Cajón"
+- **Issue**: Usuarios con rol ADMINISTRADOR no podÃ­an ver el mÃ³dulo "Ingreso a CajÃ³n"
 - **Causa**: El sistema verificaba permisos individuales (`puedeIngresoCajon`) sin considerar el rol
-- **Impacto**: ADMINISTRADORES con permisos individuales en `false` no tenían acceso completo
+- **Impacto**: ADMINISTRADORES con permisos individuales en `false` no tenÃ­an acceso completo
 
-#### 2. Solución Implementada
+#### 2. SoluciÃ³n Implementada
 **Archivo:** `src/app/page.tsx`
-- Creada función `hasPermission()` que primero verifica el rol ADMINISTRADOR
-- ADMINISTRADOR ahora tiene acceso automático a TODOS los módulos
-- Actualizadas funciones `canAccess()` y `visibleNavGroups()` para usar la nueva lógica
+- Creada funciÃ³n `hasPermission()` que primero verifica el rol ADMINISTRADOR
+- ADMINISTRADOR ahora tiene acceso automÃ¡tico a TODOS los mÃ³dulos
+- Actualizadas funciones `canAccess()` y `visibleNavGroups()` para usar la nueva lÃ³gica
 
-**Código agregado:**
+**CÃ³digo agregado:**
 ```typescript
 // Check if user has permission (ADMINISTRADOR has all permissions automatically)
 const hasPermission = (permiso: string | undefined): boolean => {
   if (!permiso) return true
-  // ADMINISTRADOR tiene todos los permisos automáticamente
+  // ADMINISTRADOR tiene todos los permisos automÃ¡ticamente
   if (operador?.rol === 'ADMINISTRADOR') return true
   return operador?.permisos[permiso as keyof typeof operador.permisos] === true
 }
 ```
 
-#### 3. Unificación de Versiones
-- **Versión anterior**: 2.2.0
-- **Nueva versión**: 3.0.0
-- **Razón**: Unificación de entornos desarrollo y producción
+#### 3. UnificaciÃ³n de Versiones
+- **VersiÃ³n anterior**: 2.2.0
+- **Nueva versiÃ³n**: 3.0.0
+- **RazÃ³n**: UnificaciÃ³n de entornos desarrollo y producciÃ³n
 
-#### 4. Sistema para Evitar Pérdida de Avances
+#### 4. Sistema para Evitar PÃ©rdida de Avances
 Implementado sistema de "Regla de 5 Pasos":
-1. Incrementar versión al final de cada sesión
+1. Incrementar versiÃ³n al final de cada sesiÃ³n
 2. Actualizar worklog con todo lo realizado
-3. Commit con formato "v3.0.0 - Descripción"
-4. Push a AMBOS repositorios (desarrollo y producción)
-5. Verificar en GitHub que se subió correctamente
+3. Commit con formato "v3.0.0 - DescripciÃ³n"
+4. Push a AMBOS repositorios (desarrollo y producciÃ³n)
+5. Verificar en GitHub que se subiÃ³ correctamente
 
 #### 5. Repositorios
 - **Desarrollo (SQLite)**: `https://github.com/aarescalvo/1532`
-- **Producción (PostgreSQL)**: `https://github.com/aarescalvo/trazasole`
+- **ProducciÃ³n (PostgreSQL)**: `https://github.com/aarescalvo/trazasole`
 
 Stage Summary:
-- **Permisos ADMINISTRADOR corregidos** ✅
-- **Versión actualizada a 3.0.0** ✅
-- **Sistema anti-pérdida documentado** ✅
-- **Listo para sincronización de repositorios** ✅
+- **Permisos ADMINISTRADOR corregidos** â
+- **VersiÃ³n actualizada a 3.0.0** â
+- **Sistema anti-pÃ©rdida documentado** â
+- **Listo para sincronizaciÃ³n de repositorios** â
 
 ---
 Task ID: 1557
 Agent: main
-Task: Módulo de operadores con todos los permisos visibles
+Task: MÃ³dulo de operadores con todos los permisos visibles
 
 Work Log:
 
 #### 1. Problema Identificado
 - Al crear/editar operadores, faltaban permisos en la interfaz
-- No había mensaje explicativo para rol ADMINISTRADOR
+- No habÃ­a mensaje explicativo para rol ADMINISTRADOR
 - Permisos nuevos (puedeIngresoCajon, puedeCCIR, puedeFacturacion) no estaban disponibles
 
 #### 2. Cambios Realizados
@@ -888,78 +924,78 @@ Work Log:
 - **handleRolChange**: Actualizado para incluir nuevos permisos
 
 - **Mensaje informativo para ADMINISTRADOR**: 
-  - Muestra alerta indicando que tienen acceso automático a todos los módulos
+  - Muestra alerta indicando que tienen acceso automÃ¡tico a todos los mÃ³dulos
   - Permisos se guardan para futuros cambios de rol
 
-- **Permisos agrupados por categoría**:
-  - CICLO I: Pesaje Camiones, Pesaje Individual, Movimiento Hacienda, Lista Faena, Ingreso Cajón, Romaneo
+- **Permisos agrupados por categorÃ­a**:
+  - CICLO I: Pesaje Camiones, Pesaje Individual, Movimiento Hacienda, Lista Faena, Ingreso CajÃ³n, Romaneo
   - Subproductos: Menudencias
-  - Stock: Stock Cámaras
+  - Stock: Stock CÃ¡maras
   - Reportes: Reportes
-  - Documentación: CCIR / Declaraciones
-  - Administración: Facturación
-  - Sistema: Configuración
+  - DocumentaciÃ³n: CCIR / Declaraciones
+  - AdministraciÃ³n: FacturaciÃ³n
+  - Sistema: ConfiguraciÃ³n
 
 Stage Summary:
-- **Todos los permisos ahora son configurables** ✅
-- **Mensaje explicativo para ADMINISTRADOR** ✅
-- **Interfaz más organizada por grupos** ✅
+- **Todos los permisos ahora son configurables** â
+- **Mensaje explicativo para ADMINISTRADOR** â
+- **Interfaz mÃ¡s organizada por grupos** â
 
 ---
 Task ID: 1558
 Agent: main
-Task: Verificación de permisos en módulo de operadores y confirmación de funcionalidad
+Task: VerificaciÃ³n de permisos en mÃ³dulo de operadores y confirmaciÃ³n de funcionalidad
 
 Work Log:
 
 #### 1. Solicitud del Usuario
-- Usuario solicitó que al crear operadores (cualquier rol), se puedan seleccionar los módulos a los que tiene acceso
-- Preocupación: que ADMINISTRADOR tenga acceso automático pero que se pueda configurar para otros roles
+- Usuario solicitÃ³ que al crear operadores (cualquier rol), se puedan seleccionar los mÃ³dulos a los que tiene acceso
+- PreocupaciÃ³n: que ADMINISTRADOR tenga acceso automÃ¡tico pero que se pueda configurar para otros roles
 
-#### 2. Verificación Realizada
+#### 2. VerificaciÃ³n Realizada
 - Revisado `src/components/config-operadores/index.tsx`
 - Comparado permisos en Prisma schema vs UI
 - **Resultado: FUNCIONALIDAD YA IMPLEMENTADA**
 
 #### 3. Funcionalidad Existente Confirmada
 **Al crear/editar operadores:**
-- Selección de rol: OPERADOR, SUPERVISOR, ADMINISTRADOR
+- SelecciÃ³n de rol: OPERADOR, SUPERVISOR, ADMINISTRADOR
 - Al cambiar rol, pre-llena permisos sugeridos:
   - ADMINISTRADOR: todos en true
-  - SUPERVISOR: todos excepto facturación y configuración
+  - SUPERVISOR: todos excepto facturaciÃ³n y configuraciÃ³n
   - OPERADOR: solo pesajes y movimiento hacienda
-- Checkboxes individuales para cada módulo (12 total)
+- Checkboxes individuales para cada mÃ³dulo (12 total)
 - Mensaje explicativo para ADMINISTRADOR
-- Organización por grupos:
-  - CICLO I: Pesaje Camiones, Pesaje Individual, Movimiento Hacienda, Lista Faena, Ingreso Cajón, Romaneo
+- OrganizaciÃ³n por grupos:
+  - CICLO I: Pesaje Camiones, Pesaje Individual, Movimiento Hacienda, Lista Faena, Ingreso CajÃ³n, Romaneo
   - Subproductos: Menudencias
-  - Stock: Stock Cámaras
+  - Stock: Stock CÃ¡maras
   - Reportes: Reportes
-  - Documentación: CCIR / Declaraciones
-  - Administración: Facturación
-  - Sistema: Configuración
+  - DocumentaciÃ³n: CCIR / Declaraciones
+  - AdministraciÃ³n: FacturaciÃ³n
+  - Sistema: ConfiguraciÃ³n
 
-#### 4. Permisos Verificados (12 módulos)
+#### 4. Permisos Verificados (12 mÃ³dulos)
 | Permiso Prisma | En UI | Estado |
 |----------------|-------|--------|
-| puedePesajeCamiones | ✅ | OK |
-| puedePesajeIndividual | ✅ | OK |
-| puedeMovimientoHacienda | ✅ | OK |
-| puedeListaFaena | ✅ | OK |
-| puedeRomaneo | ✅ | OK |
-| puedeIngresoCajon | ✅ | OK |
-| puedeMenudencias | ✅ | OK |
-| puedeStock | ✅ | OK |
-| puedeReportes | ✅ | OK |
-| puedeCCIR | ✅ | OK |
-| puedeFacturacion | ✅ | OK |
-| puedeConfiguracion | ✅ | OK |
+| puedePesajeCamiones | â | OK |
+| puedePesajeIndividual | â | OK |
+| puedeMovimientoHacienda | â | OK |
+| puedeListaFaena | â | OK |
+| puedeRomaneo | â | OK |
+| puedeIngresoCajon | â | OK |
+| puedeMenudencias | â | OK |
+| puedeStock | â | OK |
+| puedeReportes | â | OK |
+| puedeCCIR | â | OK |
+| puedeFacturacion | â | OK |
+| puedeConfiguracion | â | OK |
 
 Stage Summary:
-- **Funcionalidad YA EXISTE y funciona correctamente** ✅
-- **12 módulos configurables individualmente** ✅
-- **Sin cambios necesarios en código** ✅
-- **Usuario informado de que la feature está implementada** ✅
+- **Funcionalidad YA EXISTE y funciona correctamente** â
+- **12 mÃ³dulos configurables individualmente** â
+- **Sin cambios necesarios en cÃ³digo** â
+- **Usuario informado de que la feature estÃ¡ implementada** â
 
 ---
 Task ID: 1559
@@ -973,9 +1009,9 @@ Work Log:
   - `tee` - no existe en Windows
   - `cp -r` - sintaxis diferente en Windows
   - `NODE_ENV=production` - no funciona en Windows
-- Usuario no podía iniciar el servidor en PC de producción (Windows)
+- Usuario no podÃ­a iniciar el servidor en PC de producciÃ³n (Windows)
 
-#### 2. Solución Implementada
+#### 2. SoluciÃ³n Implementada
 **Archivo:** `package.json`
 - Simplificados scripts para compatibilidad multiplataforma:
   - `dev`: `next dev -p 3000` (sin tee)
@@ -987,17 +1023,17 @@ Work Log:
 - `iniciar-servidor.bat` - Inicia el servidor con doble click
 - `detener-servidor.bat` - Mata procesos bun/node con doble click
 
-#### 3. Usuario de Producción Actualizado
+#### 3. Usuario de ProducciÃ³n Actualizado
 - Clonado repositorio: `https://github.com/aarescalvo/trazasole`
 - Creada base de datos PostgreSQL: `trazasole`
 - Configurado `.env` con credenciales correctas
 - `bun run db:push` ejecutado exitosamente
 
 Stage Summary:
-- **Scripts compatibles con Windows** ✅
-- **Scripts .bat para iniciar/detener** ✅
-- **Producción sincronizada** ✅
-- **Base de datos PostgreSQL creada** ✅
+- **Scripts compatibles con Windows** â
+- **Scripts .bat para iniciar/detener** â
+- **ProducciÃ³n sincronizada** â
+- **Base de datos PostgreSQL creada** â
 
 ---
 Task ID: 1560
@@ -1021,16 +1057,16 @@ Work Log:
 - Cambiado `overflow-hidden` a `overflow-auto` en TabsContent "pesar"
 - Cambiado en Card principal del formulario
 - Cambiado en CardContent del formulario
-- Ahora el botón "Registrar" es visible
+- Ahora el botÃ³n "Registrar" es visible
 
-**Problema 2 - Raza con menú desplegable:**
+**Problema 2 - Raza con menÃº desplegable:**
 - Cambiado Select por botones individuales
-- Igual que la selección de Tipo de animal
-- Más rápido de seleccionar en touch/pantallas pequeñas
+- Igual que la selecciÃ³n de Tipo de animal
+- MÃ¡s rÃ¡pido de seleccionar en touch/pantallas pequeÃ±as
 - Colores: amber-500 para seleccionado, blanco con hover para no seleccionado
 
 #### 3. Scripts Disponibles
-| Script | Función |
+| Script | FunciÃ³n |
 |--------|---------|
 | `iniciar-servidor.bat` | Inicia el servidor |
 | `detener-servidor.bat` | Detiene procesos bun/node |
@@ -1039,10 +1075,10 @@ Work Log:
 | `backup-sistema.bat` | Crea backup de BD |
 
 Stage Summary:
-- **Script de backup creado** ✅
-- **Scroll arreglado en pesaje individual** ✅
-- **Raza cambiado a botones** ✅
-- **Lint sin errores** ✅
+- **Script de backup creado** â
+- **Scroll arreglado en pesaje individual** â
+- **Raza cambiado a botones** â
+- **Lint sin errores** â
 
 ---
 Task ID: 1561
@@ -1055,17 +1091,17 @@ Work Log:
 | Repositorio | Uso | Base de Datos |
 |-------------|-----|---------------|
 | `1532` | Desarrollo | SQLite |
-| `trazasole` | Producción | PostgreSQL |
+| `trazasole` | ProducciÃ³n | PostgreSQL |
 
 #### 2. Problema Detectado
-- Se subían cambios solo a un repositorio
-- El usuario de producción no recibía las actualizaciones
-- No había sistema para recordar sincronizar ambos
+- Se subÃ­an cambios solo a un repositorio
+- El usuario de producciÃ³n no recibÃ­a las actualizaciones
+- No habÃ­a sistema para recordar sincronizar ambos
 
-#### 3. Solución Implementada
+#### 3. SoluciÃ³n Implementada
 **Archivo creado:** `REGLAS.md`
-- Documentación clara de ambos repositorios
-- Checklist obligatorio al finalizar cada sesión
+- DocumentaciÃ³n clara de ambos repositorios
+- Checklist obligatorio al finalizar cada sesiÃ³n
 - Comandos exactos para push a ambos
 - Sistema de versionado sincronizado
 
@@ -1073,7 +1109,7 @@ Work Log:
 ```bash
 # SIEMPRE ejecutar AMBOS comandos:
 git push origin master          # 1532 (desarrollo)
-git push trazasole master       # trazasole (producción)
+git push trazasole master       # trazasole (producciÃ³n)
 ```
 
 #### 5. Remotos Configurados
@@ -1083,24 +1119,24 @@ git remote add trazasole https://github.com/aarescalvo/trazasole.git
 ```
 
 Stage Summary:
-- **Archivo REGLAS.md creado** ✅
-- **Checklist de sincronización** ✅
-- **Push a ambos repositorios** ✅
+- **Archivo REGLAS.md creado** â
+- **Checklist de sincronizaciÃ³n** â
+- **Push a ambos repositorios** â
 
 ---
 Task ID: 1562
 Agent: main
-Task: Sistema de rótulos ZPL/DPL para Zebra ZT410/ZT230 y Datamax Mark II
+Task: Sistema de rÃ³tulos ZPL/DPL para Zebra ZT410/ZT230 y Datamax Mark II
 
 Work Log:
 
 #### 1. Plantillas ZPL para Zebra
 **Modelos soportados:**
-- **Zebra ZT410** (300 DPI) - Industrial, alta resolución
-- **Zebra ZT230** (203 DPI) - Industrial, estándar
+- **Zebra ZT410** (300 DPI) - Industrial, alta resoluciÃ³n
+- **Zebra ZT230** (203 DPI) - Industrial, estÃ¡ndar
 
-**Rótulos creados:**
-- Pesaje Individual - 10x5 cm con número grande, tropa, tipo, peso y código de barras
+**RÃ³tulos creados:**
+- Pesaje Individual - 10x5 cm con nÃºmero grande, tropa, tipo, peso y cÃ³digo de barras
 - Media Res - 8x12 cm completo con todos los datos requeridos
 - Menudencia - 6x8 cm compacto
 
@@ -1108,53 +1144,53 @@ Work Log:
 **Modelos soportados:**
 - **Datamax Mark II** (203 DPI) - Industrial, robusta
 
-**Rótulos creados:**
+**RÃ³tulos creados:**
 - Pesaje Individual, Media Res y Menudencia en formato DPL
 
 #### 3. Schema Prisma Actualizado
 **Modelo Rotulo:**
 - Agregado campo `modeloImpresora` (ZT410, ZT230, MARK_II, etc.)
-- Seleccionable desde la UI de configuración
+- Seleccionable desde la UI de configuraciÃ³n
 
-#### 4. UI de Configuración de Rótulos Mejorada
+#### 4. UI de ConfiguraciÃ³n de RÃ³tulos Mejorada
 **Archivo:** `src/components/config-rotulos/index.tsx`
 - Selector de tipo de impresora (ZEBRA/DATAMAX)
-- Selector de modelo específico (ZT410, ZT230, Mark II, etc.)
-- DPI automático según modelo seleccionado
+- Selector de modelo especÃ­fico (ZT410, ZT230, Mark II, etc.)
+- DPI automÃ¡tico segÃºn modelo seleccionado
 - Info del modelo en tiempo real
 
 #### 5. Pantalla Pesaje Individual Optimizada
 **Archivo:** `src/components/pesaje-individual-module.tsx`
 - Layout compacto sin scroll
-- Número de animal: text-8xl → text-5xl
+- NÃºmero de animal: text-8xl â text-5xl
 - Grid 4 columnas (panel 3/4, lista 1/4)
-- Labels compactos (text-xs → text-[10px])
-- Botones de tipo y raza más pequeños pero legibles
-- Botón Registrar siempre visible
+- Labels compactos (text-xs â text-[10px])
+- Botones de tipo y raza mÃ¡s pequeÃ±os pero legibles
+- BotÃ³n Registrar siempre visible
 
-#### 6. Impresión Automática Integrada
-- Al registrar peso, busca rótulo default de PESAJE_INDIVIDUAL
+#### 6. ImpresiÃ³n AutomÃ¡tica Integrada
+- Al registrar peso, busca rÃ³tulo default de PESAJE_INDIVIDUAL
 - Si no hay configurado, usa fallback HTML
-- Envía a impresora via TCP/IP (puerto 9100)
+- EnvÃ­a a impresora via TCP/IP (puerto 9100)
 
 Stage Summary:
-- **Plantillas ZPL para Zebra ZT410/ZT230 creadas** ✅
-- **Plantillas DPL para Datamax Mark II creadas** ✅
-- **Campo modeloImpresora agregado a Prisma** ✅
-- **UI de configuración con selectores de modelo** ✅
-- **Pantalla pesaje individual optimizada SIN scroll** ✅
-- **Versión actualizada a 3.1.0** ✅
+- **Plantillas ZPL para Zebra ZT410/ZT230 creadas** â
+- **Plantillas DPL para Datamax Mark II creadas** â
+- **Campo modeloImpresora agregado a Prisma** â
+- **UI de configuraciÃ³n con selectores de modelo** â
+- **Pantalla pesaje individual optimizada SIN scroll** â
+- **VersiÃ³n actualizada a 3.1.0** â
 - **Pendiente: Push a ambos repositorios**
 
 ---
-## 📋 CHECKLIST DE FINALIZACIÓN (OBLIGATORIO)
+## ð CHECKLIST DE FINALIZACIÃN (OBLIGATORIO)
 
-Al terminar CADA sesión de trabajo, verificar:
+Al terminar CADA sesiÃ³n de trabajo, verificar:
 
-| Item | Comando/Acción | Estado |
+| Item | Comando/AcciÃ³n | Estado |
 |------|----------------|--------|
 | 1. Lint | `bun run lint` | [ ] Sin errores |
-| 2. Versión | Editar package.json | [ ] Incrementada |
+| 2. VersiÃ³n | Editar package.json | [ ] Incrementada |
 | 3. Worklog | Editar worklog.md | [ ] Actualizado |
 | 4. Git Add | `git add -A` | [ ] Hecho |
 | 5. Git Commit | `git commit -m "vX.Y.Z - mensaje"` | [ ] Hecho |
@@ -1162,23 +1198,23 @@ Al terminar CADA sesión de trabajo, verificar:
 | 7. Push trazasole | `git push trazasole master` | [ ] Hecho |
 | 8. Verificar GitHub | Ambos repos actualizados | [ ] Hecho |
 
-### Formato de versión:
-- **Major (X.0.0)**: Cambios grandes/nuevos módulos
+### Formato de versiÃ³n:
+- **Major (X.0.0)**: Cambios grandes/nuevos mÃ³dulos
 - **Minor (0.X.0)**: Nuevas funcionalidades
 - **Patch (0.0.X)**: Bug fixes, mejoras menores
 
-### Versión actual: **3.7.29**
-### Próxima versión sugerida: **3.7.30**
+### VersiÃ³n actual: **3.7.29**
+### PrÃ³xima versiÃ³n sugerida: **3.7.30**
 
 ---
 Task ID: 1604
 Agent: main
-Task: Actualizar rótulo pesaje individual con formato DPL original probado
+Task: Actualizar rÃ³tulo pesaje individual con formato DPL original probado
 
 Work Log:
 
 #### 1. Formato DPL Original del Sistema Anterior
-El usuario proporcionó el archivo DPL real que funcionaba con la Datamax Mark II:
+El usuario proporcionÃ³ el archivo DPL real que funcionaba con la Datamax Mark II:
 ```
 n
 M1084
@@ -1194,14 +1230,14 @@ A2
 1e8406900410065Ccb
 ySE1
 1911A1200220110cb
-1911A1201950010Año: 
+1911A1201950010AÃ±o: 
 1911A1401940058anio
 1911A1201960215Tropa:
 1911A1401940270nrotropa
-1911A1201660081N° de Animal:
+1911A1201660081NÂ° de Animal:
 1911A1401650200nroanimal
 1911A1402320006estabfaenador
-1911A1201330010Tipificación:
+1911A1201330010TipificaciÃ³n:
 1911A2401260117letra
 1911A1201360215Peso:
 1911A1801330270kgs
@@ -1210,109 +1246,109 @@ E
 ```
 
 #### 2. Variables Actualizadas
-- CODIGO_BARRAS: {Tropa}-{Numero} para código de barras
-- ANIO: Año de faena
-- TROPA: Número de tropa
-- NUMERO: Número de animal (3 dígitos)
+- CODIGO_BARRAS: {Tropa}-{Numero} para cÃ³digo de barras
+- ANIO: AÃ±o de faena
+- TROPA: NÃºmero de tropa
+- NUMERO: NÃºmero de animal (3 dÃ­gitos)
 - ESTABFAENADOR: SOLEMAR ALIMENTARIA
-- LETRA: Tipificación (primera letra del tipo de animal)
+- LETRA: TipificaciÃ³n (primera letra del tipo de animal)
 - PESO: Peso en kg
 
 #### 3. Archivos Modificados
 **`src/app/api/rotulos/init-dpl/route.ts`:**
-- Rótulo pesaje individual actualizado con formato DPL original probado
+- RÃ³tulo pesaje individual actualizado con formato DPL original probado
 - Variables: CODIGO_BARRAS, ANIO, TROPA, NUMERO, ESTABFAENADOR, LETRA, PESO
 
 **`src/components/pesaje-individual-module.tsx`:**
-- Función `imprimirRotulo`: datosRotulo actualizado con todas las variables DPL
-- Función `handleReimprimirRotulo`: datosRotulo actualizado igualmente
+- FunciÃ³n `imprimirRotulo`: datosRotulo actualizado con todas las variables DPL
+- FunciÃ³n `handleReimprimirRotulo`: datosRotulo actualizado igualmente
 
 Stage Summary:
-- **Rótulo DPL con formato probado del sistema anterior** ✅
-- **Variables sincronizadas con formato original** ✅
-- **Funciones de impresión actualizadas** ✅
-- **Versión actualizada a 3.7.26** ✅
+- **RÃ³tulo DPL con formato probado del sistema anterior** â
+- **Variables sincronizadas con formato original** â
+- **Funciones de impresiÃ³n actualizadas** â
+- **VersiÃ³n actualizada a 3.7.26** â
 
 ---
 Task ID: 1603
 Agent: main
-Task: Correcciones UI Romaneo y Rótulo Pesaje Individual
+Task: Correcciones UI Romaneo y RÃ³tulo Pesaje Individual
 
 Work Log:
 
 #### 1. Romaneo Pesaje de Medias - Layout sin scroll
-**Problema:** La pantalla de romaneo no era visible en su totalidad, requería scroll vertical.
+**Problema:** La pantalla de romaneo no era visible en su totalidad, requerÃ­a scroll vertical.
 
-**Solución implementada:** Reducir espaciados y tamaños para que quepa sin scroll:
-- Header: `p-3` → `p-2`, `text-xl` → `text-lg`
-- Configuración activa: `p-2` → `p-1.5`, iconos `w-4` → `w-3`
-- Botones de acción: `h-6` → `h-5`, textos `text-xs` → `text-[10px]`
-- Panel principal: `gap-3` → `gap-2`, padding reducido
-- CardHeader: `py-2 px-3` → `py-1.5 px-2`
-- Título: `text-base` → `text-sm`
-- Botones DER/IZQ: `h-8 px-5` → `h-7 px-4`
-- Input peso: `h-12 w-32 text-2xl` → `h-10 w-28 text-xl`
-- Botones dentición: `h-7 text-xs` → `h-6 text-[10px]`
-- Botones acción: `h-10` → `h-9`
-- Panel lateral: título `text-sm` → `text-xs`
+**SoluciÃ³n implementada:** Reducir espaciados y tamaÃ±os para que quepa sin scroll:
+- Header: `p-3` â `p-2`, `text-xl` â `text-lg`
+- ConfiguraciÃ³n activa: `p-2` â `p-1.5`, iconos `w-4` â `w-3`
+- Botones de acciÃ³n: `h-6` â `h-5`, textos `text-xs` â `text-[10px]`
+- Panel principal: `gap-3` â `gap-2`, padding reducido
+- CardHeader: `py-2 px-3` â `py-1.5 px-2`
+- TÃ­tulo: `text-base` â `text-sm`
+- Botones DER/IZQ: `h-8 px-5` â `h-7 px-4`
+- Input peso: `h-12 w-32 text-2xl` â `h-10 w-28 text-xl`
+- Botones denticiÃ³n: `h-7 text-xs` â `h-6 text-[10px]`
+- Botones acciÃ³n: `h-10` â `h-9`
+- Panel lateral: tÃ­tulo `text-sm` â `text-xs`
 
-**Resultado:** La pantalla ahora cabe sin scroll vertical. El scroll solo está habilitado en el listado de garrones.
+**Resultado:** La pantalla ahora cabe sin scroll vertical. El scroll solo estÃ¡ habilitado en el listado de garrones.
 
-#### 2. Rótulo Pesaje Individual - Tamaño 9x6cm
-**Problema:** El rótulo de pesaje individual no cabía en el tamaño 5x10cm.
+#### 2. RÃ³tulo Pesaje Individual - TamaÃ±o 9x6cm
+**Problema:** El rÃ³tulo de pesaje individual no cabÃ­a en el tamaÃ±o 5x10cm.
 
-**Solución implementada:** Cambiar tamaño a 9x6cm:
+**SoluciÃ³n implementada:** Cambiar tamaÃ±o a 9x6cm:
 **Archivo:** `src/app/api/rotulos/init-dpl/route.ts`
-- Ancho: 100mm → 90mm (9cm)
-- Alto: 50mm → 60mm (6cm)
-- Nombre actualizado: "Pesaje Individual 9x6cm + Cód.Barras - Datamax"
-- Descripción actualizada para reflejar el nuevo tamaño
+- Ancho: 100mm â 90mm (9cm)
+- Alto: 50mm â 60mm (6cm)
+- Nombre actualizado: "Pesaje Individual 9x6cm + CÃ³d.Barras - Datamax"
+- DescripciÃ³n actualizada para reflejar el nuevo tamaÃ±o
 
-**Nota:** El rótulo HTML de rotuloPrint.ts ya tenía tamaño 90mm x 60mm (correcto).
+**Nota:** El rÃ³tulo HTML de rotuloPrint.ts ya tenÃ­a tamaÃ±o 90mm x 60mm (correcto).
 
 Stage Summary:
-- **Romaneo pesaje de medias optimizado** ✅
-- **Sin scroll vertical en pantalla principal** ✅
-- **Rótulo pesaje individual actualizado a 9x6cm** ✅
-- **Versión actualizada a 3.7.25** ✅
+- **Romaneo pesaje de medias optimizado** â
+- **Sin scroll vertical en pantalla principal** â
+- **RÃ³tulo pesaje individual actualizado a 9x6cm** â
+- **VersiÃ³n actualizada a 3.7.25** â
 
 ---
 Task ID: 1602
 Agent: main
-Task: Documentar solución y prevención de pantalla gris en producción
+Task: Documentar soluciÃ³n y prevenciÃ³n de pantalla gris en producciÃ³n
 
 Work Log:
 
 #### 1. Causas Identificadas del Problema
-- **Conflicto de schema**: SQLite en desarrollo vs PostgreSQL en producción
+- **Conflicto de schema**: SQLite en desarrollo vs PostgreSQL en producciÃ³n
 - **Merge conflicts**: Al hacer pull desde GitHub con cambios locales
 - **Variables de entorno**: .env incorrecto o con errores de sintaxis
-- **Caché del navegador**: Assets antiguos en caché
+- **CachÃ© del navegador**: Assets antiguos en cachÃ©
 
-#### 2. Solución Implementada
+#### 2. SoluciÃ³n Implementada
 **Archivo creado:** `ACTUALIZAR_PRODUCCION.md`
-- Guía paso a paso para actualizar PC de producción
-- Verificación de PostgreSQL antes de actualizar
+- GuÃ­a paso a paso para actualizar PC de producciÃ³n
+- VerificaciÃ³n de PostgreSQL antes de actualizar
 - Proceso seguro de git (reset --hard para evitar conflictos)
-- Verificación de schema.prisma y .env
-- Pasos para limpiar caché del navegador
+- VerificaciÃ³n de schema.prisma y .env
+- Pasos para limpiar cachÃ© del navegador
 
-#### 3. Prevención para el Futuro
+#### 3. PrevenciÃ³n para el Futuro
 1. **SIEMPRE verificar** el .env antes de actualizar
 2. **USAR git reset --hard** en lugar de pull para evitar conflictos
-3. **VERIFICAR provider** en schema.prisma (postgresql para producción)
-4. **LIMPIAR caché** del navegador después de actualizar (Ctrl+Shift+R)
+3. **VERIFICAR provider** en schema.prisma (postgresql para producciÃ³n)
+4. **LIMPIAR cachÃ©** del navegador despuÃ©s de actualizar (Ctrl+Shift+R)
 5. **HACER BACKUP** de la base de datos antes de cambios importantes
 
 #### 4. Archivos de Referencia
-- `ACTUALIZAR_PRODUCCION.md` - Guía completa de actualización
-- `REGLAS.md` - Checklist de sincronización de repositorios
+- `ACTUALIZAR_PRODUCCION.md` - GuÃ­a completa de actualizaciÃ³n
+- `REGLAS.md` - Checklist de sincronizaciÃ³n de repositorios
 - `backup-sistema.bat` - Script para backup de PostgreSQL
 
 Stage Summary:
-- **Guía de actualización creada** ✅
-- **Causas documentadas** ✅
-- **Pasos preventivos definidos** ✅
+- **GuÃ­a de actualizaciÃ³n creada** â
+- **Causas documentadas** â
+- **Pasos preventivos definidos** â
 
 ---
 Task ID: 1603
@@ -1325,130 +1361,130 @@ Work Log:
 Todos los archivos .bat organizados en una carpeta dedicada.
 
 #### 2. Scripts Creados
-| Script | Función |
+| Script | FunciÃ³n |
 |--------|---------|
-| `menu-principal.bat` | Menú interactivo con todas las opciones |
+| `menu-principal.bat` | MenÃº interactivo con todas las opciones |
 | `iniciar-servidor.bat` | Inicia el servidor con interfaz visual |
 | `detener-servidor.bat` | Detiene todos los procesos bun/node |
 | `iniciar-silencioso.bat` | Inicia sin interfaz (para tareas programadas) |
 | `detener-silencioso.bat` | Detiene sin interfaz (para tareas programadas) |
-| `backup-base-datos.bat` | Backup de PostgreSQL con fecha y versión |
+| `backup-base-datos.bat` | Backup de PostgreSQL con fecha y versiÃ³n |
 | `backup-sistema.bat` | Backup completo (archivos + BD) |
-| `restaurar-backup.bat` | Restaurar con selección de versión/fecha |
+| `restaurar-backup.bat` | Restaurar con selecciÃ³n de versiÃ³n/fecha |
 | `listar-backups.bat` | Ver todos los backups disponibles |
 | `actualizar-sistema.bat` | Actualizar desde GitHub |
 | `reiniciar-actualizado.bat` | Detener + Backup + Actualizar + Iniciar |
 
-#### 3. Características
-- **Mantener últimos 50 backups**: Los scripts de backup limpian automáticamente los más antiguos
-- **Versionado**: Cada backup incluye la versión del sistema
+#### 3. CaracterÃ­sticas
+- **Mantener Ãºltimos 50 backups**: Los scripts de backup limpian automÃ¡ticamente los mÃ¡s antiguos
+- **Versionado**: Cada backup incluye la versiÃ³n del sistema
 - **Fecha y hora**: Nombres de archivo con timestamp
-- **Menú interactivo**: `menu-principal.bat` agrupa todas las opciones
+- **MenÃº interactivo**: `menu-principal.bat` agrupa todas las opciones
 - **Modo silencioso**: Para usar con Programador de Tareas de Windows
 
 #### 4. Estructura de Carpetas
 ```
 backups/
-├── base-datos/          # Backups SQL
-│   └── backup_YYYY-MM-DD_HH-MM_vX.X.X.sql
-└── sistema/             # Backups completos
-    └── backup_sistema_YYYY-MM-DD_HH-MM_vX.X.X/
-        ├── archivos/    # src, prisma, scripts, config
-        ├── base-datos/  # SQL
-        └── INFO.txt     # Información del backup
+âââ base-datos/          # Backups SQL
+â   âââ backup_YYYY-MM-DD_HH-MM_vX.X.X.sql
+âââ sistema/             # Backups completos
+    âââ backup_sistema_YYYY-MM-DD_HH-MM_vX.X.X/
+        âââ archivos/    # src, prisma, scripts, config
+        âââ base-datos/  # SQL
+        âââ INFO.txt     # InformaciÃ³n del backup
 ```
 
 #### 5. Scripts Antiguos Eliminados
-Eliminados los .bat de la raíz del proyecto para mantener orden.
+Eliminados los .bat de la raÃ­z del proyecto para mantener orden.
 
 Stage Summary:
-- **11 scripts .bat creados y organizados** ✅
-- **Menú principal interactivo** ✅
-- **Sistema de retención de 50 backups** ✅
-- **Modo silencioso para tareas programadas** ✅
-- **Versión 3.7.24** ✅
+- **11 scripts .bat creados y organizados** â
+- **MenÃº principal interactivo** â
+- **Sistema de retenciÃ³n de 50 backups** â
+- **Modo silencioso para tareas programadas** â
+- **VersiÃ³n 3.7.24** â
 
 ---
 Task ID: 1604
 Agent: main
-Task: Crear rótulo de Media Res para Zebra ZT230 con logos y código de barras
+Task: Crear rÃ³tulo de Media Res para Zebra ZT230 con logos y cÃ³digo de barras
 
 Work Log:
 
 #### 1. Template ZPL Creado
 **Archivo:** `prisma/seed-rotulo-media-res.ts`
 - Impresora: Zebra ZT230 (203 DPI)
-- Tamaño: 100mm × 150mm (papel continuo)
+- TamaÃ±o: 100mm Ã 150mm (papel continuo)
 - Formato: ZPL II
 
-#### 2. Estructura del Rótulo
+#### 2. Estructura del RÃ³tulo
 ```
-┌─────────────────────────────────────────┐
-│ [LOGO SOLEMAR]                          │
-│ ESTABLECIMIENTO FAENADOR SOLEMAR...     │
-│ CUIT: 30-70919450-6                     │
-│ MATRICULA N°: 300                       │
-│ RUTA NAC. N° 22, KM 1043...            │
-│─────────────────────────────────────────│
-│ TITULAR DE FAENA: {NOMBRE_CLIENTE}      │
-│ CUIT N°: {CUIT_CLIENTE}                 │
-│ MATRICULA N°: {MATRICULA_CLIENTE}       │
-│─────────────────────────────────────────│
-│ CARNE VACUNA CON HUESO ENFRIADA         │
-│ [LOGO SENASA] SENASA N° 3986/141334/1   │
-│               INDUSTRIA ARGENTINA       │
-│         ╔══ MEDIA RES ══╗               │
-│─────────────────────────────────────────│
-│ FECHA FAENA: {FECHA}  TROPA N°: {TROPA} │
-│ GARRON N°: {GARRON} {LADO} CLASIF: {A/T/D}│
-│ VENTA AL PESO: {KG} KG                  │
-│ MANTENER REFRIGERADO A MENOS DE 5°C     │
-│ CONSUMIR PREFERENTEMENTE... {VENC.}     │
-│─────────────────────────────────────────│
-│ |||||||||||||||||||||| (Código 128)     │
-│ TROPA-GARRON-LADO-CLASIF                │
-└─────────────────────────────────────────┘
+âââââââââââââââââââââââââââââââââââââââââââ
+â [LOGO SOLEMAR]                          â
+â ESTABLECIMIENTO FAENADOR SOLEMAR...     â
+â CUIT: 30-70919450-6                     â
+â MATRICULA NÂ°: 300                       â
+â RUTA NAC. NÂ° 22, KM 1043...            â
+âââââââââââââââââââââââââââââââââââââââââââ
+â TITULAR DE FAENA: {NOMBRE_CLIENTE}      â
+â CUIT NÂ°: {CUIT_CLIENTE}                 â
+â MATRICULA NÂ°: {MATRICULA_CLIENTE}       â
+âââââââââââââââââââââââââââââââââââââââââââ
+â CARNE VACUNA CON HUESO ENFRIADA         â
+â [LOGO SENASA] SENASA NÂ° 3986/141334/1   â
+â               INDUSTRIA ARGENTINA       â
+â         âââ MEDIA RES âââ               â
+âââââââââââââââââââââââââââââââââââââââââââ
+â FECHA FAENA: {FECHA}  TROPA NÂ°: {TROPA} â
+â GARRON NÂ°: {GARRON} {LADO} CLASIF: {A/T/D}â
+â VENTA AL PESO: {KG} KG                  â
+â MANTENER REFRIGERADO A MENOS DE 5Â°C     â
+â CONSUMIR PREFERENTEMENTE... {VENC.}     â
+âââââââââââââââââââââââââââââââââââââââââââ
+â |||||||||||||||||||||| (CÃ³digo 128)     â
+â TROPA-GARRON-LADO-CLASIF                â
+âââââââââââââââââââââââââââââââââââââââââââ
 ```
 
-#### 3. Lógica de Impresión (3 rótulos por media)
-| Media | Rótulos | Lado |
+#### 3. LÃ³gica de ImpresiÃ³n (3 rÃ³tulos por media)
+| Media | RÃ³tulos | Lado |
 |-------|---------|------|
 | Derecha | A, T, D | DER |
 | Izquierda | A, T, D | IZQ |
 
-Total: 6 rótulos por animal
+Total: 6 rÃ³tulos por animal
 
 #### 4. Variables del Template
 - `{LOGO_SOLEMAR}` - Logo en formato GRF
 - `{LOGO_SENASA}` - Logo en formato GRF
 - `{NOMBRE_CLIENTE}` - Titular de faena
 - `{CUIT_CLIENTE}` - CUIT del cliente
-- `{MATRICULA_CLIENTE}` - Matrícula
+- `{MATRICULA_CLIENTE}` - MatrÃ­cula
 - `{FECHA_FAENA}` - Fecha de faena
-- `{TROPA}` - Número de tropa
-- `{GARRON}` - Número de garrón
+- `{TROPA}` - NÃºmero de tropa
+- `{GARRON}` - NÃºmero de garrÃ³n
 - `{LADO}` - DER o IZQ
 - `{CLASIFICACION}` - A, T o D
 - `{KG}` - Peso en kilogramos
-- `{VENCIMIENTO}` - Fecha faena + 13 días
+- `{VENCIMIENTO}` - Fecha faena + 13 dÃ­as
 - `{CODIGO_BARRAS}` - TROPA-GARRON-LADO-CLASIF
 
 #### 5. API Creada
-`/api/rotulos/imprimir-media-res` - Imprime 3 rótulos por media
+`/api/rotulos/imprimir-media-res` - Imprime 3 rÃ³tulos por media
 
 #### 6. Carpeta para Logos
 `public/logos/` - Guardar logo-solemar.png y logo-senasa.png
 
-#### 7. Script de Conversión
+#### 7. Script de ConversiÃ³n
 `scripts/convertir-logo.ts` - Convierte PNG a formato GRF para ZPL
 
 Stage Summary:
-- **Template ZPL completo creado** ✅
-- **API para imprimir 3 rótulos por media** ✅
-- **Carpeta public/logos/ creada** ✅
-- **Script de conversión de logos** ✅
-- **Logos subidos por usuario y convertidos a GRF** ✅
-- **Vista previa visual generada** ✅
+- **Template ZPL completo creado** â
+- **API para imprimir 3 rÃ³tulos por media** â
+- **Carpeta public/logos/ creada** â
+- **Script de conversiÃ³n de logos** â
+- **Logos subidos por usuario y convertidos a GRF** â
+- **Vista previa visual generada** â
 
 ---
 Task ID: 1605
@@ -1464,22 +1500,22 @@ Work Log:
 
 | Hoja | Contenido | Columnas Obligatorias |
 |------|-----------|----------------------|
-| INSTRUCCIONES | Guía de uso | - |
+| INSTRUCCIONES | GuÃ­a de uso | - |
 | CLIENTES | Clientes, productores, usuarios faena | NOMBRE, ES_PRODUCTOR, ES_USUARIO_FAENA |
 | OPERADORES | Usuarios del sistema | NOMBRE, USUARIO, PASSWORD, ROL |
 | TRANSPORTISTAS | Transportistas de ganado | NOMBRE |
 | CORRALES | Corrales disponibles | NOMBRE, CAPACIDAD |
-| CAMARAS | Cámaras frigoríficas | NOMBRE, TIPO, CAPACIDAD |
-| TROPAS | Tropas históricas | CODIGO, ESPECIE, NOMBRE_USUARIO_FAENA, CUIT_USUARIO_FAENA, CANTIDAD_CABEZAS |
+| CAMARAS | CÃ¡maras frigorÃ­ficas | NOMBRE, TIPO, CAPACIDAD |
+| TROPAS | Tropas histÃ³ricas | CODIGO, ESPECIE, NOMBRE_USUARIO_FAENA, CUIT_USUARIO_FAENA, CANTIDAD_CABEZAS |
 | ANIMALES | Animales de cada tropa | CODIGO_TROPA, NUMERO_ANIMAL, TIPO_ANIMAL |
 | DATOS_EJEMPLO | Datos de ejemplo para copiar | - |
 
-#### 3. Características
+#### 3. CaracterÃ­sticas
 - Columnas obligatorias marcadas en amarillo
 - Validaciones de datos (listas desplegables)
 - Instrucciones detalladas
 - Datos de ejemplo incluidos
-- Sin duplicación de datos
+- Sin duplicaciÃ³n de datos
 
 #### 4. Validaciones Incluidas
 - ES_PRODUCTOR/ES_USUARIO_FAENA: SI/NO
@@ -1490,62 +1526,62 @@ Work Log:
 - TIPO_ANIMAL: TO/VA/VQ/MEJ/NO/NT
 
 Stage Summary:
-- **Plantilla Excel completa creada** ✅
-- **8 hojas con validaciones** ✅
-- **Datos de ejemplo incluidos** ✅
-- **Sin duplicación de datos** ✅
+- **Plantilla Excel completa creada** â
+- **8 hojas con validaciones** â
+- **Datos de ejemplo incluidos** â
+- **Sin duplicaciÃ³n de datos** â
 
 ---
 Task ID: 1570
 Agent: main
-Task: Implementar módulo completo de facturación para TrazaSole
+Task: Implementar mÃ³dulo completo de facturaciÃ³n para TrazaSole
 
 Work Log:
 
-#### 1. Análisis del Estado Actual
-- **Modelos Prisma existentes**: TipoServicio, PrecioServicio, PagoFactura, Factura, DetalleFactura ✅
-- **APIs existentes**: /api/tipos-servicio, /api/precios-servicio, /api/facturacion (básica)
-- **UI actual**: Módulo facturacion/index.tsx era MOCK con datos simulados
+#### 1. AnÃ¡lisis del Estado Actual
+- **Modelos Prisma existentes**: TipoServicio, PrecioServicio, PagoFactura, Factura, DetalleFactura â
+- **APIs existentes**: /api/tipos-servicio, /api/precios-servicio, /api/facturacion (bÃ¡sica)
+- **UI actual**: MÃ³dulo facturacion/index.tsx era MOCK con datos simulados
 
-#### 2. Módulos de Configuración Creados
+#### 2. MÃ³dulos de ConfiguraciÃ³n Creados
 
 **Tipos de Servicio** (`src/components/configuracion/tipos-servicio.tsx`):
 - CRUD completo para tipos de servicio (FAENA, EMBOLSADO_VACIO, etc.)
-- Campos: código, nombre, unidad (KG/UN/HORA), % IVA (10.5/21)
-- Indica si se factura o está incluido en otro servicio
-- Orden de aparición configurable
+- Campos: cÃ³digo, nombre, unidad (KG/UN/HORA), % IVA (10.5/21)
+- Indica si se factura o estÃ¡ incluido en otro servicio
+- Orden de apariciÃ³n configurable
 
 **Precios por Cliente** (`src/components/configuracion/precios-servicio.tsx`):
-- Asignación de precios por cliente y tipo de servicio
-- Histórico de precios con fecha desde/hasta
+- AsignaciÃ³n de precios por cliente y tipo de servicio
+- HistÃ³rico de precios con fecha desde/hasta
 - Solo muestra usuarios de faena (clientes que reciben factura)
-- Búsqueda y filtros por cliente/servicio
+- BÃºsqueda y filtros por cliente/servicio
 
 #### 3. APIs Mejoradas
 
-**API Facturación** (`src/app/api/facturacion/route.ts`):
-- GET: Lista facturas con filtros (estado, cliente, fecha, búsqueda)
-- POST: Crea factura con determinación automática de tipo:
+**API FacturaciÃ³n** (`src/app/api/facturacion/route.ts`):
+- GET: Lista facturas con filtros (estado, cliente, fecha, bÃºsqueda)
+- POST: Crea factura con determinaciÃ³n automÃ¡tica de tipo:
   - FACTURA_A para Responsables Inscriptos (RI)
   - FACTURA_B para Consumidor Final/Monotributo (CF/MT)
   - FACTURA_C para Exentos/No Categorizados (EX/NC)
-- Usa precios vigentes del cliente automáticamente
-- Calcula IVA según tipo de comprobante
+- Usa precios vigentes del cliente automÃ¡ticamente
+- Calcula IVA segÃºn tipo de comprobante
 - PUT: Actualiza estado y datos de factura
 - DELETE: Anula factura (solo si no tiene pagos)
 
 **API Cuenta Corriente** (`src/app/api/cuenta-corriente/route.ts`):
 - GET: Resumen de saldos por cliente o detalle de un cliente
-- POST: Registra pagos con distribución automática a facturas pendientes
+- POST: Registra pagos con distribuciÃ³n automÃ¡tica a facturas pendientes
 - DELETE: Anula un pago y revierte el saldo
 
-**API Facturación desde Despacho** (`src/app/api/facturacion/despacho/route.ts`):
-- POST: Genera facturas automáticamente desde un despacho
+**API FacturaciÃ³n desde Despacho** (`src/app/api/facturacion/despacho/route.ts`):
+- POST: Genera facturas automÃ¡ticamente desde un despacho
 - Agrupa items por usuario/cliente
 - Busca precio de faena vigente para cada cliente
 - Crea una factura por cada cliente en el despacho
 
-#### 4. Módulo de Facturación Completo
+#### 4. MÃ³dulo de FacturaciÃ³n Completo
 
 **Nueva UI** (`src/components/facturacion/index.tsx`):
 - Tab "Facturas": Lista todas las facturas con filtros
@@ -1554,69 +1590,69 @@ Work Log:
 - Acciones por factura:
   - Ver detalle completo
   - Imprimir comprobante
-  - Registrar pago (con selección de método)
+  - Registrar pago (con selecciÃ³n de mÃ©todo)
   - Anular factura
 
 **Formulario Nueva Factura**:
-- Selección de cliente (solo usuarios de faena)
-- Detalles dinámicos con servicios configurables
+- SelecciÃ³n de cliente (solo usuarios de faena)
+- Detalles dinÃ¡micos con servicios configurables
 - Precio unitario con sugerencia desde precios vigentes
 - Observaciones y datos adicionales
 
 **Modal de Pago**:
 - Muestra saldo pendiente
-- Métodos: Efectivo, Transferencia, Cheque, Tarjetas
+- MÃ©todos: Efectivo, Transferencia, Cheque, Tarjetas
 - Campo de referencia para transferencias
-- Registro con actualización automática de saldo
+- Registro con actualizaciÃ³n automÃ¡tica de saldo
 
-#### 5. Integración en Configuración
-- Agregados tabs "Servicios" y "Precios" en módulo de configuración
-- Navegación actualizada con iconos Receipt y DollarSign
+#### 5. IntegraciÃ³n en ConfiguraciÃ³n
+- Agregados tabs "Servicios" y "Precios" en mÃ³dulo de configuraciÃ³n
+- NavegaciÃ³n actualizada con iconos Receipt y DollarSign
 
-#### 6. Verificación
-- **Lint**: Sin errores ✓
-- **DB Push**: No requerido (modelos ya existían) ✓
-- **Server**: Funcionando correctamente ✓
-- **HTTP**: 200 OK ✓
+#### 6. VerificaciÃ³n
+- **Lint**: Sin errores â
+- **DB Push**: No requerido (modelos ya existÃ­an) â
+- **Server**: Funcionando correctamente â
+- **HTTP**: 200 OK â
 
 Stage Summary:
-- **Módulo de tipos de servicio creado** ✅
-- **Módulo de precios por cliente creado** ✅
-- **API de facturación mejorada con IVA automático** ✅
-- **API de cuenta corriente creada** ✅
-- **API de facturación desde despacho creada** ✅
-- **Módulo de facturación completo con UI real** ✅
-- **Versión actualizada a 3.4.0** ✅
-- **Servidor funcionando correctamente** ✅
+- **MÃ³dulo de tipos de servicio creado** â
+- **MÃ³dulo de precios por cliente creado** â
+- **API de facturaciÃ³n mejorada con IVA automÃ¡tico** â
+- **API de cuenta corriente creada** â
+- **API de facturaciÃ³n desde despacho creada** â
+- **MÃ³dulo de facturaciÃ³n completo con UI real** â
+- **VersiÃ³n actualizada a 3.4.0** â
+- **Servidor funcionando correctamente** â
 
 ---
 Task ID: 1569
 Agent: main
-Task: Rótulo Pesaje Individual 5x10cm con Código de Barras para Datamax Mark II
+Task: RÃ³tulo Pesaje Individual 5x10cm con CÃ³digo de Barras para Datamax Mark II
 
 Work Log:
 
 #### 1. Sobre los Archivos .trz
-- **Los archivos .trz NO son un formato estándar de Datamax**
+- **Los archivos .trz NO son un formato estÃ¡ndar de Datamax**
 - Datamax usa **DPL** (Datamax Programming Language)
 - El sistema ya tiene soporte completo para DPL
 
-#### 2. Rótulo de Pesaje Individual Creado
+#### 2. RÃ³tulo de Pesaje Individual Creado
 **Formato:** 5cm alto x 10cm ancho (etiqueta horizontal)
 **Contenido:**
-- **Número de animal** - MUY GRANDE y RESALTADO (font 440)
-- **Número de tropa** - Tamaño mediano
-- **Peso en kg** - Tamaño grande, destacado
-- **Código de barras Code 128** - Con datos de tropa + número
+- **NÃºmero de animal** - MUY GRANDE y RESALTADO (font 440)
+- **NÃºmero de tropa** - TamaÃ±o mediano
+- **Peso en kg** - TamaÃ±o grande, destacado
+- **CÃ³digo de barras Code 128** - Con datos de tropa + nÃºmero
 
 #### 3. Archivos Actualizados
 **`src/lib/print-dpl.ts`:**
-- Función `generarRotuloDPL()` - Genera código DPL completo con código de barras
-- Función `generarRotuloZPL()` - Equivalente ZPL para Zebra
-- Función `imprimirRotuloPesaje()` - Envía 2 copias por defecto
+- FunciÃ³n `generarRotuloDPL()` - Genera cÃ³digo DPL completo con cÃ³digo de barras
+- FunciÃ³n `generarRotuloZPL()` - Equivalente ZPL para Zebra
+- FunciÃ³n `imprimirRotuloPesaje()` - EnvÃ­a 2 copias por defecto
 
 **`src/app/api/rotulos/init-dpl/route.ts`:**
-- Crea rótulo default `PESAJE_INDIVIDUAL_DPL_V2` con código de barras
+- Crea rÃ³tulo default `PESAJE_INDIVIDUAL_DPL_V2` con cÃ³digo de barras
 - Variables: NUMERO, TROPA, PESO, CODIGO_BARRAS, FECHA
 - Medidas: 100mm x 50mm (10cm x 5cm)
 
@@ -1626,122 +1662,122 @@ Work Log:
 D11             ; Dimensiones
 H14             ; Velocidad
 PG              ; Modo gap
-1K0150          ; Posición X (horizontal)
-1V0020          ; Posición Y (vertical)
-2f440           ; Tamaño de fuente MUY GRANDE
+1K0150          ; PosiciÃ³n X (horizontal)
+1V0020          ; PosiciÃ³n Y (vertical)
+2f440           ; TamaÃ±o de fuente MUY GRANDE
 3c0000          ; Color negro
 eANIMAL #{NUMERO}  ; Texto
-2B5201          ; Código de barras Code 128
-e{CODIGO_BARRAS}   ; Datos del código
+2B5201          ; CÃ³digo de barras Code 128
+e{CODIGO_BARRAS}   ; Datos del cÃ³digo
 E               ; Fin e imprimir
 ```
 
-#### 5. Cómo Usar
-1. Ir a **Configuración → Rótulos**
-2. Ejecutar `/api/rotulos/init-dpl` (POST) para crear los rótulos default
-3. El rótulo `PESAJE_INDIVIDUAL_DPL_V2` será el default
-4. Al pesar en **Pesaje Individual**, se imprime automáticamente
+#### 5. CÃ³mo Usar
+1. Ir a **ConfiguraciÃ³n â RÃ³tulos**
+2. Ejecutar `/api/rotulos/init-dpl` (POST) para crear los rÃ³tulos default
+3. El rÃ³tulo `PESAJE_INDIVIDUAL_DPL_V2` serÃ¡ el default
+4. Al pesar en **Pesaje Individual**, se imprime automÃ¡ticamente
 
-#### 6. Verificación
-- **Lint**: Sin errores ✓
+#### 6. VerificaciÃ³n
+- **Lint**: Sin errores â
 
 Stage Summary:
-- **Rótulo pesaje individual 5x10cm creado** ✅
-- **Código de barras Code 128 incluido** ✅
-- **Número de animal resaltado (fuente grande)** ✅
-- **Compatible Datamax Mark II** ✅
-- **Versión actualizada a 3.3.4** ✅
+- **RÃ³tulo pesaje individual 5x10cm creado** â
+- **CÃ³digo de barras Code 128 incluido** â
+- **NÃºmero de animal resaltado (fuente grande)** â
+- **Compatible Datamax Mark II** â
+- **VersiÃ³n actualizada a 3.3.4** â
 
 ---
 Task ID: 1567
 Agent: main
-Task: Mejoras UI - Eliminar Resumen por Tropa y compactar Ingreso a Cajón
+Task: Mejoras UI - Eliminar Resumen por Tropa y compactar Ingreso a CajÃ³n
 
 Work Log:
 
 #### 1. Cambios en Movimiento de Hacienda
 **Archivo:** `src/components/movimiento-hacienda-module.tsx`
 
-- **Eliminado "Resumen por Tropa"**: Sección que mostraba el resumen global de todas las tropas en corrales
-  - Removido el cálculo `useMemo` de `resumenTropas`
-  - Removida toda la sección visual del resumen
+- **Eliminado "Resumen por Tropa"**: SecciÃ³n que mostraba el resumen global de todas las tropas en corrales
+  - Removido el cÃ¡lculo `useMemo` de `resumenTropas`
+  - Removida toda la secciÃ³n visual del resumen
   - Removido el import de `useMemo` que ya no se usa
-- **Resultado**: El módulo ahora muestra directamente el grid de corrales sin el resumen superior
+- **Resultado**: El mÃ³dulo ahora muestra directamente el grid de corrales sin el resumen superior
 
-#### 2. Cambios en Ingreso a Cajón
+#### 2. Cambios en Ingreso a CajÃ³n
 **Archivo:** `src/components/ingreso-cajon/index.tsx`
 
-**Problema:** El módulo tenía scroll lateral y vertical excesivo
+**Problema:** El mÃ³dulo tenÃ­a scroll lateral y vertical excesivo
 
-**Solución implementada:**
+**SoluciÃ³n implementada:**
 - Cambiado layout de posiciones absolutas fijas a grid responsive (`grid-cols-1 lg:grid-cols-2`)
 - Agregado `overflow-x-hidden` al contenedor principal
 - Eliminado `min-h-screen` para evitar altura forzada
 - Reducidos todos los espaciados y paddings
-- Botones del teclado numérico más compactos (`h-10` en lugar de `h-12`)
-- Texto del garrón actual más pequeño (`text-2xl` en lugar de `text-4xl`)
-- Header más compacto con menos padding
-- Lista de garrones con altura máxima reducida (`max-h-[350px]`)
-- Panel de configuración más angosto (`w-72`)
-- Todos los textos más compactos (`text-xs`, `text-[10px]`)
+- Botones del teclado numÃ©rico mÃ¡s compactos (`h-10` en lugar de `h-12`)
+- Texto del garrÃ³n actual mÃ¡s pequeÃ±o (`text-2xl` en lugar de `text-4xl`)
+- Header mÃ¡s compacto con menos padding
+- Lista de garrones con altura mÃ¡xima reducida (`max-h-[350px]`)
+- Panel de configuraciÃ³n mÃ¡s angosto (`w-72`)
+- Todos los textos mÃ¡s compactos (`text-xs`, `text-[10px]`)
 
 **Eliminado:**
 - Componente `EditableBlock` con drag & drop (ya no se usa con layout responsive)
 - Funciones `moveBloqueUp` y `moveBloqueDown` (ya no se usan)
 - Imports de `ChevronUp`, `ChevronDown`, `Move`, `EyeOff` (no usados)
 
-#### 3. Corrección de Error
+#### 3. CorrecciÃ³n de Error
 - **Error**: `useCallback is not defined` 
-- **Causa**: Se eliminó el import de `useCallback` por error
+- **Causa**: Se eliminÃ³ el import de `useCallback` por error
 - **Fix**: Re-agregado `useCallback` al import de React
 
-#### 4. Verificación
-- **Lint**: Sin errores ✓
-- **Dev server**: Funcionando ✓
+#### 4. VerificaciÃ³n
+- **Lint**: Sin errores â
+- **Dev server**: Funcionando â
 
 Stage Summary:
-- **Resumen por Tropa eliminado de Movimiento Hacienda** ✅
-- **Ingreso a Cajón compactado sin scroll lateral** ✅
-- **Layout responsive implementado** ✅
-- **Error de useCallback corregido** ✅
-- **Versión actualizada a 3.3.2** ✅
+- **Resumen por Tropa eliminado de Movimiento Hacienda** â
+- **Ingreso a CajÃ³n compactado sin scroll lateral** â
+- **Layout responsive implementado** â
+- **Error de useCallback corregido** â
+- **VersiÃ³n actualizada a 3.3.2** â
 
 ---
 Task ID: 1568
 Agent: main
-Task: Fix error rotulosData.find en módulo Romaneo
+Task: Fix error rotulosData.find en mÃ³dulo Romaneo
 
 Work Log:
 
 #### 1. Error Identificado
 - **Error**: `rotulosData.find is not a function`
-- **Ubicación**: `src/components/romaneo/index.tsx` línea 317
-- **Causa**: La API `/api/rotulos` devuelve `{ success: true, data: [...] }` pero el código intentaba hacer `.find()` directamente sobre el objeto de respuesta
+- **UbicaciÃ³n**: `src/components/romaneo/index.tsx` lÃ­nea 317
+- **Causa**: La API `/api/rotulos` devuelve `{ success: true, data: [...] }` pero el cÃ³digo intentaba hacer `.find()` directamente sobre el objeto de respuesta
 
-#### 2. Solución
+#### 2. SoluciÃ³n
 **Archivo:** `src/components/romaneo/index.tsx`
 ```typescript
 // Antes:
 const rotulosData = await rotulosRes.json()
 const rotulo = rotulosData.find((r: any) => r.esDefault) || rotulosData[0]
 
-// Después:
+// DespuÃ©s:
 const rotulosResponse = await rotulosRes.json()
 const rotulosData = rotulosResponse.data || []
 const rotulo = rotulosData.find((r: any) => r.esDefault) || rotulosData[0]
 ```
 
-#### 3. Verificación
-- **Lint**: Sin errores ✓
+#### 3. VerificaciÃ³n
+- **Lint**: Sin errores â
 
 Stage Summary:
-- **Error de acceso a datos de rótulos corregido** ✅
-- **Versión actualizada a 3.3.3** ✅
+- **Error de acceso a datos de rÃ³tulos corregido** â
+- **VersiÃ³n actualizada a 3.3.3** â
 
 ---
 Task ID: 1566
 Agent: main
-Task: Agregar modal de edición de rótulos con vista previa en tiempo real
+Task: Agregar modal de ediciÃ³n de rÃ³tulos con vista previa en tiempo real
 
 Work Log:
 
@@ -1750,24 +1786,24 @@ Work Log:
 
 **Nuevos estados:**
 - `modalEditar` - Controla la visibilidad del modal
-- `editandoContenido` - Contenido ZPL/DPL del rótulo
-- `editandoNombre` - Nombre del rótulo
+- `editandoContenido` - Contenido ZPL/DPL del rÃ³tulo
+- `editandoNombre` - Nombre del rÃ³tulo
 - `guardando` - Estado de guardado
 
 **Nuevas funciones:**
-- `handleEditar(rotulo)` - Abre modal con datos del rótulo
+- `handleEditar(rotulo)` - Abre modal con datos del rÃ³tulo
 - `handleGuardarEdicion()` - Guarda cambios en la API
 - `insertarVariable(variable)` - Inserta variable en el cursor
 - `previewEdicion` - Vista previa en tiempo real con datos de prueba
 
-**UI del modal de edición:**
+**UI del modal de ediciÃ³n:**
 - Panel izquierdo: Lista de variables disponibles (click para insertar)
 - Panel derecho: Editor de contenido + vista previa en tiempo real
-- Botón de guardar cambios
+- BotÃ³n de guardar cambios
 
-#### 2. Cómo Editar un Rótulo
-1. Ir a **Configuración → Rótulos**
-2. Click en el ícono de lápiz (Editar)
+#### 2. CÃ³mo Editar un RÃ³tulo
+1. Ir a **ConfiguraciÃ³n â RÃ³tulos**
+2. Click en el Ã­cono de lÃ¡piz (Editar)
 3. Modificar el contenido ZPL/DPL
 4. Click en variables para insertarlas
 5. Ver vista previa en tiempo real
@@ -1776,23 +1812,23 @@ Work Log:
 #### 3. Variables Soportadas
 | Variable | Uso | Ejemplo |
 |----------|-----|---------|
-| `{{NUMERO}}` | Número de animal | 15 |
-| `{{TROPA}}` | Código de tropa | B 2026 0012 |
+| `{{NUMERO}}` | NÃºmero de animal | 15 |
+| `{{TROPA}}` | CÃ³digo de tropa | B 2026 0012 |
 | `{{TIPO}}` | Tipo de animal | VA, TO, NO |
 | `{{PESO}}` | Peso vivo | 452 |
-| `{{CODIGO}}` | Código completo | B20260012-015 |
+| `{{CODIGO}}` | CÃ³digo completo | B20260012-015 |
 | `{{RAZA}}` | Raza del animal | Angus |
 | `{{FECHA}}` | Fecha actual | 20/03/2026 |
 | `{{PRODUCTO}}` | Nombre producto | MEDIA RES |
 | `{{FECHA_VENC}}` | Fecha vencimiento | 19/04/2026 |
-| `{{CODIGO_BARRAS}}` | Código de barras | B202600120151 |
+| `{{CODIGO_BARRAS}}` | CÃ³digo de barras | B202600120151 |
 
 Stage Summary:
-- **Modal de edición implementado** ✅
-- **Vista previa en tiempo real** ✅
-- **Inserción de variables con click** ✅
-- **Versión actualizada a 3.1.4** ✅
-- **Push a ambos repositorios** ✅
+- **Modal de ediciÃ³n implementado** â
+- **Vista previa en tiempo real** â
+- **InserciÃ³n de variables con click** â
+- **VersiÃ³n actualizada a 3.1.4** â
+- **Push a ambos repositorios** â
 
 ---
 Task ID: 1565
@@ -1802,11 +1838,11 @@ Task: Reescribir API init-zpl con plantillas completas para Zebra y Datamax
 Work Log:
 
 #### 1. Problema Identificado
-- La API init-zpl anterior tenía errores en los nombres de campos
-- No coincidía con el schema Prisma del modelo Rotulo
-- Los rótulos no se creaban correctamente
+- La API init-zpl anterior tenÃ­a errores en los nombres de campos
+- No coincidÃ­a con el schema Prisma del modelo Rotulo
+- Los rÃ³tulos no se creaban correctamente
 
-#### 2. Solución Implementada
+#### 2. SoluciÃ³n Implementada
 **Archivo:** `src/app/api/rotulos/init-zpl/route.ts` - REESCRITO COMPLETO
 
 **Plantillas ZPL (Zebra):**
@@ -1837,8 +1873,8 @@ Work Log:
 }
 ```
 
-#### 3. Rótulos Creados (7 total)
-| Código | Tipo | Impresora | DPI |
+#### 3. RÃ³tulos Creados (7 total)
+| CÃ³digo | Tipo | Impresora | DPI |
 |--------|------|-----------|-----|
 | PESAJE_IND_ZT230 | Pesaje Individual | Zebra ZT230 | 203 |
 | PESAJE_IND_ZT410 | Pesaje Individual | Zebra ZT410 | 300 |
@@ -1849,17 +1885,17 @@ Work Log:
 | MENUDENCIA_MARK2 | Menudencia | Datamax Mark II | 203 |
 
 Stage Summary:
-- **API reescrita desde cero** ✅
-- **7 rótulos predefinidos listos** ✅
-- **Plantillas ZPL para Zebra ZT230/ZT410** ✅
-- **Plantillas DPL para Datamax Mark II** ✅
-- **Versión actualizada a 3.1.3** ✅
-- **Push a ambos repositorios** ✅
+- **API reescrita desde cero** â
+- **7 rÃ³tulos predefinidos listos** â
+- **Plantillas ZPL para Zebra ZT230/ZT410** â
+- **Plantillas DPL para Datamax Mark II** â
+- **VersiÃ³n actualizada a 3.1.3** â
+- **Push a ambos repositorios** â
 
 ---
 Task ID: 1564
 Agent: main
-Task: Fix error al cargar rótulos en producción
+Task: Fix error al cargar rÃ³tulos en producciÃ³n
 
 Work Log:
 
@@ -1869,171 +1905,171 @@ TypeError: rotulos.reduce is not a function
 ```
 
 #### 2. Causa
-La API `/api/rotulos` devuelve `{success: true, data: [...]}` pero el componente hacía:
+La API `/api/rotulos` devuelve `{success: true, data: [...]}` pero el componente hacÃ­a:
 ```typescript
 setRotulos(data) // data es un objeto, no un array
 ```
 
-#### 3. Solución
+#### 3. SoluciÃ³n
 ```typescript
 setRotulos(Array.isArray(data) ? data : (data.data || []))
 ```
 
 Stage Summary:
-- **Error corregido** ✅
-- **Versión actualizada a 3.1.2** ✅
-- **Push a ambos repositorios** ✅
+- **Error corregido** â
+- **VersiÃ³n actualizada a 3.1.2** â
+- **Push a ambos repositorios** â
 
 ---
 Task ID: 1563
 Agent: main
-Task: Fix script actualización Windows para manejar cambios locales
+Task: Fix script actualizaciÃ³n Windows para manejar cambios locales
 
 Work Log:
 
 #### 1. Problema Identificado
 El script `reiniciar-actualizado.bat` fallaba porque:
-- En producción, `prisma/schema.prisma` tiene `provider = "postgresql"`
-- Este cambio local no está committeado (es configuración de producción)
+- En producciÃ³n, `prisma/schema.prisma` tiene `provider = "postgresql"`
+- Este cambio local no estÃ¡ committeado (es configuraciÃ³n de producciÃ³n)
 - Al hacer `git pull`, Git rechaza sobrescribir el archivo
 
-#### 2. Solución Implementada
+#### 2. SoluciÃ³n Implementada
 **Archivo:** `reiniciar-actualizado.bat`
 - Agregado `git stash` antes del pull para guardar cambios locales
-- Después del pull, restaurar configuración PostgreSQL con PowerShell
-- Flujo: stash → pull → configurar postgres → db:push → iniciar
+- DespuÃ©s del pull, restaurar configuraciÃ³n PostgreSQL con PowerShell
+- Flujo: stash â pull â configurar postgres â db:push â iniciar
 
 #### 3. Nuevo Flujo del Script
 ```
 [1/6] Detener servidor
 [2/6] Guardar cambios locales (stash)
 [3/6] Descargar actualizaciones (pull)
-[4/6] Restaurar configuración PostgreSQL
+[4/6] Restaurar configuraciÃ³n PostgreSQL
 [5/6] Instalar dependencias y sincronizar BD
 [6/6] Iniciar servidor
 ```
 
 Stage Summary:
-- **Script corregido para producción** ✅
-- **Maneja cambios locales del schema** ✅
-- **Siempre configura PostgreSQL** ✅
-- **Versión actualizada a 3.1.1** ✅
-- **Push a ambos repositorios** ✅
+- **Script corregido para producciÃ³n** â
+- **Maneja cambios locales del schema** â
+- **Siempre configura PostgreSQL** â
+- **VersiÃ³n actualizada a 3.1.1** â
+- **Push a ambos repositorios** â
 
 ---
-## 🚨 REGLAS DE ORO (OBLIGATORIO)
+## ð¨ REGLAS DE ORO (OBLIGATORIO)
 
 ### 1. NUNCA hacer force push
 ```bash
-# ❌ PROHIBIDO - Puede perder avances del programa
+# â PROHIBIDO - Puede perder avances del programa
 git push --force
 git push -f
 
-# ✅ CORRECTO - Push normal
+# â CORRECTO - Push normal
 git push origin master
 
-# ✅ Si hay conflictos, resolver primero
+# â Si hay conflictos, resolver primero
 git pull --rebase origin master
 # Resolver conflictos, luego:
 git push origin master
 ```
 
 ### 2. SIEMPRE actualizar el worklog
-- Documentar TODO lo realizado en cada sesión
+- Documentar TODO lo realizado en cada sesiÃ³n
 - Incluir archivos modificados
 - Incluir errores encontrados y soluciones
 
-### 3. Commits descriptivos con versión
+### 3. Commits descriptivos con versiÃ³n
 ```bash
-# ❌ Malo
+# â Malo
 git commit -m "fix"
 
-# ✅ Bueno
+# â Bueno
 git commit -m "v3.1.0 - Soporte impresoras Zebra ZT410/ZT230 y Datamax Mark II"
 ```
 
-### 4. Proteger datos y código existente
+### 4. Proteger datos y cÃ³digo existente
 - **NUNCA** eliminar datos sin confirmar
-- **NUNCA** usar `git reset --hard` sin autorización
-- **NUNCA** usar `bun run db:reset` sin autorización (borra toda la BD)
+- **NUNCA** usar `git reset --hard` sin autorizaciÃ³n
+- **NUNCA** usar `bun run db:reset` sin autorizaciÃ³n (borra toda la BD)
 - Siempre hacer backup antes de operaciones riesgosas
 
 ---
 Task ID: 1567
 Agent: main
-Task: Editor visual de rótulos estilo drag and drop con conversión a ZPL/DPL
+Task: Editor visual de rÃ³tulos estilo drag and drop con conversiÃ³n a ZPL/DPL
 
 Work Log:
 
 #### 1. Funcionalidad Solicitada
-- Usuario solicitó un editor visual de rótulos tipo "paint"
-- Poder diseñar rótulos con campos drag and drop
-- Conversión automática a código ZPL/DPL para impresoras
+- Usuario solicitÃ³ un editor visual de rÃ³tulos tipo "paint"
+- Poder diseÃ±ar rÃ³tulos con campos drag and drop
+- ConversiÃ³n automÃ¡tica a cÃ³digo ZPL/DPL para impresoras
 
-#### 2. Implementación Realizada
+#### 2. ImplementaciÃ³n Realizada
 **Archivo:** `src/components/config-rotulos/index.tsx`
 
 **Editor Visual con Canvas:**
-- Canvas de 400x250 píxeles (proporcional a etiqueta 4"x2.5")
+- Canvas de 400x250 pÃ­xeles (proporcional a etiqueta 4"x2.5")
 - Elementos arrastrables con drag and drop
 - Posicionamiento preciso con coordenadas X,Y
 - Redimensionamiento de elementos
-- Zoom in/out para precisión
+- Zoom in/out para precisiÃ³n
 
 **Tipos de Elementos:**
-- **Texto Fijo**: Etiquetas estáticas (ej: "TROPA:", "PESO:")
-- **Variables Dinámicas**: {{NUMERO}}, {{TROPA}}, {{PESO}}, etc.
-- **Código de Barras**: Automáticamente se agrega zona de barras
-- **Líneas**: Separadores horizontales/verticales
+- **Texto Fijo**: Etiquetas estÃ¡ticas (ej: "TROPA:", "PESO:")
+- **Variables DinÃ¡micas**: {{NUMERO}}, {{TROPA}}, {{PESO}}, etc.
+- **CÃ³digo de Barras**: AutomÃ¡ticamente se agrega zona de barras
+- **LÃ­neas**: Separadores horizontales/verticales
 
 **Panel de Propiedades:**
 - Fuente: Arial, Helvetica, Courier, Times
-- Tamaño: 8-48pt
-- Alineación: Izquierda, Centro, Derecha
+- TamaÃ±o: 8-48pt
+- AlineaciÃ³n: Izquierda, Centro, Derecha
 - Estilo: Normal, Negrita
-- Posición X/Y editable manualmente
+- PosiciÃ³n X/Y editable manualmente
 
-**Conversión a ZPL/DPL:**
-- Botón "Generar Código" crea ZPL para Zebra o DPL para Datamax
-- Mapeo automático de coordenadas canvas → DPI impresora
-- Vista previa del código generado
-- Guardado automático del rótulo
+**ConversiÃ³n a ZPL/DPL:**
+- BotÃ³n "Generar CÃ³digo" crea ZPL para Zebra o DPL para Datamax
+- Mapeo automÃ¡tico de coordenadas canvas â DPI impresora
+- Vista previa del cÃ³digo generado
+- Guardado automÃ¡tico del rÃ³tulo
 
 #### 3. Variables Disponibles
-| Variable | Descripción | Ejemplo |
+| Variable | DescripciÃ³n | Ejemplo |
 |----------|-------------|---------|
-| {{NUMERO}} | Número de animal | 15 |
-| {{TROPA}} | Código de tropa | B 2026 0012 |
+| {{NUMERO}} | NÃºmero de animal | 15 |
+| {{TROPA}} | CÃ³digo de tropa | B 2026 0012 |
 | {{TIPO}} | Tipo de animal | VA, TO, NO |
 | {{PESO}} | Peso vivo | 452 kg |
-| {{CODIGO}} | Código completo | B20260012-015 |
+| {{CODIGO}} | CÃ³digo completo | B20260012-015 |
 | {{RAZA}} | Raza del animal | Angus |
 | {{FECHA}} | Fecha actual | 20/03/2026 |
 | {{FECHA_VENC}} | Fecha vencimiento | 19/04/2026 |
 | {{PRODUCTO}} | Nombre producto | MEDIA RES |
-| {{CODIGO_BARRAS}} | Código barras | B202600120151 |
+| {{CODIGO_BARRAS}} | CÃ³digo barras | B202600120151 |
 
-#### 4. Cómo Usar el Editor
-1. Ir a **Configuración → Rótulos**
+#### 4. CÃ³mo Usar el Editor
+1. Ir a **ConfiguraciÃ³n â RÃ³tulos**
 2. Click en **"Editor Visual"** 
 3. Seleccionar tipo de impresora (Zebra/Datamax)
 4. Agregar elementos desde el panel izquierdo
 5. Arrastrar y soltar en el canvas
 6. Ajustar propiedades en el panel derecho
-7. Click **"Generar Código"** para ver ZPL/DPL
+7. Click **"Generar CÃ³digo"** para ver ZPL/DPL
 8. Click **"Guardar"** para persistir
 
 Stage Summary:
-- **Editor visual drag and drop implementado** ✅
-- **Conversión automática a ZPL/DPL** ✅
-- **Variables dinámicas configurables** ✅
-- **Vista previa en tiempo real** ✅
-- **Versión actualizada a 3.1.5** ✅
+- **Editor visual drag and drop implementado** â
+- **ConversiÃ³n automÃ¡tica a ZPL/DPL** â
+- **Variables dinÃ¡micas configurables** â
+- **Vista previa en tiempo real** â
+- **VersiÃ³n actualizada a 3.1.5** â
 - **Pendiente: Push a ambos repositorios**
 
 ---
-### Versión actual: **3.1.5**
-### Próxima versión sugerida: **3.1.6**
+### VersiÃ³n actual: **3.1.5**
+### PrÃ³xima versiÃ³n sugerida: **3.1.6**
 
 
 ---
@@ -2044,12 +2080,12 @@ Task: Restaurar cambios perdidos en ticket de pesaje
 Work Log:
 
 #### 1. Problema Identificado
-- Cambios realizados en sesión anterior se perdieron
-- El ticket de pesaje no tenía:
-  - Logo del frigorífico
-  - Dirección de la empresa
+- Cambios realizados en sesiÃ³n anterior se perdieron
+- El ticket de pesaje no tenÃ­a:
+  - Logo del frigorÃ­fico
+  - DirecciÃ³n de la empresa
   - Firma del portero
-  - "Firma Conforme Chofer" (decía solo "Firma Conforme")
+  - "Firma Conforme Chofer" (decÃ­a solo "Firma Conforme")
 
 #### 2. Cambios Restaurados
 **Archivo:** `src/components/pesaje-camiones/ticketPrint.ts`
@@ -2057,41 +2093,41 @@ Work Log:
 **Header mejorado:**
 - Logo SVG con "SOLEMAR ALIMENTARIA"
 - Nombre completo: "SOLEMAR ALIMENTARIA S.A."
-- Dirección: "Ruta Nacional 12 Km 1234 - Corrientes, Argentina"
-- Teléfono y CUIT (placeholders editables)
+- DirecciÃ³n: "Ruta Nacional 12 Km 1234 - Corrientes, Argentina"
+- TelÃ©fono y CUIT (placeholders editables)
 
-**Sección de firmas:**
+**SecciÃ³n de firmas:**
 - Dos firmas lado a lado:
   - "Firma Portero"
   - "Firma Conforme Chofer"
 
 **Footer agregado:**
 - Mensaje de validez del ticket
-- Instrucciones de conservación
+- Instrucciones de conservaciÃ³n
 
 #### 3. Datos Editables
-El usuario puede modificar en el código:
+El usuario puede modificar en el cÃ³digo:
 - LOGO_BASE64: Cambiar por logo real en base64 o SVG
-- Dirección y teléfono
+- DirecciÃ³n y telÃ©fono
 - CUIT de la empresa
 
 Stage Summary:
-- **Logo agregado al ticket** ✅
-- **Dirección del frigorífico agregada** ✅
-- **Firma del portero agregada** ✅
-- **Firma Conforme cambiada a "Firma Conforme Chofer"** ✅
-- **Versión actualizada a 3.1.6** ✅
+- **Logo agregado al ticket** â
+- **DirecciÃ³n del frigorÃ­fico agregada** â
+- **Firma del portero agregada** â
+- **Firma Conforme cambiada a "Firma Conforme Chofer"** â
+- **VersiÃ³n actualizada a 3.1.6** â
 - **Pendiente: Push a ambos repositorios**
 
 ---
-### Versión actual: **3.1.6**
-### Próxima versión sugerida: **3.1.7**
+### VersiÃ³n actual: **3.1.6**
+### PrÃ³xima versiÃ³n sugerida: **3.1.7**
 
 
 ---
 Task ID: 1569
 Agent: main
-Task: Actualizar ticket de pesaje con logo real y dirección correcta
+Task: Actualizar ticket de pesaje con logo real y direcciÃ³n correcta
 
 Work Log:
 
@@ -2102,9 +2138,9 @@ Work Log:
 - Ahora usa el mismo logo SVG que la pantalla de login
 - Logo "Z" de Solemar Alimentaria
 
-**Dirección actualizada:**
-- Ruta Nacional N° 22, Km 1043
-- Chimpay, Río Negro, Argentina
+**DirecciÃ³n actualizada:**
+- Ruta Nacional NÂ° 22, Km 1043
+- Chimpay, RÃ­o Negro, Argentina
 
 **Firmas:**
 - Firma Portero
@@ -2112,63 +2148,63 @@ Work Log:
 
 #### 2. Estructura del Ticket
 ```
-┌────────────────────────────────┐
-│        [LOGO SOLEMAR]          │
-│   SOLEMAR ALIMENTARIA S.A.     │
-│  Ruta Nacional N° 22, Km 1043  │
-│  Chimpay, Río Negro, Argentina │
-│     TICKET DE PESAJE           │
-│        Nº 000123               │
-├────────────────────────────────┤
-│ Tipo: INGRESO HACIENDA         │
-│ Fecha: 21/03/2026              │
-│ Hora: 10:30:00                 │
-│ Operador: Juan Pérez           │
-├────────────────────────────────┤
-│ DATOS DE HACIENDA              │
-│ Tropa: B 2026 0012             │
-│ Productor: ...                 │
-├────────────────────────────────┤
-│ PESOS                          │
-│ Bruto: 15,000 kg               │
-│ Tara: 5,000 kg                 │
-│ NETO: 10,000 kg                │
-├────────────────────────────────┤
-│ Firma Portero │ Firma Chofer   │
-└────────────────────────────────┘
+ââââââââââââââââââââââââââââââââââ
+â        [LOGO SOLEMAR]          â
+â   SOLEMAR ALIMENTARIA S.A.     â
+â  Ruta Nacional NÂ° 22, Km 1043  â
+â  Chimpay, RÃ­o Negro, Argentina â
+â     TICKET DE PESAJE           â
+â        NÂº 000123               â
+ââââââââââââââââââââââââââââââââââ¤
+â Tipo: INGRESO HACIENDA         â
+â Fecha: 21/03/2026              â
+â Hora: 10:30:00                 â
+â Operador: Juan PÃ©rez           â
+ââââââââââââââââââââââââââââââââââ¤
+â DATOS DE HACIENDA              â
+â Tropa: B 2026 0012             â
+â Productor: ...                 â
+ââââââââââââââââââââââââââââââââââ¤
+â PESOS                          â
+â Bruto: 15,000 kg               â
+â Tara: 5,000 kg                 â
+â NETO: 10,000 kg                â
+ââââââââââââââââââââââââââââââââââ¤
+â Firma Portero â Firma Chofer   â
+ââââââââââââââââââââââââââââââââââ
 ```
 
 Stage Summary:
-- **Logo real de Solemar agregado** ✅
-- **Dirección de Chimpay actualizada** ✅
-- **Firmas portero y chofer** ✅
-- **Versión actualizada a 3.1.7** ✅
+- **Logo real de Solemar agregado** â
+- **DirecciÃ³n de Chimpay actualizada** â
+- **Firmas portero y chofer** â
+- **VersiÃ³n actualizada a 3.1.7** â
 - **Pendiente: Push a ambos repositorios**
 
 ---
-### Versión actual: **3.1.7**
-### Próxima versión sugerida: **3.1.8**
+### VersiÃ³n actual: **3.1.7**
+### PrÃ³xima versiÃ³n sugerida: **3.1.8**
 
 
 ---
 Task ID: 1570
 Agent: main
-Task: Documentación completa - Scripts, instrucciones y backup
+Task: DocumentaciÃ³n completa - Scripts, instrucciones y backup
 
 Work Log:
 
 #### 1. Archivos Creados
 **Archivo:** `INSTRUCCIONES.md`
-- Guía completa de instalación
-- Scripts de inicio/detención
-- Scripts de actualización
+- GuÃ­a completa de instalaciÃ³n
+- Scripts de inicio/detenciÃ³n
+- Scripts de actualizaciÃ³n
 - Scripts de backup
-- Solución de problemas comunes
-- Comandos útiles
-- Configuración de repositorios
+- SoluciÃ³n de problemas comunes
+- Comandos Ãºtiles
+- ConfiguraciÃ³n de repositorios
 
 #### 2. Scripts Documentados
-| Script | Función |
+| Script | FunciÃ³n |
 |--------|---------|
 | `iniciar-servidor.bat` | Inicia el servidor en puerto 3000 |
 | `detener-servidor.bat` | Mata procesos bun/node |
@@ -2182,33 +2218,33 @@ Work Log:
 - Git pull con conflictos
 - Schema SQLite vs PostgreSQL
 - PostgreSQL no accesible
-- Módulos no encontrados
+- MÃ³dulos no encontrados
 - Migraciones fallidas
 
 Stage Summary:
-- **Documentación completa creada** ✅
-- **Todos los scripts documentados** ✅
-- **Solución de problemas incluida** ✅
-- **Versión actualizada a 3.1.7** ✅
+- **DocumentaciÃ³n completa creada** â
+- **Todos los scripts documentados** â
+- **SoluciÃ³n de problemas incluida** â
+- **VersiÃ³n actualizada a 3.1.7** â
 
 ---
 
-## 📋 PENDIENTES / PRÓXIMAS TAREAS
+## ð PENDIENTES / PRÃXIMAS TAREAS
 
 ### Alta Prioridad
-1. [ ] **Editor visual de rótulos drag and drop** - Funcionalidad base implementada, mejorar UX
-2. [ ] **Integración real con impresoras Zebra/Datamax** - Probar en producción
+1. [ ] **Editor visual de rÃ³tulos drag and drop** - Funcionalidad base implementada, mejorar UX
+2. [ ] **IntegraciÃ³n real con impresoras Zebra/Datamax** - Probar en producciÃ³n
 3. [ ] **Configurar IP/puerto de impresoras** en puestos de trabajo
 
 ### Media Prioridad
 4. [ ] **Sistema de logs centralizado** - Ver logs desde la UI
-5. [ ] **Backup automático programado** - Ejecutar cada noche
+5. [ ] **Backup automÃ¡tico programado** - Ejecutar cada noche
 6. [ ] **Notificaciones de alertas** - Stock bajo, calibraciones
 
 ### Baja Prioridad
 7. [ ] **Reportes PDF exportables** - Formato profesional
-8. [ ] **Dashboard ejecutivo** - Gráficos y KPIs
-9. [ ] **App móvil** - Para pesajes en campo
+8. [ ] **Dashboard ejecutivo** - GrÃ¡ficos y KPIs
+9. [ ] **App mÃ³vil** - Para pesajes en campo
 
 ### Mejoras Continuas
 10. [ ] Optimizar rendimiento de consultas
@@ -2216,160 +2252,160 @@ Stage Summary:
 12. [ ] Documentar APIs con Swagger
 
 ---
-### Versión actual: **3.1.7**
-### Próxima versión sugerida: **3.1.8**
+### VersiÃ³n actual: **3.1.7**
+### PrÃ³xima versiÃ³n sugerida: **3.1.8**
 
-## 📊 RESUMEN DE LA SESIÓN
+## ð RESUMEN DE LA SESIÃN
 
 ### Cambios Realizados Hoy
-1. ✅ Restaurar cambios perdidos en ticket de pesaje
-2. ✅ Agregar logo real de Solemar (mismo que login)
-3. ✅ Actualizar dirección: Ruta Nacional N° 22, Km 1043, Chimpay, Río Negro
-4. ✅ Agregar firma del portero
-5. ✅ Cambiar "Firma Conforme" por "Firma Conforme Chofer"
-6. ✅ Crear documentación completa INSTRUCCIONES.md
-7. ✅ Documentar todos los scripts .bat
-8. ✅ Documentar solución de problemas comunes
+1. â Restaurar cambios perdidos en ticket de pesaje
+2. â Agregar logo real de Solemar (mismo que login)
+3. â Actualizar direcciÃ³n: Ruta Nacional NÂ° 22, Km 1043, Chimpay, RÃ­o Negro
+4. â Agregar firma del portero
+5. â Cambiar "Firma Conforme" por "Firma Conforme Chofer"
+6. â Crear documentaciÃ³n completa INSTRUCCIONES.md
+7. â Documentar todos los scripts .bat
+8. â Documentar soluciÃ³n de problemas comunes
 
 ### Archivos Modificados
-- `src/components/pesaje-camiones/ticketPrint.ts` - Logo y dirección
-- `INSTRUCCIONES.md` - Nuevo archivo de documentación
-- `worklog.md` - Actualización de tareas
-- `package.json` - Versión 3.1.7
+- `src/components/pesaje-camiones/ticketPrint.ts` - Logo y direcciÃ³n
+- `INSTRUCCIONES.md` - Nuevo archivo de documentaciÃ³n
+- `worklog.md` - ActualizaciÃ³n de tareas
+- `package.json` - VersiÃ³n 3.1.7
 
 ### Push a GitHub
-- ✅ origin (1532 - desarrollo)
-- ✅ trazasole (producción)
+- â origin (1532 - desarrollo)
+- â trazasole (producciÃ³n)
 
 
 ---
 Task ID: 1572
 Agent: main
-Task: Editor visual de rótulos drag and drop implementado
+Task: Editor visual de rÃ³tulos drag and drop implementado
 
 Work Log:
 
 #### 1. Archivos Creados/Modificados
 - **Nuevo:** `src/components/config-rotulos/LabelDesigner.tsx` - Editor visual completo
-- **Actualizado:** `src/components/config-rotulos/index.tsx` - Integración del editor
+- **Actualizado:** `src/components/config-rotulos/index.tsx` - IntegraciÃ³n del editor
 
 #### 2. Funcionalidades del Editor Visual
 **Elementos disponibles:**
 - Texto Fijo
-- Variables dinámicas ({{NUMERO}}, {{TROPA}}, etc.)
-- Código de Barras
-- Líneas
+- Variables dinÃ¡micas ({{NUMERO}}, {{TROPA}}, etc.)
+- CÃ³digo de Barras
+- LÃ­neas
 
 **Interacciones:**
 - Drag and drop para mover elementos
-- Selección con click
-- Edición de propiedades (fuente, tamaño, alineación)
-- Vista previa del código generado
+- SelecciÃ³n con click
+- EdiciÃ³n de propiedades (fuente, tamaÃ±o, alineaciÃ³n)
+- Vista previa del cÃ³digo generado
 
-**Conversión automática:**
-- Genera código ZPL para Zebra
-- Genera código DPL para Datamax
-- Guarda automáticamente como nuevo rótulo
+**ConversiÃ³n automÃ¡tica:**
+- Genera cÃ³digo ZPL para Zebra
+- Genera cÃ³digo DPL para Datamax
+- Guarda automÃ¡ticamente como nuevo rÃ³tulo
 
 #### 3. Variables Soportadas (12)
-| Variable | Descripción |
+| Variable | DescripciÃ³n |
 |----------|-------------|
-| {{NUMERO}} | Número de animal |
-| {{TROPA}} | Código de tropa |
+| {{NUMERO}} | NÃºmero de animal |
+| {{TROPA}} | CÃ³digo de tropa |
 | {{TIPO}} | Tipo de animal |
 | {{PESO}} | Peso |
-| {{CODIGO}} | Código completo |
+| {{CODIGO}} | CÃ³digo completo |
 | {{RAZA}} | Raza |
 | {{FECHA}} | Fecha actual |
 | {{FECHA_VENC}} | Fecha vencimiento |
 | {{PRODUCTO}} | Producto |
-| {{GARRON}} | Garrón |
+| {{GARRON}} | GarrÃ³n |
 | {{LOTE}} | Lote |
-| {{CODIGO_BARRAS}} | Código de barras |
+| {{CODIGO_BARRAS}} | CÃ³digo de barras |
 
-#### 4. Cómo Usar el Editor
-1. Ir a **Configuración → Rótulos**
+#### 4. CÃ³mo Usar el Editor
+1. Ir a **ConfiguraciÃ³n â RÃ³tulos**
 2. Click en **"Editor Visual"**
 3. Agregar elementos desde el panel izquierdo
 4. Arrastrar y soltar en el canvas
 5. Editar propiedades en el panel inferior
-6. Click en **"Generar Código"**
-7. El rótulo se guarda automáticamente
+6. Click en **"Generar CÃ³digo"**
+7. El rÃ³tulo se guarda automÃ¡ticamente
 
 Stage Summary:
-- **Editor visual drag and drop implementado** ✅
-- **Conversión automática ZPL/DPL** ✅
-- **12 variables disponibles** ✅
-- **Versión actualizada a 3.1.9** ✅
+- **Editor visual drag and drop implementado** â
+- **ConversiÃ³n automÃ¡tica ZPL/DPL** â
+- **12 variables disponibles** â
+- **VersiÃ³n actualizada a 3.1.9** â
 - **Pendiente: Push a GitHub**
 
 ---
-## 📋 ESTADO ACTUAL DE PENDIENTES
+## ð ESTADO ACTUAL DE PENDIENTES
 
-### 🔴 Alta Prioridad
+### ð´ Alta Prioridad
 | # | Tarea | Estado |
 |---|-------|--------|
-| 1 | Editor visual de rótulos | ✅ **COMPLETADO** |
-| 2 | Configurar IPs de impresoras | 🔄 Pendiente configuración en producción |
-| 3 | Probar en producción | 🔄 Pendiente |
+| 1 | Editor visual de rÃ³tulos | â **COMPLETADO** |
+| 2 | Configurar IPs de impresoras | ð Pendiente configuraciÃ³n en producciÃ³n |
+| 3 | Probar en producciÃ³n | ð Pendiente |
 
-### 🟢 Nuevas Mejoras (v3.2.0)
+### ð¢ Nuevas Mejoras (v3.2.0)
 | # | Tarea | Estado |
 |---|-------|--------|
-| 4 | Error clipboard SSR | ✅ **CORREGIDO** |
-| 5 | Impresión de prueba con IP | ✅ **IMPLEMENTADO** |
-| 6 | Exportar a archivo | ✅ **IMPLEMENTADO** |
+| 4 | Error clipboard SSR | â **CORREGIDO** |
+| 5 | ImpresiÃ³n de prueba con IP | â **IMPLEMENTADO** |
+| 6 | Exportar a archivo | â **IMPLEMENTADO** |
 
 ---
-### Versión actual: **3.2.0**
-### Próxima versión sugerida: **3.2.1**
+### VersiÃ³n actual: **3.2.0**
+### PrÃ³xima versiÃ³n sugerida: **3.2.1**
 
 
 ---
 Task ID: 1573
 Agent: main
-Task: Corregir error clipboard y mejorar impresión de prueba
+Task: Corregir error clipboard y mejorar impresiÃ³n de prueba
 
 Work Log:
 
 #### 1. Error Corregido
 **Error:** `TypeError: Cannot read properties of undefined (reading 'writeText')`
-**Causa:** `navigator.clipboard` no está disponible en SSR o en contextos no seguros (no HTTPS)
+**Causa:** `navigator.clipboard` no estÃ¡ disponible en SSR o en contextos no seguros (no HTTPS)
 
-**Solución implementada:**
-- Creada función `handleCopiar()` con fallback para navegadores sin clipboard API
-- Si `navigator.clipboard` no está disponible, usa `document.execCommand('copy')` como alternativa
+**SoluciÃ³n implementada:**
+- Creada funciÃ³n `handleCopiar()` con fallback para navegadores sin clipboard API
+- Si `navigator.clipboard` no estÃ¡ disponible, usa `document.execCommand('copy')` como alternativa
 - Archivos modificados:
   - `src/components/config-rotulos/index.tsx`
   - `src/components/config-rotulos/LabelDesigner.tsx`
 
-#### 2. Mejoras en Impresión de Prueba
+#### 2. Mejoras en ImpresiÃ³n de Prueba
 **Antes:**
-- No pedía IP de impresora
-- No permitía configurar puerto
-- Botón siempre habilitado
+- No pedÃ­a IP de impresora
+- No permitÃ­a configurar puerto
+- BotÃ³n siempre habilitado
 
 **Ahora:**
 - Campo para IP de impresora
 - Campo para puerto (default 9100)
-- Botón deshabilitado si no hay IP
-- Mensaje de confirmación con IP y puerto
+- BotÃ³n deshabilitado si no hay IP
+- Mensaje de confirmaciÃ³n con IP y puerto
 
-#### 3. Nueva Función: Exportar a Archivo
-- Permite descargar el código ZPL/DPL procesado
-- Útil para ver exactamente qué se enviaría a la impresora
+#### 3. Nueva FunciÃ³n: Exportar a Archivo
+- Permite descargar el cÃ³digo ZPL/DPL procesado
+- Ãtil para ver exactamente quÃ© se enviarÃ­a a la impresora
 - Nombre del archivo: `prueba_{nombre_rotulo}.{zpl|dpl}`
 
 #### 4. UI Mejorada en Modal Preview
-- Panel de configuración de impresora con IP y Puerto
-- Botón "Exportar Archivo" para ver el código sin imprimir
-- Botón "Imprimir Prueba" para enviar a la impresora configurada
+- Panel de configuraciÃ³n de impresora con IP y Puerto
+- BotÃ³n "Exportar Archivo" para ver el cÃ³digo sin imprimir
+- BotÃ³n "Imprimir Prueba" para enviar a la impresora configurada
 
 Stage Summary:
-- **Error clipboard corregido** ✅
-- **Impresión de prueba con IP configurable** ✅
-- **Exportación a archivo implementada** ✅
-- **Versión actualizada a 3.2.0** ✅
+- **Error clipboard corregido** â
+- **ImpresiÃ³n de prueba con IP configurable** â
+- **ExportaciÃ³n a archivo implementada** â
+- **VersiÃ³n actualizada a 3.2.0** â
 
 
 ---
@@ -2380,18 +2416,18 @@ Task: Soporte completo para archivos .lbl/.nlbl de Zebra Designer
 Work Log:
 
 #### 1. Mejoras en Preview para Archivos Binarios
-- Identificación visual de archivos Zebra Designer (binarios)
-- Muestra información del archivo: nombre, tamaño, DPI
+- IdentificaciÃ³n visual de archivos Zebra Designer (binarios)
+- Muestra informaciÃ³n del archivo: nombre, tamaÃ±o, DPI
 - Instrucciones claras para obtener ZPL desde Zebra Designer
-- Botones específicos para archivos binarios
+- Botones especÃ­ficos para archivos binarios
 
 #### 2. Funcionalidades para .lbl/.nlbl
 - **Importar:** Sube archivos .lbl/.nlbl y los guarda en base64
 - **Descargar:** Exporta el archivo original decodificando de base64
-- **Imprimir:** Envía el archivo binario directamente a la impresora Zebra
+- **Imprimir:** EnvÃ­a el archivo binario directamente a la impresora Zebra
 
-#### 3. Cómo usar archivos Zebra Designer
-1. **Importar plantilla:** Click en "Importar Plantilla" → seleccionar archivo .lbl o .nlbl
+#### 3. CÃ³mo usar archivos Zebra Designer
+1. **Importar plantilla:** Click en "Importar Plantilla" â seleccionar archivo .lbl o .nlbl
 2. **El archivo se guarda** en formato binario (no se puede editar)
 3. **Para imprimir:**
    - Click en "Preview" (ojo)
@@ -2399,61 +2435,61 @@ Work Log:
    - Click en "Imprimir"
 
 #### 4. Para obtener ZPL legible (opcional)
-- **Print to File:** En Zebra Designer → File → Print → "Print to file" → guardar como .prn
-- **Exportar ZPL:** En Zebra Designer → Tools → Export → formato ZPL
+- **Print to File:** En Zebra Designer â File â Print â "Print to file" â guardar como .prn
+- **Exportar ZPL:** En Zebra Designer â Tools â Export â formato ZPL
 
 Stage Summary:
-- **Soporte completo para .lbl/.nlbl** ✅
-- **Descarga de archivo original** ✅
-- **Impresión directa de binarios** ✅
-- **Versión actualizada a 3.2.1** ✅
+- **Soporte completo para .lbl/.nlbl** â
+- **Descarga de archivo original** â
+- **ImpresiÃ³n directa de binarios** â
+- **VersiÃ³n actualizada a 3.2.1** â
 
 
 ---
-## ✅ SINCRONIZACIÓN VERIFICADA - $(date '+%Y-%m-%d %H:%M')
+## â SINCRONIZACIÃN VERIFICADA - $(date '+%Y-%m-%d %H:%M')
 
 ### Repositorios Sincronizados
-| Repositorio | URL | Último Commit | Estado |
+| Repositorio | URL | Ãltimo Commit | Estado |
 |-------------|-----|---------------|--------|
-| 1532 (desarrollo) | github.com/aarescalvo/1532 | v3.2.1 | ✅ OK |
-| trazasole (producción) | github.com/aarescalvo/trazasole | v3.2.1 | ✅ OK |
+| 1532 (desarrollo) | github.com/aarescalvo/1532 | v3.2.1 | â OK |
+| trazasole (producciÃ³n) | github.com/aarescalvo/trazasole | v3.2.1 | â OK |
 
 ### Commits Sincronizados
 ```
 v3.2.1 - Soporte completo para archivos .lbl/.nlbl Zebra Designer
-v3.2.0 - Fix clipboard SSR, impresión prueba con IP, exportar archivo
-v3.1.9 - Editor visual de rótulos drag and drop con conversión ZPL/DPL
+v3.2.0 - Fix clipboard SSR, impresiÃ³n prueba con IP, exportar archivo
+v3.1.9 - Editor visual de rÃ³tulos drag and drop con conversiÃ³n ZPL/DPL
 v3.1.8 - Documentacion completa: INSTRUCCIONES.md
 v3.1.7 - Ticket pesaje: logo real Solemar y direccion Chimpay
 ```
 
-### Versión Actual
+### VersiÃ³n Actual
 **v3.2.1** - Ambos repositorios sincronizados
 
 ---
 
-## 📋 RESUMEN DE FUNCIONALIDADES v3.2.1
+## ð RESUMEN DE FUNCIONALIDADES v3.2.1
 
-### Configuración de Rótulos
-| Tipo | Formato | Preview | Impresión |
+### ConfiguraciÃ³n de RÃ³tulos
+| Tipo | Formato | Preview | ImpresiÃ³n |
 |------|---------|---------|-----------|
-| Zebra (ZPL) | .zpl, .prn, .txt | ✅ Texto | ✅ Directa |
-| Datamax (DPL) | .dpl | ✅ Texto | ✅ Directa |
-| Zebra Designer | .lbl, .nlbl | ⚠️ Binario | ✅ Directa |
+| Zebra (ZPL) | .zpl, .prn, .txt | â Texto | â Directa |
+| Datamax (DPL) | .dpl | â Texto | â Directa |
+| Zebra Designer | .lbl, .nlbl | â ï¸ Binario | â Directa |
 
 ### Funcionalidades Implementadas
-1. ✅ Importar plantillas ZPL/DPL/lbl/nlbl
-2. ✅ Editor visual drag & drop
-3. ✅ Vista previa con datos de prueba
-4. ✅ Impresión de prueba con IP configurable
-5. ✅ Exportar a archivo (.zpl/.dpl)
-6. ✅ Descargar archivo original (.lbl/.nlbl)
-7. ✅ Copiar código al portapapeles (SSR safe)
+1. â Importar plantillas ZPL/DPL/lbl/nlbl
+2. â Editor visual drag & drop
+3. â Vista previa con datos de prueba
+4. â ImpresiÃ³n de prueba con IP configurable
+5. â Exportar a archivo (.zpl/.dpl)
+6. â Descargar archivo original (.lbl/.nlbl)
+7. â Copiar cÃ³digo al portapapeles (SSR safe)
 
-### Próximos Pasos en Producción
+### PrÃ³ximos Pasos en ProducciÃ³n
 1. Actualizar: `reiniciar-actualizado.bat`
 2. Configurar IPs de impresoras en cada puesto
-3. Probar impresión con plantillas importadas
+3. Probar impresiÃ³n con plantillas importadas
 
 
 ---
@@ -2464,23 +2500,23 @@ Task: Fix error al mover tropas de corral
 Work Log:
 
 #### 1. Error Detectado
-- El módulo "Movimiento de Hacienda" fallaba al mover tropas de corral
-- Causa: La API `/api/animales/mover-cantidad` tenía la ruta de BD hardcodeada
-- `datasourceUrl: 'file:/home/z/my-project/db/custom.db'` no funciona en producción
+- El mÃ³dulo "Movimiento de Hacienda" fallaba al mover tropas de corral
+- Causa: La API `/api/animales/mover-cantidad` tenÃ­a la ruta de BD hardcodeada
+- `datasourceUrl: 'file:/home/z/my-project/db/custom.db'` no funciona en producciÃ³n
 
-#### 2. Solución Aplicada
+#### 2. SoluciÃ³n Aplicada
 - Removido el PrismaClient con ruta hardcodeada
-- Usar `import { db } from '@/lib/db'` que usa la configuración correcta
+- Usar `import { db } from '@/lib/db'` que usa la configuraciÃ³n correcta
 - Removido `db.$disconnect()` en finally blocks
 
 #### 3. Archivo Corregido
 - `src/app/api/animales/mover-cantidad/route.ts`
 
 Stage Summary:
-- **Error de mover tropas corregido** ✅
-- **BD hardcodeada removida** ✅
-- **Versión actualizada a 3.2.2** ✅
-- **Push a ambos repositorios** ✅
+- **Error de mover tropas corregido** â
+- **BD hardcodeada removida** â
+- **VersiÃ³n actualizada a 3.2.2** â
+- **Push a ambos repositorios** â
 
 
 ---
@@ -2490,11 +2526,11 @@ Task: Sistema completo de reportes Excel con plantillas personalizables
 
 Work Log:
 
-#### 1. Sistema Híbrido Implementado
-**Opción 2 (Plantillas) + ExcelJS:**
-- El usuario diseña su planilla en Excel con el formato visual deseado
-- El sistema lee la plantilla, completa datos dinámicos, mantiene el diseño
-- Para reportes sin plantilla, ExcelJS genera el formato automáticamente
+#### 1. Sistema HÃ­brido Implementado
+**OpciÃ³n 2 (Plantillas) + ExcelJS:**
+- El usuario diseÃ±a su planilla en Excel con el formato visual deseado
+- El sistema lee la plantilla, completa datos dinÃ¡micos, mantiene el diseÃ±o
+- Para reportes sin plantilla, ExcelJS genera el formato automÃ¡ticamente
 
 #### 2. Modelo de Datos Agregado
 **PlantillaReporte (Prisma):**
@@ -2504,7 +2540,7 @@ Work Log:
 - marcadores (JSON para mapeo de celdas a variables)
 
 #### 3. APIs Creadas
-| API | Función |
+| API | FunciÃ³n |
 |-----|---------|
 | `/api/plantillas-reporte` | CRUD de plantillas |
 | `/api/plantillas-reporte/descargar` | Descargar plantilla original |
@@ -2514,7 +2550,7 @@ Work Log:
 #### 4. Funcionalidades del Sistema de Plantillas
 **Marcadores soportados:**
 - `{{FECHA}}` - Fecha actual
-- `{{TROPA}}` - Código de tropa
+- `{{TROPA}}` - CÃ³digo de tropa
 - `{{PRODUCTOR}}` - Nombre del productor
 - `{{CABEZAS}}` - Cantidad de animales
 - `{{PESO}}` - Peso total
@@ -2522,224 +2558,224 @@ Work Log:
 - `{{CORRAL}}` - Nombre del corral
 - `{{ESTADO}}` - Estado actual
 
-**Configuración por plantilla:**
+**ConfiguraciÃ³n por plantilla:**
 - Hoja de datos (ej: "Datos")
 - Fila de inicio para datos tabulares
 - Rango de datos (ej: A7:F50)
 - Mapeo de columnas a campos
 
-#### 5. Módulo Frontend
+#### 5. MÃ³dulo Frontend
 **`/src/components/config-plantillas/index.tsx`:**
-- Lista plantillas por categoría
+- Lista plantillas por categorÃ­a
 - Subir nuevas plantillas
 - Configurar marcadores y mapeos
 - Descargar plantilla original
-- Vista previa de configuración
+- Vista previa de configuraciÃ³n
 
-#### 6. Formato Excel Automático (sin plantilla)
+#### 6. Formato Excel AutomÃ¡tico (sin plantilla)
 - Encabezado con nombre de empresa
-- Título del reporte
-- Fecha de generación
+- TÃ­tulo del reporte
+- Fecha de generaciÃ³n
 - Tabla con encabezados oscuros
 - Filas con colores alternados
 - Bordes en todas las celdas
-- Ajuste automático de anchos
+- Ajuste automÃ¡tico de anchos
 
 Stage Summary:
-- **Sistema de plantillas Excel implementado** ✅
-- **API de exportación Excel (híbrido)** ✅
-- **API de exportación PDF** ✅
-- **Módulo de gestión de plantillas** ✅
-- **Librerías instaladas: exceljs, pdfmake** ✅
-- **Versión actualizada a 3.2.2** ✅
+- **Sistema de plantillas Excel implementado** â
+- **API de exportaciÃ³n Excel (hÃ­brido)** â
+- **API de exportaciÃ³n PDF** â
+- **MÃ³dulo de gestiÃ³n de plantillas** â
+- **LibrerÃ­as instaladas: exceljs, pdfmake** â
+- **VersiÃ³n actualizada a 3.2.2** â
 
 
 ---
 Task ID: 1577
 Agent: main
-Task: Dashboard Ejecutivo con gráficos y KPIs
+Task: Dashboard Ejecutivo con grÃ¡ficos y KPIs
 
 Work Log:
 
 #### 1. KPIs Implementados (tarjetas superiores)
-| KPI | Descripción | Color |
+| KPI | DescripciÃ³n | Color |
 |-----|-------------|-------|
-| Animales Faenados | Total del período con tendencia | Amber |
-| Peso Total Procesado | En kg con variación | Emerald |
+| Animales Faenados | Total del perÃ­odo con tendencia | Amber |
+| Peso Total Procesado | En kg con variaciÃ³n | Emerald |
 | Rinde Promedio | % con meta (52%) | Blue |
 | Tropas Activas | Cantidad actual | Purple |
-| Stock en Cámaras | Medias res | Cyan |
+| Stock en CÃ¡maras | Medias res | Cyan |
 
-#### 2. Gráficos con Recharts
-| Gráfico | Tipo | Datos |
+#### 2. GrÃ¡ficos con Recharts
+| GrÃ¡fico | Tipo | Datos |
 |---------|------|-------|
-| Faena por día | BarChart + Line | Últimos 7 días, cabezas y rinde |
-| Distribución especie | PieChart | Bovinos vs Equinos |
-| Evolución rinde | LineChart | Semanal con objetivo |
-| Stock por cámara | BarChart horizontal | Ocupación por cámara |
+| Faena por dÃ­a | BarChart + Line | Ãltimos 7 dÃ­as, cabezas y rinde |
+| DistribuciÃ³n especie | PieChart | Bovinos vs Equinos |
+| EvoluciÃ³n rinde | LineChart | Semanal con objetivo |
+| Stock por cÃ¡mara | BarChart horizontal | OcupaciÃ³n por cÃ¡mara |
 
 #### 3. Paneles Adicionales
-- **Resumen del Día**: Progreso diario de faena
+- **Resumen del DÃ­a**: Progreso diario de faena
 - **Cumplimiento de Metas**: Barras de progreso para KPIs
 - **Alertas del Sistema**: Notificaciones importantes
 
-#### 4. Características Visuales
+#### 4. CaracterÃ­sticas Visuales
 - Fondos con gradientes
 - Sombras en tarjetas con hover
-- Métricas con código de colores
+- MÃ©tricas con cÃ³digo de colores
 - Layout responsive
 - Estados de carga con skeletons
-- Botón de actualización con animación
-- Selector de período (semana/mes/trimestre/año)
+- BotÃ³n de actualizaciÃ³n con animaciÃ³n
+- Selector de perÃ­odo (semana/mes/trimestre/aÃ±o)
 
 #### 5. APIs Utilizadas
-- `/api/dashboard` - Estadísticas generales
+- `/api/dashboard` - EstadÃ­sticas generales
 - `/api/tropas` - Datos de tropas
 - `/api/stock` - Stock disponible
-- `/api/stock-camaras` - Stock por cámara
+- `/api/stock-camaras` - Stock por cÃ¡mara
 
 Stage Summary:
-- **Dashboard Ejecutivo implementado** ✅
-- **5 KPIs con indicadores visuales** ✅
-- **4 gráficos interactivos** ✅
-- **Paneles de resumen y alertas** ✅
-- **Versión actualizada a 3.2.4** ✅
+- **Dashboard Ejecutivo implementado** â
+- **5 KPIs con indicadores visuales** â
+- **4 grÃ¡ficos interactivos** â
+- **Paneles de resumen y alertas** â
+- **VersiÃ³n actualizada a 3.2.4** â
 
 
 ---
 Task ID: 1578
 Agent: main
-Task: Optimización de consultas y mejora del dashboard
+Task: OptimizaciÃ³n de consultas y mejora del dashboard
 
 Work Log:
 
 #### 1. Mejoras en la API del Dashboard
 **Antes:**
-- Solo 3 estadísticas básicas
-- Sin datos de faena por día
-- Sin distribución por especie
+- Solo 3 estadÃ­sticas bÃ¡sicas
+- Sin datos de faena por dÃ­a
+- Sin distribuciÃ³n por especie
 
 **Ahora:**
-- 15+ estadísticas en paralelo
-- Faena semanal con agrupación por día
-- Distribución por especie
-- Stock por cámara con ocupación
+- 15+ estadÃ­sticas en paralelo
+- Faena semanal con agrupaciÃ³n por dÃ­a
+- DistribuciÃ³n por especie
+- Stock por cÃ¡mara con ocupaciÃ³n
 - Metas y KPIs
 
 #### 2. Optimizaciones Aplicadas
-| Técnica | Implementación |
+| TÃ©cnica | ImplementaciÃ³n |
 |---------|----------------|
 | Promise.all | Consultas paralelas en vez de secuenciales |
 | Cache 30s | Resultados cacheados para datos frecuentes |
-| Select específico | Solo campos necesarios en consultas |
-| GroupBy | Agregación en BD en vez de JavaScript |
+| Select especÃ­fico | Solo campos necesarios en consultas |
+| GroupBy | AgregaciÃ³n en BD en vez de JavaScript |
 
 #### 3. Sistema de Cache Existente
 El proyecto ya tiene `/lib/cache.ts` con:
 - Cache en memoria con TTL
-- Limpieza automática de expirados
-- Estadísticas de hit/miss
+- Limpieza automÃ¡tica de expirados
+- EstadÃ­sticas de hit/miss
 - Keys predefinidas para entidades
 
-#### 4. Índices Existentes (verificados)
-Ya hay +80 índices definidos en el schema:
+#### 4. Ãndices Existentes (verificados)
+Ya hay +80 Ã­ndices definidos en el schema:
 - Por estado, especie, fecha
 - Por relaciones (corralId, tropaId, etc.)
 - Compuestos para consultas frecuentes
 
 Stage Summary:
-- **API Dashboard optimizada** ✅
-- **Consultas en paralelo** ✅
-- **Cache activo en endpoints críticos** ✅
-- **Versión actualizada a 3.2.5** ✅
+- **API Dashboard optimizada** â
+- **Consultas en paralelo** â
+- **Cache activo en endpoints crÃ­ticos** â
+- **VersiÃ³n actualizada a 3.2.5** â
 
 
 ---
 Task ID: 1579
 Agent: main
-Task: Mejoras en creación de clientes y sistema de impresión DPL para pesaje individual
+Task: Mejoras en creaciÃ³n de clientes y sistema de impresiÃ³n DPL para pesaje individual
 
 Work Log:
 
-#### 1. Corrección en Creación de Clientes desde Módulo de Pesaje
-**Problema:** Al crear un cliente desde el módulo de pesaje, solo pedía el nombre. Debía pedir todos los datos como en Configuración.
+#### 1. CorrecciÃ³n en CreaciÃ³n de Clientes desde MÃ³dulo de Pesaje
+**Problema:** Al crear un cliente desde el mÃ³dulo de pesaje, solo pedÃ­a el nombre. DebÃ­a pedir todos los datos como en ConfiguraciÃ³n.
 
 **Archivo modificado:** `src/components/pesaje-camiones/QuickAddDialog.tsx`
 - Expandido el formulario para incluir:
-  * Nombre / Razón Social
+  * Nombre / RazÃ³n Social
   * CUIT
-  * Teléfono
+  * TelÃ©fono
   * Email
-  * Dirección
-  * Tipo de cliente (preseleccionado según el botón: Productor o Usuario de Faena)
+  * DirecciÃ³n
+  * Tipo de cliente (preseleccionado segÃºn el botÃ³n: Productor o Usuario de Faena)
 - Agregados labels y placeholders descriptivos
-- Mantenida funcionalidad rápida para transportista (solo nombre)
+- Mantenida funcionalidad rÃ¡pida para transportista (solo nombre)
 
-#### 2. Sistema de Impresión DPL para Datamax Mark II
-**Requisito:** Imprimir rótulos de 5x10cm por duplicado con: número de tropa, número de animal (resaltado), peso en kg.
+#### 2. Sistema de ImpresiÃ³n DPL para Datamax Mark II
+**Requisito:** Imprimir rÃ³tulos de 5x10cm por duplicado con: nÃºmero de tropa, nÃºmero de animal (resaltado), peso en kg.
 
 **Archivos creados:**
 
 **`src/lib/print-dpl.ts`:**
-- Función `generarRotuloDPL()` - Genera código DPL completo
-- Función `generarRotuloDPLSimple()` - Versión simplificada compatible
-- Función `generarRotuloZPL()` - Alternativa para Zebra con emulación
-- Función `enviarAImpresora()` - Envío via TCP/IP puerto 9100
-- Función `imprimirRotuloDuplicado()` - Imprime 2 copias
+- FunciÃ³n `generarRotuloDPL()` - Genera cÃ³digo DPL completo
+- FunciÃ³n `generarRotuloDPLSimple()` - VersiÃ³n simplificada compatible
+- FunciÃ³n `generarRotuloZPL()` - Alternativa para Zebra con emulaciÃ³n
+- FunciÃ³n `enviarAImpresora()` - EnvÃ­o via TCP/IP puerto 9100
+- FunciÃ³n `imprimirRotuloDuplicado()` - Imprime 2 copias
 - Dimensiones: 5cm x 10cm (203 DPI = ~400 x ~800 dots)
 
 **`src/app/api/rotulos/init-dpl/route.ts`:**
-- Crea rótulos DPL por defecto para Datamax Mark II
-- Rótulo PESAJE_INDIVIDUAL_DPL: 5x10cm con número animal resaltado
-- Rótulo PESAJE_INDIVIDUAL_COMPACTO_DPL: Versión compacta
-- Rótulo MEDIA_RES_DPL: Para medias reses
+- Crea rÃ³tulos DPL por defecto para Datamax Mark II
+- RÃ³tulo PESAJE_INDIVIDUAL_DPL: 5x10cm con nÃºmero animal resaltado
+- RÃ³tulo PESAJE_INDIVIDUAL_COMPACTO_DPL: VersiÃ³n compacta
+- RÃ³tulo MEDIA_RES_DPL: Para medias reses
 
-#### 3. Modificación en Pesaje Individual
+#### 3. ModificaciÃ³n en Pesaje Individual
 **Archivo:** `src/components/pesaje-individual-module.tsx`
 
-**Impresión por duplicado:**
+**ImpresiÃ³n por duplicado:**
 - Cambiado `cantidad: 1` a `cantidad: 2` en la llamada a `/api/rotulos/imprimir`
-- Ahora cada pesaje imprime 2 rótulos automáticamente
+- Ahora cada pesaje imprime 2 rÃ³tulos automÃ¡ticamente
 
 **Nuevas funciones agregadas:**
-- `handleReimprimirRotulo(animal)` - Reimprime rótulo de animal ya pesado (2 copias)
+- `handleReimprimirRotulo(animal)` - Reimprime rÃ³tulo de animal ya pesado (2 copias)
 - `handleRepesar(animal)` - Marca animal para repesar (elimina peso, vuelve a RECIBIDO)
 
-**Botones de acción agregados en lista de animales:**
-- 🖨️ Reimprimir rótulo (verde) - Solo visible para animales pesados
-- ⚖️ Repesar (ámbar) - Vuelve a pesar el animal
-- ✏️ Editar (azul) - Abre diálogo de edición
-- 🗑️ Eliminar (rojo) - Elimina el animal
+**Botones de acciÃ³n agregados en lista de animales:**
+- ð¨ï¸ Reimprimir rÃ³tulo (verde) - Solo visible para animales pesados
+- âï¸ Repesar (Ã¡mbar) - Vuelve a pesar el animal
+- âï¸ Editar (azul) - Abre diÃ¡logo de ediciÃ³n
+- ðï¸ Eliminar (rojo) - Elimina el animal
 
 **UI mejorada:**
-- Lista de animales con botones de acción al lado de cada animal pesado
-- Grid de 1 columna para mostrar información completa
+- Lista de animales con botones de acciÃ³n al lado de cada animal pesado
+- Grid de 1 columna para mostrar informaciÃ³n completa
 - Botones compactos con tooltips explicativos
 
-#### 4. Variables de Rótulo Soportadas
-| Variable | Descripción |
+#### 4. Variables de RÃ³tulo Soportadas
+| Variable | DescripciÃ³n |
 |----------|-------------|
-| `{NUMERO}` | Número de animal (grande/resaltado) |
-| `{TROPA}` | Código de tropa |
+| `{NUMERO}` | NÃºmero de animal (grande/resaltado) |
+| `{TROPA}` | CÃ³digo de tropa |
 | `{PESO}` | Peso en kg |
 | `{FECHA}` | Fecha actual |
 | `{TIPO}` | Tipo de animal |
-| `{CODIGO}` | Código completo |
+| `{CODIGO}` | CÃ³digo completo |
 | `{RAZA}` | Raza del animal |
 
 Stage Summary:
-- **QuickAddDialog mejorado** ✅ - Ahora pide todos los datos del cliente
-- **Sistema DPL completo** ✅ - Generación e impresión para Datamax Mark II
-- **Impresión por duplicado** ✅ - Cada pesaje imprime 2 rótulos
-- **Botones de acción en pesaje** ✅ - Reimprimir, Repesar, Editar, Eliminar
-- **Lint OK** ✅ - Solo error menor en archivo de ejemplo
+- **QuickAddDialog mejorado** â - Ahora pide todos los datos del cliente
+- **Sistema DPL completo** â - GeneraciÃ³n e impresiÃ³n para Datamax Mark II
+- **ImpresiÃ³n por duplicado** â - Cada pesaje imprime 2 rÃ³tulos
+- **Botones de acciÃ³n en pesaje** â - Reimprimir, Repesar, Editar, Eliminar
+- **Lint OK** â - Solo error menor en archivo de ejemplo
 
 ### Pendientes:
-- Configurar IP de impresora Datamax en producción
-- Probar impresión real con la Datamax Mark II
+- Configurar IP de impresora Datamax en producciÃ³n
+- Probar impresiÃ³n real con la Datamax Mark II
 - Considerar agregar soporte para otras dimensiones de etiqueta
 
-### Versión actual: **3.2.6**
+### VersiÃ³n actual: **3.2.6**
 
 ---
 Task ID: 1579
@@ -2752,37 +2788,37 @@ Work Log:
 - Repositorios con historiales divergentes
 - Conflictos de merge en: package.json, QuickAddDialog.tsx, pesaje-individual-module.tsx, worklog.md
 
-#### 2. Resolución de Conflictos
+#### 2. ResoluciÃ³n de Conflictos
 - Abortado merge con conflictos
 - Usada estrategia 'ours' para preservar cambios locales v3.2.6
 - Merge completado sin perder funcionalidades nuevas
 
 #### 3. Push a Repositorios
-- **Desarrollo (1532)**: `65643f1..f04fdae master -> master` ✅
-- **Producción (trazasole)**: `890f66f..f04fdae master -> master` ✅
+- **Desarrollo (1532)**: `65643f1..f04fdae master -> master` â
+- **ProducciÃ³n (trazasole)**: `890f66f..f04fdae master -> master` â
 
 #### 4. Funcionalidades en v3.2.6
-- Creación de clientes con formulario completo desde pesaje
-- Impresión de rótulos por duplicado (DPL para Datamax Mark II)
+- CreaciÃ³n de clientes con formulario completo desde pesaje
+- ImpresiÃ³n de rÃ³tulos por duplicado (DPL para Datamax Mark II)
 - Botones de repesar/editar/eliminar en pesaje individual
-- Reimpresión de rótulos
+- ReimpresiÃ³n de rÃ³tulos
 
 Stage Summary:
-- **Cambios subidos a ambos repositorios** ✅
-- **Sin force push (estrategia ours)** ✅
-- **Versión 3.2.6 sincronizada** ✅
+- **Cambios subidos a ambos repositorios** â
+- **Sin force push (estrategia ours)** â
+- **VersiÃ³n 3.2.6 sincronizada** â
 
 ---
 Task ID: 1580
 Agent: main
-Task: Agregar resumen global de tropas en módulo de movimiento de hacienda
+Task: Agregar resumen global de tropas en mÃ³dulo de movimiento de hacienda
 
 Work Log:
 
 #### 1. Requerimiento del Usuario
 El stock de corrales debe mostrar:
 - El total por tropa (resumen global en todo el sistema)
-- Dentro de cada corral qué cantidad de cada tropa hay (ya funcionaba)
+- Dentro de cada corral quÃ© cantidad de cada tropa hay (ya funcionaba)
 - No es necesario separar equinos de bovinos en la suma total
 
 #### 2. Cambios Realizados
@@ -2791,119 +2827,119 @@ El stock de corrales debe mostrar:
 **Agregado:**
 - Import `useMemo` de React
 - Nuevo `resumenTropas` calculado con useMemo que agrupa todas las tropas de todos los corrales
-- Nueva sección "Resumen por Tropa" antes del grid de corrales
+- Nueva secciÃ³n "Resumen por Tropa" antes del grid de corrales
 
 **Funcionalidad del resumen:**
-- Muestra cada tropa con su código y especie
+- Muestra cada tropa con su cÃ³digo y especie
 - Total de animales de esa tropa en todos los corrales
 - Desglose por corral (badges con nombre del corral y cantidad)
 - Usuario de faena de cada tropa
-- Ordenado alfabéticamente por código de tropa
+- Ordenado alfabÃ©ticamente por cÃ³digo de tropa
 
 **UI:**
-- Card con scroll máximo de 64 (max-h-64 overflow-y-auto)
-- Badge ámbar con total de animales
+- Card con scroll mÃ¡ximo de 64 (max-h-64 overflow-y-auto)
+- Badge Ã¡mbar con total de animales
 - Badges outline para desglose por corral
 
 #### 3. Correcciones de Sintaxis
 - Corregidas comillas simples incorrectas en className de Badge y div
 
 Stage Summary:
-- **Resumen global de tropas implementado** ✅
-- **Desglose por corral dentro de cada tropa** ✅
-- **Lint sin errores** ✅
+- **Resumen global de tropas implementado** â
+- **Desglose por corral dentro de cada tropa** â
+- **Lint sin errores** â
 
 ---
 Task ID: 1581
 Agent: main
-Task: Correcciones de formulario QuickAddDialog - Matrícula y Transportistas
+Task: Correcciones de formulario QuickAddDialog - MatrÃ­cula y Transportistas
 
 Work Log:
 
 #### 1. Problemas Reportados
-1. No se pide el dato de matrícula para los clientes
-2. La carga rápida de datos en pesaje camiones solo tenía más campos para clientes, no para transportistas y productores
+1. No se pide el dato de matrÃ­cula para los clientes
+2. La carga rÃ¡pida de datos en pesaje camiones solo tenÃ­a mÃ¡s campos para clientes, no para transportistas y productores
 
 #### 2. Soluciones Implementadas
 **Archivo:** `src/components/pesaje-camiones/QuickAddDialog.tsx`
 
-**Matrícula para clientes:**
+**MatrÃ­cula para clientes:**
 - Agregado campo `matricula` a la interfaz `FormData`
-- Agregado input para matrícula en el formulario (grid de 2 columnas junto con CUIT)
+- Agregado input para matrÃ­cula en el formulario (grid de 2 columnas junto con CUIT)
 - Incluido en el body del POST a `/api/clientes`
 
-**Ampliación para transportistas:**
-- El formulario ahora muestra CUIT y Teléfono para TODOS (transportistas, productores, usuarios de faena)
+**AmpliaciÃ³n para transportistas:**
+- El formulario ahora muestra CUIT y TelÃ©fono para TODOS (transportistas, productores, usuarios de faena)
 - El body del POST a `/api/transportistas` ahora incluye `cuit` y `telefono`
-- Agregado icono de Truck para transportistas en el título del diálogo
+- Agregado icono de Truck para transportistas en el tÃ­tulo del diÃ¡logo
 
 **Campos por tipo de entidad:**
-- **Transportistas**: Nombre, CUIT, Teléfono
-- **Clientes (Productor/UsuarioFaena)**: Nombre, CUIT, Matrícula, Teléfono, Email, Dirección, Tipo de cliente
+- **Transportistas**: Nombre, CUIT, TelÃ©fono
+- **Clientes (Productor/UsuarioFaena)**: Nombre, CUIT, MatrÃ­cula, TelÃ©fono, Email, DirecciÃ³n, Tipo de cliente
 
-#### 3. Error de Romaneo "Ya existe media para el garrón"
+#### 3. Error de Romaneo "Ya existe media para el garrÃ³n"
 **Causa identificada:**
-- El componente de romaneo usa un estado local `mediasPesadas` que se vacía al recargar la página
+- El componente de romaneo usa un estado local `mediasPesadas` que se vacÃ­a al recargar la pÃ¡gina
 - Pero la base de datos ya tiene las medias reses creadas
-- La API `/api/romaneo/pesar` valida y rechaza si ya existe una media para ese garrón y lado
+- La API `/api/romaneo/pesar` valida y rechaza si ya existe una media para ese garrÃ³n y lado
 
-**Solución:**
+**SoluciÃ³n:**
 - La API `/api/garrones-asignados` ya devuelve `tieneMediaDer` y `tieneMediaIzq`
 - El componente ya sincroniza estos campos con el estado local
-- Si el usuario ve el error, debe usar el botón "Actualizar" para sincronizar con la base de datos
+- Si el usuario ve el error, debe usar el botÃ³n "Actualizar" para sincronizar con la base de datos
 
 Stage Summary:
-- **Campo matrícula agregado para clientes** ✅
-- **Transportistas ahora tienen CUIT y Teléfono** ✅
-- **Productores y usuarios de faena mantienen todos los campos** ✅
-- **Lint sin errores** ✅
+- **Campo matrÃ­cula agregado para clientes** â
+- **Transportistas ahora tienen CUIT y TelÃ©fono** â
+- **Productores y usuarios de faena mantienen todos los campos** â
+- **Lint sin errores** â
 
 ---
 Task ID: 1582
 Agent: main
-Task: Sincronización de repositorios y actualización de versión v3.2.7
+Task: SincronizaciÃ³n de repositorios y actualizaciÃ³n de versiÃ³n v3.2.7
 
 Work Log:
 
 #### 1. Estado de Cambios Pendientes
 - `db/custom.db` - Base de datos actualizada
 - `src/components/movimiento-hacienda-module.tsx` - Resumen global de tropas
-- `src/components/pesaje-camiones/QuickAddDialog.tsx` - Matrícula y carga rápida ampliada
+- `src/components/pesaje-camiones/QuickAddDialog.tsx` - MatrÃ­cula y carga rÃ¡pida ampliada
 - `worklog.md` - Entradas anteriores agregadas
 
-#### 2. Verificación del Sistema
+#### 2. VerificaciÃ³n del Sistema
 - **Repositorios configurados**:
-  - desarrollo → desarrollo1 (SQLite)
-  - produccion → produccion1 (PostgreSQL)
-- **Versión actual**: 3.2.6
-- **Nueva versión**: 3.2.7
+  - desarrollo â desarrollo1 (SQLite)
+  - produccion â produccion1 (PostgreSQL)
+- **VersiÃ³n actual**: 3.2.6
+- **Nueva versiÃ³n**: 3.2.7
 
 #### 3. Issues Reportados y Estado
-| Issue | Estado | Descripción |
+| Issue | Estado | DescripciÃ³n |
 |-------|--------|-------------|
-| Matrícula en clientes | ✅ RESUELTO | Campo agregado a QuickAddDialog |
-| Carga rápida para transportistas | ✅ RESUELTO | CUIT y teléfono ahora incluidos |
-| Error romaneo "media asignada" | ⚠️ PENDIENTE | Bug en validación de garrones - necesita más investigación |
+| MatrÃ­cula en clientes | â RESUELTO | Campo agregado a QuickAddDialog |
+| Carga rÃ¡pida para transportistas | â RESUELTO | CUIT y telÃ©fono ahora incluidos |
+| Error romaneo "media asignada" | â ï¸ PENDIENTE | Bug en validaciÃ³n de garrones - necesita mÃ¡s investigaciÃ³n |
 
 #### 4. Archivos Clave del Sistema
 - **Modelo Cliente en Prisma**: Ya incluye campo `matricula`
 - **API Clientes**: Ya maneja el campo matricula (POST/PUT)
-- **QuickAddDialog**: Ahora muestra matrícula para clientes (productores/usuarios de faena)
+- **QuickAddDialog**: Ahora muestra matrÃ­cula para clientes (productores/usuarios de faena)
 
 Stage Summary:
-- **Cambios listos para commit** ✅
-- **Worklog actualizado** ✅
-- **Pendiente: Push a ambos repositorios** ⏳
+- **Cambios listos para commit** â
+- **Worklog actualizado** â
+- **Pendiente: Push a ambos repositorios** â³
 
 ---
-## 📋 CHECKLIST DE FINALIZACIÓN (OBLIGATORIO)
+## ð CHECKLIST DE FINALIZACIÃN (OBLIGATORIO)
 
-Al terminar CADA sesión de trabajo, verificar:
+Al terminar CADA sesiÃ³n de trabajo, verificar:
 
-| Item | Comando/Acción | Estado |
+| Item | Comando/AcciÃ³n | Estado |
 |------|----------------|--------|
 | 1. Lint | `bun run lint` | [ ] Sin errores |
-| 2. Versión | Editar package.json | [ ] Incrementada |
+| 2. VersiÃ³n | Editar package.json | [ ] Incrementada |
 | 3. Worklog | Editar worklog.md | [x] Actualizado |
 | 4. Git Add | `git add -A` | [ ] Hecho |
 | 5. Git Commit | `git commit -m "vX.Y.Z - mensaje"` | [ ] Hecho |
@@ -2911,10 +2947,10 @@ Al terminar CADA sesión de trabajo, verificar:
 | 7. Push produccion | `git push produccion master` | [ ] Hecho |
 | 8. Verificar GitHub | Ambos repos actualizados | [ ] Hecho |
 
-### Versión actual: **3.2.7**
+### VersiÃ³n actual: **3.2.7**
 ### Repositorios:
 - **Desarrollo**: https://github.com/aarescalvo/desarrollo1
-- **Producción**: https://github.com/aarescalvo/produccion1
+- **ProducciÃ³n**: https://github.com/aarescalvo/produccion1
 
 ---
 Task ID: 1583
@@ -2924,29 +2960,29 @@ Task: Corregir bug de romaneo "ya existe media asignada"
 Work Log:
 
 #### 1. Problema Identificado
-El usuario reportaba que en romaneo aparecía el error "ya hay media res asignada para un garrón" cuando intentaba pesar, aunque:
-- El garrón no había sido pesado todavía
+El usuario reportaba que en romaneo aparecÃ­a el error "ya hay media res asignada para un garrÃ³n" cuando intentaba pesar, aunque:
+- El garrÃ³n no habÃ­a sido pesado todavÃ­a
 - No figuraba como pesado en la lista de la derecha
 
-#### 2. Análisis del Código
+#### 2. AnÃ¡lisis del CÃ³digo
 **Archivo:** `src/app/api/romaneo/pesar/route.ts`
 
-**Causa raíz:**
-La búsqueda de romaneos existentes (línea 96-99) NO filtraba por fecha:
+**Causa raÃ­z:**
+La bÃºsqueda de romaneos existentes (lÃ­nea 96-99) NO filtraba por fecha:
 ```typescript
-// ANTES (problemático)
+// ANTES (problemÃ¡tico)
 let romaneo = await tx.romaneo.findFirst({
   where: { garron: parseInt(garron) },  // Sin filtro de fecha
   include: { mediasRes: true }
 })
 ```
 
-Si existía un romaneo de días anteriores con el mismo número de garrón, lo encontraba y verificaba sus medias, causando el error falso positivo.
+Si existÃ­a un romaneo de dÃ­as anteriores con el mismo nÃºmero de garrÃ³n, lo encontraba y verificaba sus medias, causando el error falso positivo.
 
-#### 3. Solución Implementada
+#### 3. SoluciÃ³n Implementada
 
-**A. Validación usando asignación del garrón:**
-Antes de buscar el romaneo, verificar si la asignación YA tiene la media pesada:
+**A. ValidaciÃ³n usando asignaciÃ³n del garrÃ³n:**
+Antes de buscar el romaneo, verificar si la asignaciÃ³n YA tiene la media pesada:
 ```typescript
 if (asignacion) {
   if (lado === 'DERECHA' && asignacion.tieneMediaDer) {
@@ -2960,7 +2996,7 @@ if (asignacion) {
 
 **B. Filtrar romaneos por fecha:**
 ```typescript
-// DESPUÉS (corregido)
+// DESPUÃS (corregido)
 let romaneo = await tx.romaneo.findFirst({
   where: { 
     garron: parseInt(garron),
@@ -2973,30 +3009,30 @@ let romaneo = await tx.romaneo.findFirst({
 })
 ```
 
-#### 4. Verificación
-- **Lint**: Sin errores ✅
-- **Cambios**: Guardados correctamente ✅
+#### 4. VerificaciÃ³n
+- **Lint**: Sin errores â
+- **Cambios**: Guardados correctamente â
 
 Stage Summary:
-- **Bug corregido en API de romaneo** ✅
-- **Validación doble: asignación + fecha de romaneo** ✅
-- **Lint sin errores** ✅
+- **Bug corregido en API de romaneo** â
+- **ValidaciÃ³n doble: asignaciÃ³n + fecha de romaneo** â
+- **Lint sin errores** â
 
 ---
 Task ID: 1584
 Agent: main
-Task: Corrección de APIs con modelos inexistentes
+Task: CorrecciÃ³n de APIs con modelos inexistentes
 
 Work Log:
 
 #### 1. Problema Detectado
-La simulación integral detectó 4 endpoints con errores:
+La simulaciÃ³n integral detectÃ³ 4 endpoints con errores:
 - `/api/proveedores` - Usaba `db.proveedor` (modelo inexistente)
 - `/api/usuarios` - Usaba `db.usuario` (modelo inexistente)
-- `/api/animales` - Requiere parámetro tropaId (comportamiento esperado)
-- `/api/sistema/status` - Requiere autenticación (comportamiento esperado)
+- `/api/animales` - Requiere parÃ¡metro tropaId (comportamiento esperado)
+- `/api/sistema/status` - Requiere autenticaciÃ³n (comportamiento esperado)
 
-#### 2. Solución Implementada
+#### 2. SoluciÃ³n Implementada
 
 **API `/api/usuarios`:**
 - Cambiado de `db.usuario` a `db.operador`
@@ -3005,94 +3041,94 @@ La simulación integral detectó 4 endpoints con errores:
 
 **API `/api/proveedores`:**
 - Cambiado para usar `db.cliente` como proveedores potenciales
-- TODO: Crear modelo Proveedor si se necesita funcionalidad específica
+- TODO: Crear modelo Proveedor si se necesita funcionalidad especÃ­fica
 - Operaciones CRUD completas funcionando
 
-#### 3. Verificación Post-Corrección
-- `/api/proveedores`: ✅ Devuelve lista de clientes como proveedores
-- `/api/usuarios`: ✅ Devuelve operadores del sistema
+#### 3. VerificaciÃ³n Post-CorrecciÃ³n
+- `/api/proveedores`: â Devuelve lista de clientes como proveedores
+- `/api/usuarios`: â Devuelve operadores del sistema
 
 Stage Summary:
-- **APIs corregidas** ✅
-- **Todas las APIs principales funcionando** ✅
-- **Versión actualizada a 3.2.8** ✅
+- **APIs corregidas** â
+- **Todas las APIs principales funcionando** â
+- **VersiÃ³n actualizada a 3.2.8** â
 ---
 Task ID: 1567
 Agent: main
-Task: Verificación de sincronización y estado del sistema v3.2.9
+Task: VerificaciÃ³n de sincronizaciÃ³n y estado del sistema v3.2.9
 
 Work Log:
 
 #### 1. Estado Verificado
-- **Versión actual**: 3.2.9 ✅
-- **Git status**: Working tree clean ✅
-- **Remotos configurados**: desarrollo y produccion ✅
+- **VersiÃ³n actual**: 3.2.9 â
+- **Git status**: Working tree clean â
+- **Remotos configurados**: desarrollo y produccion â
 
-#### 2. Sincronización GitHub
-- **Push a desarrollo**: Everything up-to-date ✅
-- **Push a produccion**: Everything up-to-date ✅
+#### 2. SincronizaciÃ³n GitHub
+- **Push a desarrollo**: Everything up-to-date â
+- **Push a produccion**: Everything up-to-date â
 - Ambos repositorios sincronizados
 
 #### 3. Lint
-- **Estado**: Sin errores ✅
+- **Estado**: Sin errores â
 
 #### 4. Dev Server
 - El servidor se inicia correctamente con `bun run dev`
 - Next.js 16.1.3 con Turbopack funciona correctamente
 
 Stage Summary:
-- **Sistema TrazaSole v3.2.9 completamente sincronizado** ✅
-- **Ambos repositorios GitHub actualizados** ✅
-- **Sin errores de lint** ✅
-- **Servidor funcionando correctamente** ✅
+- **Sistema TrazaSole v3.2.9 completamente sincronizado** â
+- **Ambos repositorios GitHub actualizados** â
+- **Sin errores de lint** â
+- **Servidor funcionando correctamente** â
 
 ---
 Task ID: 1568
 Agent: main
-Task: Simulación integral v3.3.0 - Corrección de API garrones
+Task: SimulaciÃ³n integral v3.3.0 - CorrecciÃ³n de API garrones
 
 Work Log:
 
-#### 1. Resultado de Simulación Integral
+#### 1. Resultado de SimulaciÃ³n Integral
 - **31 endpoints probados**: 30 exitosos, 1 con error
-- **Tasa de éxito inicial**: 96.77%
+- **Tasa de Ã©xito inicial**: 96.77%
 
 #### 2. Error Encontrado y Corregido
 **Endpoint**: GET /api/garrones
 **Error original**: `{"success":false,"error":"Error al obtener garrones"}` (HTTP 500)
-**Causa**: El código usaba campos inexistentes del modelo:
-- `asig.numeroAnimal` → No existe en modelo (es `asig.animalNumero`)
-- `asig.horaIngreso` → No existe en modelo (se usa `asig.createdAt`)
-- `asig.animal.tipoAnimal` → Acceso sin null check
+**Causa**: El cÃ³digo usaba campos inexistentes del modelo:
+- `asig.numeroAnimal` â No existe en modelo (es `asig.animalNumero`)
+- `asig.horaIngreso` â No existe en modelo (se usa `asig.createdAt`)
+- `asig.animal.tipoAnimal` â Acceso sin null check
 
-**Solución aplicada**:
+**SoluciÃ³n aplicada**:
 - Cambiado `asig.numeroAnimal` por `asig.animalNumero ?? asig.animal?.numero ?? null`
 - Cambiado `asig.horaIngreso.toISOString()` por `asig.createdAt.toISOString()`
 - Agregado null checks con optional chaining (`asig.animal?.tropa`, `asig.animal ? {...} : null`)
 
-#### 3. Verificación Post-Fix
-- **GET /api/garrones**: ✅ 200 OK con datos correctos
+#### 3. VerificaciÃ³n Post-Fix
+- **GET /api/garrones**: â 200 OK con datos correctos
 - **Datos devueltos**: Garrones con tropa, animal, estado de medias
 
 #### 4. Estado Final del Sistema
-| Módulo | Estado |
+| MÃ³dulo | Estado |
 |--------|--------|
-| CICLO I - Recepción y Faena | ✅ 100% operativo |
-| CICLO II - Despostada | ✅ 100% operativo |
-| Subproductos | ✅ 100% operativo |
-| Stock y Cámaras | ✅ 100% operativo |
-| Configuración | ✅ 100% operativo |
-| Reportes y Documentación | ✅ 100% operativo |
+| CICLO I - RecepciÃ³n y Faena | â 100% operativo |
+| CICLO II - Despostada | â 100% operativo |
+| Subproductos | â 100% operativo |
+| Stock y CÃ¡maras | â 100% operativo |
+| ConfiguraciÃ³n | â 100% operativo |
+| Reportes y DocumentaciÃ³n | â 100% operativo |
 
-#### 5. Versión Actualizada
-- **v3.2.9** → **v3.3.0**
-- **Motivo**: Fix crítico en API de garrones
+#### 5. VersiÃ³n Actualizada
+- **v3.2.9** â **v3.3.0**
+- **Motivo**: Fix crÃ­tico en API de garrones
 
 Stage Summary:
-- **Error crítico corregido en /api/garrones** ✅
-- **Simulación integral completada** ✅
-- **31/31 endpoints funcionando** ✅
-- **Sistema 100% operativo** ✅
+- **Error crÃ­tico corregido en /api/garrones** â
+- **SimulaciÃ³n integral completada** â
+- **31/31 endpoints funcionando** â
+- **Sistema 100% operativo** â
 
 ---
 Task ID: 1570
@@ -3102,94 +3138,94 @@ Task: Correcciones de errores reportados v3.3.5
 Work Log:
 
 #### 1. Error: Dos campos caravana en Pesaje Individual
-**Problema:** El usuario reportó que veía 2 campos de caravana ("car 1" y "car 2")
-**Causa:** El modelo Animal en Prisma tenía dos campos: `caravana` y `caravana2`
-**Solución:**
+**Problema:** El usuario reportÃ³ que veÃ­a 2 campos de caravana ("car 1" y "car 2")
+**Causa:** El modelo Animal en Prisma tenÃ­a dos campos: `caravana` y `caravana2`
+**SoluciÃ³n:**
 - Eliminado campo `caravana2` del modelo Animal en `prisma/schema.prisma`
 - Actualizado `src/app/api/animales/route.ts` para eliminar referencias a `caravana2`
 - Ejecutado `bun run db:push` para sincronizar la base de datos
 
-#### 2. Error: Error al cargar faena para reimprimir rótulo
-**Problema:** El módulo de Romaneo daba error al cargar garrones por fecha para reimpresión
+#### 2. Error: Error al cargar faena para reimprimir rÃ³tulo
+**Problema:** El mÃ³dulo de Romaneo daba error al cargar garrones por fecha para reimpresiÃ³n
 **Causa:** La API `/api/romaneo/por-fecha/route.ts` usaba campos inexistentes en el modelo Romaneo:
 - `r.decomisoDer` - no existe
 - `r.kgDecomisoDer` - no existe
 - `r.kgDecomisoIzq` - no existe
 - `r.kgRestantesDer` - no existe
 - `r.kgRestantesIzq` - no existe
-**Solución:** Corregida la API para usar valores por defecto en lugar de campos inexistentes
+**SoluciÃ³n:** Corregida la API para usar valores por defecto en lugar de campos inexistentes
 
-#### 3. Error: Rótulo en ventana en blanco
-**Problema:** Al imprimir rótulo en Pesaje Individual, se abría una ventana en blanco
-**Causa:** La función `imprimirRotuloHTML` tenía problemas de timing y CSS
-**Solución:**
-- Mejorado el CSS con colores explícitos y mejor layout
+#### 3. Error: RÃ³tulo en ventana en blanco
+**Problema:** Al imprimir rÃ³tulo en Pesaje Individual, se abrÃ­a una ventana en blanco
+**Causa:** La funciÃ³n `imprimirRotuloHTML` tenÃ­a problemas de timing y CSS
+**SoluciÃ³n:**
+- Mejorado el CSS con colores explÃ­citos y mejor layout
 - Agregado `background: white` al body y contenedores
-- Agregado `printWindow.focus()` para asegurar que la ventana esté activa
-- Mejorado el timing del setTimeout (200ms → 300ms)
+- Agregado `printWindow.focus()` para asegurar que la ventana estÃ© activa
+- Mejorado el timing del setTimeout (200ms â 300ms)
 - Agregado meta viewport para mejor renderizado
-- Agregado `@media print` para estilos de impresión
+- Agregado `@media print` para estilos de impresiÃ³n
 
 #### 4. Archivos Modificados
 - `prisma/schema.prisma` - Eliminado campo caravana2
 - `src/app/api/animales/route.ts` - Eliminadas referencias a caravana2
 - `src/app/api/romaneo/por-fecha/route.ts` - Corregidos campos inexistentes
-- `src/components/pesaje-individual-module.tsx` - Mejorada función imprimirRotuloHTML
+- `src/components/pesaje-individual-module.tsx` - Mejorada funciÃ³n imprimirRotuloHTML
 
-#### 5. Verificación
-- **DB Push**: Exitoso ✓
-- **Lint**: Sin errores ✓
+#### 5. VerificaciÃ³n
+- **DB Push**: Exitoso â
+- **Lint**: Sin errores â
 
 Stage Summary:
-- **Campo caravana2 eliminado del modelo Animal** ✅
-- **API de romaneo por fecha corregida** ✅
-- **Función de impresión de rótulos mejorada** ✅
-- **Versión actualizada a 3.3.5** ✅
+- **Campo caravana2 eliminado del modelo Animal** â
+- **API de romaneo por fecha corregida** â
+- **FunciÃ³n de impresiÃ³n de rÃ³tulos mejorada** â
+- **VersiÃ³n actualizada a 3.3.5** â
 
 ---
 Task ID: 1571
 Agent: main
-Task: Corregir edición de faena en Romaneo - permitir sobrescribir pesos
+Task: Corregir ediciÃ³n de faena en Romaneo - permitir sobrescribir pesos
 
 Work Log:
 
 #### 1. Problema Reportado
-- En modo edición de faena, al registrar kg decía "ya está pesado" y no editaba
-- Solo mostraba desde el garrón 4 en la lista
+- En modo ediciÃ³n de faena, al registrar kg decÃ­a "ya estÃ¡ pesado" y no editaba
+- Solo mostraba desde el garrÃ³n 4 en la lista
 
-#### 2. Solución Implementada - Modo Edición
-**Nuevo estado:** `modoEdicion` para controlar cuando el supervisor autoriza edición
+#### 2. SoluciÃ³n Implementada - Modo EdiciÃ³n
+**Nuevo estado:** `modoEdicion` para controlar cuando el supervisor autoriza ediciÃ³n
 
 **Cambios en API `/api/romaneo/pesar/route.ts`:**
-- Agregado parámetro `sobrescribir = false` al body
+- Agregado parÃ¡metro `sobrescribir = false` al body
 - Si `sobrescribir` es true, elimina la media existente antes de crear la nueva
 - Actualiza el stock correctamente al sobrescribir
 
 **Cambios en componente `romaneo/index.tsx`:**
 - Agregado estado `modoEdicion`
-- Al validar supervisor, activa `modoEdicion` y permite seleccionar cualquier garrón
-- Botones DER/IZQ habilitados en modo edición aunque ya tengan peso
-- Indicador visual "MODO EDICIÓN - Puede modificar cualquier peso"
-- Botón "Terminar Edición" para salir del modo
-- Iconos de edición (lápiz) en garrones ya pesados durante modo edición
+- Al validar supervisor, activa `modoEdicion` y permite seleccionar cualquier garrÃ³n
+- Botones DER/IZQ habilitados en modo ediciÃ³n aunque ya tengan peso
+- Indicador visual "MODO EDICIÃN - Puede modificar cualquier peso"
+- BotÃ³n "Terminar EdiciÃ³n" para salir del modo
+- Iconos de ediciÃ³n (lÃ¡piz) en garrones ya pesados durante modo ediciÃ³n
 
 #### 3. Archivos Modificados
-- `src/app/api/romaneo/pesar/route.ts` - Parámetro sobrescribir
-- `src/components/romaneo/index.tsx` - Modo edición completo
+- `src/app/api/romaneo/pesar/route.ts` - ParÃ¡metro sobrescribir
+- `src/components/romaneo/index.tsx` - Modo ediciÃ³n completo
 
-#### 4. Verificación
-- **Lint**: Sin errores ✓
+#### 4. VerificaciÃ³n
+- **Lint**: Sin errores â
 
 Stage Summary:
-- **Modo edición implementado** ✅
-- **Permite sobrescribir pesos existentes** ✅
-- **Indicadores visuales de edición** ✅
-- **Versión actualizada a 3.3.6** ✅
+- **Modo ediciÃ³n implementado** â
+- **Permite sobrescribir pesos existentes** â
+- **Indicadores visuales de ediciÃ³n** â
+- **VersiÃ³n actualizada a 3.3.6** â
 
 ---
 Task ID: 1572
 Agent: main
-Task: Agregar scripts BAT para inicio/detención silenciosa del servidor
+Task: Agregar scripts BAT para inicio/detenciÃ³n silenciosa del servidor
 
 Work Log:
 
@@ -3199,16 +3235,16 @@ Work Log:
 
 #### 2. Funcionalidad
 - El servidor inicia minimizado sin ventanas visibles
-- Muestra mensaje de confirmación y URL
-- Script de detención mata procesos bun.exe relacionados
+- Muestra mensaje de confirmaciÃ³n y URL
+- Script de detenciÃ³n mata procesos bun.exe relacionados
 
-#### 3. Versión
-- **Versión actual**: 3.3.6
+#### 3. VersiÃ³n
+- **VersiÃ³n actual**: 3.3.6
 
 Stage Summary:
-- **Scripts BAT creados** ✅
-- **Subido a ambos repositorios** ✅
-- **Sistema listo para producción** ✅
+- **Scripts BAT creados** â
+- **Subido a ambos repositorios** â
+- **Sistema listo para producciÃ³n** â
 
 ---
 Task ID: 1573
@@ -3223,7 +3259,7 @@ Work Log:
 #### 2. Estructura del Excel (9 hojas)
 | Hoja | Contenido | Columnas |
 |------|-----------|----------|
-| INSTRUCCIONES | Guía de uso | Orden de carga, convenciones |
+| INSTRUCCIONES | GuÃ­a de uso | Orden de carga, convenciones |
 | PRODUCTORES | Datos de productores | nombre*, cuit, direccion, telefono, email, observaciones |
 | CLIENTES | Clientes/matarifes | nombre*, cuit, **matricula**, direccion, telefono, email, esProductor, observaciones |
 | CORRALES | Corrales disponibles | nombre*, capacidad, observaciones |
@@ -3235,7 +3271,7 @@ Work Log:
 
 #### 3. Correcciones Realizadas
 - **PRODUCTORES**: Quitado campo `matricula` (solo clientes/matarifes lo tienen)
-- **CLIENTES**: Agregado campo `matricula` para número de matrícula de matarifes
+- **CLIENTES**: Agregado campo `matricula` para nÃºmero de matrÃ­cula de matarifes
 - **TROPAS**: Agregados campos obligatorios `dte*`, `guia*`, `usuarioFaenaNombre*`
 - **ANIMALES**: Quitado campo `pesoVivo` (redundante, el peso va en PESAJES_INDIVIDUALES)
 
@@ -3244,25 +3280,25 @@ Work Log:
 2. Completar los datos desde los registros en papel
 3. Respetar el orden de carga:
    - PRODUCTORES primero
-   - CLIENTES (con matrícula si corresponde)
+   - CLIENTES (con matrÃ­cula si corresponde)
    - CORRALES
-   - TROPAS (con DTE y Guía obligatorios)
+   - TROPAS (con DTE y GuÃ­a obligatorios)
    - ANIMALES
    - PESAJES_INDIVIDUALES
    - ASIGNACIONES_GARRONES
    - ROMANEOS
 4. Guardar el archivo completado
-5. Enviar el archivo para importación a la base de datos
+5. Enviar el archivo para importaciÃ³n a la base de datos
 
-#### 5. Versión
-- **Versión actual**: 3.3.8
+#### 5. VersiÃ³n
+- **VersiÃ³n actual**: 3.3.8
 
 Stage Summary:
-- **Excel de carga masiva corregido** ✅
-- **Matrícula solo en CLIENTES** ✅
-- **DTE y Guía obligatorios en TROPAS** ✅
-- **Sin duplicación de pesos** ✅
-- **Listo para subir a GitHub** ✅
+- **Excel de carga masiva corregido** â
+- **MatrÃ­cula solo en CLIENTES** â
+- **DTE y GuÃ­a obligatorios en TROPAS** â
+- **Sin duplicaciÃ³n de pesos** â
+- **Listo para subir a GitHub** â
 
 ---
 Task ID: 1574
@@ -3272,8 +3308,8 @@ Task: Unificar hojas ANIMALES y PESAJES_INDIVIDUALES en Excel de carga
 Work Log:
 
 #### 1. Cambio Solicitado
-- El usuario solicitó unificar las hojas ANIMALES y PESAJES_INDIVIDUALES
-- Razón: Más práctico cargar todo en una sola hoja
+- El usuario solicitÃ³ unificar las hojas ANIMALES y PESAJES_INDIVIDUALES
+- RazÃ³n: MÃ¡s prÃ¡ctico cargar todo en una sola hoja
 
 #### 2. Modificaciones Realizadas
 **Hoja ANIMALES:**
@@ -3289,7 +3325,7 @@ Work Log:
 #### 3. Estructura Final del Excel (8 hojas)
 | Hoja | Columnas |
 |------|----------|
-| INSTRUCCIONES | Guía de uso |
+| INSTRUCCIONES | GuÃ­a de uso |
 | PRODUCTORES | nombre*, cuit, direccion, telefono, email, observaciones |
 | CLIENTES | nombre*, cuit, matricula, direccion, telefono, email, esProductor, observaciones |
 | CORRALES | nombre*, capacidad, observaciones |
@@ -3298,43 +3334,43 @@ Work Log:
 | ASIGNACIONES_GARRONES | garron*, tropaCodigo*, numeroAnimal*, fecha*, tieneMediaDer, tieneMediaIzq |
 | ROMANEOS | garron*, lado*, peso*, fecha*, tropaCodigo, denticion |
 
-#### 4. Versión
-- **Versión actual**: 3.3.8
+#### 4. VersiÃ³n
+- **VersiÃ³n actual**: 3.3.8
 
 Stage Summary:
-- **Hojas unificadas** ✅
-- **Excel más simple de cargar** ✅
+- **Hojas unificadas** â
+- **Excel mÃ¡s simple de cargar** â
 - **Pendiente: Subir a GitHub** 
 
 ---
 Task ID: 1575
 Agent: main
-Task: Sistema de Facturación de Servicios Frigoríficos - Fase 1
+Task: Sistema de FacturaciÃ³n de Servicios FrigorÃ­ficos - Fase 1
 
 Work Log:
 
 #### 1. Modelos Prisma Creados
 **TipoServicio:**
-- codigo (único): FAENA, EMBOLSADO_VACIO, CUERO_KG, CUERO_UN, etc.
-- nombre: Descripción del servicio
+- codigo (Ãºnico): FAENA, EMBOLSADO_VACIO, CUERO_KG, CUERO_UN, etc.
+- nombre: DescripciÃ³n del servicio
 - unidad: KG, UN, HORA
-- seFactura: Si se factura o está incluido en otro servicio
-- incluidoEn: Código del servicio padre
-- porcentajeIva: 10.5 o 21 según tipo
+- seFactura: Si se factura o estÃ¡ incluido en otro servicio
+- incluidoEn: CÃ³digo del servicio padre
+- porcentajeIva: 10.5 o 21 segÃºn tipo
 - orden: Para ordenar en UI
 
 **PrecioServicio:**
-- tipoServicioId + clienteId: Relación
+- tipoServicioId + clienteId: RelaciÃ³n
 - precio: Float
-- fechaDesde / fechaHasta: Para histórico de precios
+- fechaDesde / fechaHasta: Para histÃ³rico de precios
 - observaciones: Notas
-- createdBy: Auditoría
+- createdBy: AuditorÃ­a
 
 **PagoFactura:**
-- facturaId: Relación
+- facturaId: RelaciÃ³n
 - monto, metodoPago (EFECTIVO, TRANSFERENCIA, CHEQUE, TARJETA)
 - banco, numeroCheque, fechaCheque: Para cheques
-- operadorId: Quién registró
+- operadorId: QuiÃ©n registrÃ³
 
 **Enums nuevos:**
 - TipoComprobante: FACTURA_A, FACTURA_B, FACTURA_C, REMITO, NOTA_CREDITO, NOTA_DEBITO
@@ -3342,64 +3378,64 @@ Work Log:
 
 #### 2. APIs Creadas
 - `/api/tipos-servicio` - CRUD completo
-- `/api/tipos-servicio/inicializar` - Inicialización de tipos default
-- `/api/precios-servicio` - CRUD + histórico por cliente
+- `/api/tipos-servicio/inicializar` - InicializaciÃ³n de tipos default
+- `/api/precios-servicio` - CRUD + histÃ³rico por cliente
 - `/api/pagos-factura` - Registro de pagos parciales
 
 #### 3. Tipos de Servicio Default
-| Código | Nombre | Unidad | IVA |
+| CÃ³digo | Nombre | Unidad | IVA |
 |--------|--------|-------|-----|
 | FAENA | Servicio de Faena x Kg | KG | 10.5% |
-| EMBOLSADO_VACIO | Embolsado al Vacío x Kg | KG | 21% |
+| EMBOLSADO_VACIO | Embolsado al VacÃ­o x Kg | KG | 21% |
 | DESHUESADO | Despostado con Hueso | KG | 21% |
 | CUERO_UN | Cuero por Unidad | UN | 21% |
 | CUERO_KG | Cuero por Kg | KG | 21% |
 | MENUDENCIA | Menudencias | KG | 21% |
 | FAENA_INCLUIDO | Faena con Subproductos | KG | 10.5% |
 
-#### 4. Versión
-- **Versión actual**: 3.3.9
+#### 4. VersiÃ³n
+- **VersiÃ³n actual**: 3.3.9
 
 Stage Summary:
-- **Modelos Prisma completos** ✅
-- **APIs de servicios creadas** ✅
-- **Sistema de precios por cliente listo** ✅
-- **Sistema de pagos parciales listo** ✅
-- **Pendiente: UI de facturación real**
+- **Modelos Prisma completos** â
+- **APIs de servicios creadas** â
+- **Sistema de precios por cliente listo** â
+- **Sistema de pagos parciales listo** â
+- **Pendiente: UI de facturaciÃ³n real**
 
 ---
 Task ID: 1580
 Agent: main
-Task: Rollback a versión estable v3.7.22 tras errores en facturación
+Task: Rollback a versiÃ³n estable v3.7.22 tras errores en facturaciÃ³n
 
 Work Log:
 
 #### 1. ERRORES COMETIDOS (IMPORTANTE - NO REPETIR)
 
-**Error #1: Cambios de facturación sin verificar en producción**
-- Se hicieron cambios en el módulo de facturación (v3.7.23)
-- Los cambios incluían: modal de detalle, pagos, notas de débito
-- **Problema**: No se verificó que el servidor compile correctamente antes de subir
-- **Resultado**: Pantalla gris congelada en producción tras login
+**Error #1: Cambios de facturaciÃ³n sin verificar en producciÃ³n**
+- Se hicieron cambios en el mÃ³dulo de facturaciÃ³n (v3.7.23)
+- Los cambios incluÃ­an: modal de detalle, pagos, notas de dÃ©bito
+- **Problema**: No se verificÃ³ que el servidor compile correctamente antes de subir
+- **Resultado**: Pantalla gris congelada en producciÃ³n tras login
 
-**Error #2: No limpiar caché de Turbopack después de cambios grandes**
+**Error #2: No limpiar cachÃ© de Turbopack despuÃ©s de cambios grandes**
 - Turbopack puede quedar en estado inconsistente
 - El error fue: `inner_of_upper_lost_followers` (panic de Turbopack)
-- **Solución**: SIEMPRE ejecutar `Remove-Item -Recurse -Force .next` en PowerShell
+- **SoluciÃ³n**: SIEMPRE ejecutar `Remove-Item -Recurse -Force .next` en PowerShell
 
 **Error #3: Subir cambios sin verificar en PC de desarrollo primero**
-- Se subieron cambios directamente a producción sin probar
-- **Regla**: SIEMPRE verificar en desarrollo antes de push a producción
+- Se subieron cambios directamente a producciÃ³n sin probar
+- **Regla**: SIEMPRE verificar en desarrollo antes de push a producciÃ³n
 
-#### 2. Síntomas del Problema
+#### 2. SÃ­ntomas del Problema
 - Dashboard se quedaba en "Compiling..." por minutos
 - Al hacer login, pantalla gris con overlay (modal bloqueado)
-- APIs respondían correctamente pero UI no cargaba
-- localStorage tenía sesión guardada que podía causar conflictos
+- APIs respondÃ­an correctamente pero UI no cargaba
+- localStorage tenÃ­a sesiÃ³n guardada que podÃ­a causar conflictos
 
-#### 3. Solución Aplicada
+#### 3. SoluciÃ³n Aplicada
 ```powershell
-# Volver a versión estable anterior
+# Volver a versiÃ³n estable anterior
 git checkout b998316
 git checkout master
 git reset --hard b998316
@@ -3407,36 +3443,36 @@ Remove-Item -Recurse -Force .next
 bun run dev
 ```
 
-#### 4. Versión Estable Actual
-- **Versión**: v3.7.22
+#### 4. VersiÃ³n Estable Actual
+- **VersiÃ³n**: v3.7.22
 - **Commit**: b998316
-- **Contenido**: Editor rótulos pantalla completa + fix IVA 0%
+- **Contenido**: Editor rÃ³tulos pantalla completa + fix IVA 0%
 - **Estado**: FUNCIONANDO CORRECTAMENTE
 
 #### 5. Lecciones Aprendidas
-1. ⚠️ **SIEMPRE** verificar `bun run lint` sin errores antes de commit
-2. ⚠️ **SIEMPRE** limpiar `.next` después de cambios grandes
-3. ⚠️ **SIEMPRE** probar en desarrollo antes de push a producción
-4. ⚠️ **SIEMPRE** hacer push a AMBOS repositorios
-5. ⚠️ Verificar que el servidor compile en menos de 30 segundos
-6. ⚠️ Si hay pantalla gris, probar `localStorage.clear()` en consola
+1. â ï¸ **SIEMPRE** verificar `bun run lint` sin errores antes de commit
+2. â ï¸ **SIEMPRE** limpiar `.next` despuÃ©s de cambios grandes
+3. â ï¸ **SIEMPRE** probar en desarrollo antes de push a producciÃ³n
+4. â ï¸ **SIEMPRE** hacer push a AMBOS repositorios
+5. â ï¸ Verificar que el servidor compile en menos de 30 segundos
+6. â ï¸ Si hay pantalla gris, probar `localStorage.clear()` en consola
 
 Stage Summary:
-- **Rollback completado a v3.7.22** ✅
-- **Sistema funcionando en producción** ✅
-- **Errores documentados para evitar repetir** ✅
-- **Cambios de facturación descartados** (se reharán correctamente)
-- **Versión estable guardada** ✅
+- **Rollback completado a v3.7.22** â
+- **Sistema funcionando en producciÃ³n** â
+- **Errores documentados para evitar repetir** â
+- **Cambios de facturaciÃ³n descartados** (se reharÃ¡n correctamente)
+- **VersiÃ³n estable guardada** â
 
 ---
-## 📋 CHECKLIST DE FINALIZACIÓN (OBLIGATORIO)
+## ð CHECKLIST DE FINALIZACIÃN (OBLIGATORIO)
 
-Al terminar CADA sesión de trabajo, verificar:
+Al terminar CADA sesiÃ³n de trabajo, verificar:
 
-| Item | Comando/Acción | Estado |
+| Item | Comando/AcciÃ³n | Estado |
 |------|----------------|--------|
 | 1. Lint | `bun run lint` | [ ] Sin errores |
-| 2. Versión | Editar package.json | [ ] Incrementada |
+| 2. VersiÃ³n | Editar package.json | [ ] Incrementada |
 | 3. Worklog | Editar worklog.md | [ ] Actualizado |
 | 4. Git Add | `git add -A` | [ ] Hecho |
 | 5. Git Commit | `git commit -m "vX.Y.Z - mensaje"` | [ ] Hecho |
@@ -3444,108 +3480,108 @@ Al terminar CADA sesión de trabajo, verificar:
 | 7. Push desarrollo | `git push desarrollo master` | [ ] Hecho |
 | 8. Verificar GitHub | Ambos repos actualizados | [ ] Hecho |
 
-### Formato de versión:
-- **Major (X.0.0)**: Cambios grandes/nuevos módulos
+### Formato de versiÃ³n:
+- **Major (X.0.0)**: Cambios grandes/nuevos mÃ³dulos
 - **Minor (0.X.0)**: Nuevas funcionalidades
 - **Patch (0.0.X)**: Bug fixes, mejoras menores
 
-### Versión actual: **3.7.22**
-### Próxima versión sugerida: **3.7.23**
+### VersiÃ³n actual: **3.7.22**
+### PrÃ³xima versiÃ³n sugerida: **3.7.23**
 
 ---
 Task ID: 1581
 Agent: main
-Task: Rollback a versión estable tras pantalla gris en dashboard
+Task: Rollback a versiÃ³n estable tras pantalla gris en dashboard
 
 Work Log:
 
 #### 1. Problema Reportado
-- Usuario reportó pantalla gris congelada después del login
+- Usuario reportÃ³ pantalla gris congelada despuÃ©s del login
 - El dashboard no cargaba, se quedaba en overlay gris
 - APIs funcionaban correctamente (200 OK)
 
-#### 2. Diagnóstico
-- Turbopack tenía error: `inner_of_upper_lost_followers` (panic)
+#### 2. DiagnÃ³stico
+- Turbopack tenÃ­a error: `inner_of_upper_lost_followers` (panic)
 - Posible modal/dialog bloqueado en la UI
-- Se intentó limpiar caché .next sin éxito
+- Se intentÃ³ limpiar cachÃ© .next sin Ã©xito
 
-#### 3. Solución Aplicada
+#### 3. SoluciÃ³n Aplicada
 ```powershell
 # Reset al commit estable
 git reset --hard 8849330
 Remove-Item -Recurse -Force .next
 ```
 
-#### 4. Commit de Restauración
+#### 4. Commit de RestauraciÃ³n
 - **Commit**: 8849330
-- **Mensaje**: "v3.7.22 - Rollback a versión estable + documentación de errores"
+- **Mensaje**: "v3.7.22 - Rollback a versiÃ³n estable + documentaciÃ³n de errores"
 - **Estado**: ESTABLE
 
 Stage Summary:
-- **Rollback completado** ✅
-- **Versión 3.7.22** ✅
-- **Subiendo a ambos repositorios** ✅
+- **Rollback completado** â
+- **VersiÃ³n 3.7.22** â
+- **Subiendo a ambos repositorios** â
 
 
 ---
 Task ID: 1601
 Agent: main
-Task: Soporte para impresora predeterminada de Windows en rótulos de pesaje individual
+Task: Soporte para impresora predeterminada de Windows en rÃ³tulos de pesaje individual
 
 Work Log:
 
-#### 1. Análisis del Sistema Actual
-- **Impresión TCP/IP**: Socket directo al puerto 9100 con IP configurada
+#### 1. AnÃ¡lisis del Sistema Actual
+- **ImpresiÃ³n TCP/IP**: Socket directo al puerto 9100 con IP configurada
 - **Fallback HTML**: `window.print()` para impresora predeterminada (solo como error)
-- **Problema**: Requería configurar IP obligatoriamente
+- **Problema**: RequerÃ­a configurar IP obligatoriamente
 
 #### 2. Cambios Realizados
 
 **Archivo:** `src/components/pesaje-individual-module.tsx`
 
 **Nuevos estados:**
-- `usarPredeterminada`: boolean para seleccionar modo de impresión
+- `usarPredeterminada`: boolean para seleccionar modo de impresiÃ³n
 - Persistencia en localStorage: `impresoraRotulosPredeterminada`
 
-**Diálogo de configuración mejorado:**
-- Opción 1: Impresora Predeterminada de Windows
+**DiÃ¡logo de configuraciÃ³n mejorado:**
+- OpciÃ³n 1: Impresora Predeterminada de Windows
   - Usa `window.print()` con la impresora configurada en el sistema
-  - No requiere configuración adicional
-- Opción 2: Impresora TCP/IP (Datamax)
-  - Conexión directa por red al puerto 9100
+  - No requiere configuraciÃ³n adicional
+- OpciÃ³n 2: Impresora TCP/IP (Datamax)
+  - ConexiÃ³n directa por red al puerto 9100
   - Requiere IP de la impresora
 
-**Botón de impresora actualizado:**
-- Verde: Cuando hay configuración (IP o predeterminada)
-- Rojo: Cuando no hay configuración
-- Tooltip muestra el tipo de configuración activa
+**BotÃ³n de impresora actualizado:**
+- Verde: Cuando hay configuraciÃ³n (IP o predeterminada)
+- Rojo: Cuando no hay configuraciÃ³n
+- Tooltip muestra el tipo de configuraciÃ³n activa
 
-**Lógica de impresión:**
-1. Si `usarPredeterminada === true` → imprimir HTML con `window.print()`
-2. Si hay IP configurada → enviar por TCP
-3. Sin configuración → usar predeterminada automáticamente
+**LÃ³gica de impresiÃ³n:**
+1. Si `usarPredeterminada === true` â imprimir HTML con `window.print()`
+2. Si hay IP configurada â enviar por TCP
+3. Sin configuraciÃ³n â usar predeterminada automÃ¡ticamente
 
-#### 3. Rótulo HTML Mejorado
-- Tamaño: 10cm x 5cm (landscape/horizontal)
+#### 3. RÃ³tulo HTML Mejorado
+- TamaÃ±o: 10cm x 5cm (landscape/horizontal)
 - Datos principales:
   - TROPA (arriba, ancho completo)
-  - N° Animal (columna izquierda)
+  - NÂ° Animal (columna izquierda)
   - KG Vivos (columna central, fondo negro)
-  - Código de barras (columna derecha)
+  - CÃ³digo de barras (columna derecha)
 - Formato optimizado para etiquetas adhesivas
 
 #### 4. Beneficios
 - No requiere configurar IP para usuarios con impresora local
 - Compatible con cualquier impresora instalada en Windows
-- Sigue soportando impresión TCP para Datamax/Zebra
+- Sigue soportando impresiÃ³n TCP para Datamax/Zebra
 
 Stage Summary:
-- **Soporte para impresora predeterminada** ✅
-- **Diálogo de configuración mejorado** ✅
-- **Rótulo 10x5cm con datos requeridos** ✅
-- **Versión actualizada a 3.7.24** ✅
+- **Soporte para impresora predeterminada** â
+- **DiÃ¡logo de configuraciÃ³n mejorado** â
+- **RÃ³tulo 10x5cm con datos requeridos** â
+- **VersiÃ³n actualizada a 3.7.24** â
 
-### Versión actual: **3.7.24**
+### VersiÃ³n actual: **3.7.24**
 
 
 ---
@@ -3555,7 +3591,7 @@ Task: Crear plantilla Excel para carga de datos TrazaSole v3.7.24
 
 Work Log:
 
-#### 1. Análisis del Schema Prisma
+#### 1. AnÃ¡lisis del Schema Prisma
 - Revisados todos los modelos del sistema
 - Identificadas entidades necesarias para carga inicial
 - Determinadas relaciones y campos obligatorios
@@ -3564,26 +3600,26 @@ Work Log:
 **Archivo:** `upload/PLANTILLA_CARGA_DATOS_TRAZASOLE_v3.7.24.xlsx`
 
 **Hojas creadas (12):**
-1. **INSTRUCCIONES** - Guía de uso completa
-2. **CONFIGURACION** - Datos del establecimiento (nombre, CUIT, N° establecimiento, etc.)
+1. **INSTRUCCIONES** - GuÃ­a de uso completa
+2. **CONFIGURACION** - Datos del establecimiento (nombre, CUIT, NÂ° establecimiento, etc.)
 3. **CLIENTES** - Productores y usuarios de faena (16 campos)
 4. **OPERADORES** - Usuarios del sistema con permisos (19 campos)
 5. **TRANSPORTISTAS** - Empresas de transporte (4 campos)
 6. **CORRALES** - Corrales disponibles (4 campos)
-7. **CAMARAS** - Cámaras frigoríficas (5 campos)
-8. **TIPIFICADORES** - Personal de tipificación (5 campos)
-9. **TIPOS_MENUDENCIA** - Clasificación de menudencias (3 campos)
-10. **PRODUCTOS** - Catálogo de productos (16 campos)
+7. **CAMARAS** - CÃ¡maras frigorÃ­ficas (5 campos)
+8. **TIPIFICADORES** - Personal de tipificaciÃ³n (5 campos)
+9. **TIPOS_MENUDENCIA** - ClasificaciÃ³n de menudencias (3 campos)
+10. **PRODUCTOS** - CatÃ¡logo de productos (16 campos)
 11. **INSUMOS** - Insumos del sistema (16 campos)
 12. **PRECIOS_SERVICIO** - Precios por cliente (7 campos)
 
-#### 3. Características de la Plantilla
+#### 3. CaracterÃ­sticas de la Plantilla
 - Estilo profesional con encabezados oscuros
 - Campos de entrada en azul (input del usuario)
 - Filas alternadas con fondo gris
 - Bordes definidos para mejor legibilidad
 - Notas explicativas en hojas complejas
-- Orden lógico de carga (configuración → operadores → clientes → etc.)
+- Orden lÃ³gico de carga (configuraciÃ³n â operadores â clientes â etc.)
 
 #### 4. Campos Incluidos por Entidad
 
@@ -3596,120 +3632,120 @@ Work Log:
 **INSUMOS:** codigo, nombre, categoria, subcategoria, unidadMedida, stock, proveedor, precio, ubicacion, etc.
 
 Stage Summary:
-- **Plantilla Excel creada** ✅
-- **12 hojas con estructura completa** ✅
-- **Campos alineados con schema Prisma** ✅
-- **Instrucciones de uso incluidas** ✅
-- **Archivo: upload/PLANTILLA_CARGA_DATOS_TRAZASOLE_v3.7.24.xlsx** ✅
+- **Plantilla Excel creada** â
+- **12 hojas con estructura completa** â
+- **Campos alineados con schema Prisma** â
+- **Instrucciones de uso incluidas** â
+- **Archivo: upload/PLANTILLA_CARGA_DATOS_TRAZASOLE_v3.7.24.xlsx** â
 
 
 ---
 Task ID: 1604
 Agent: main
-Task: Corregir pantalla romaneo y rótulo pesaje individual
+Task: Corregir pantalla romaneo y rÃ³tulo pesaje individual
 
 Work Log:
 
-#### 1. Corrección Rótulo Pesaje Individual
-**Problema:** El rótulo medía 10x5cm, pero la medida correcta es 9x6cm
+#### 1. CorrecciÃ³n RÃ³tulo Pesaje Individual
+**Problema:** El rÃ³tulo medÃ­a 10x5cm, pero la medida correcta es 9x6cm
 
 **Archivos modificados:**
 - `src/lib/print-dpl.ts` - Dimensiones DPL y ZPL
 - `src/components/pesaje-individual/rotuloPrint.ts` - Plantilla HTML
 
 **Cambios realizados:**
-- WIDTH: 100mm → 90mm (9cm)
-- HEIGHT: 50mm → 60mm (6cm)
-- Ajustadas posiciones de elementos para nuevo tamaño
-- Reducidos tamaños de fuente para ajustar al nuevo formato
+- WIDTH: 100mm â 90mm (9cm)
+- HEIGHT: 50mm â 60mm (6cm)
+- Ajustadas posiciones de elementos para nuevo tamaÃ±o
+- Reducidos tamaÃ±os de fuente para ajustar al nuevo formato
 
-#### 2. Corrección Layout Pantalla Romaneo
-**Problema:** La pantalla de pesaje de medias no era visible en su totalidad, requería scroll vertical
+#### 2. CorrecciÃ³n Layout Pantalla Romaneo
+**Problema:** La pantalla de pesaje de medias no era visible en su totalidad, requerÃ­a scroll vertical
 
 **Archivo modificado:** `src/components/romaneo/index.tsx`
 
 **Cambios realizados:**
-- Reducido padding: `p-3` → `p-2`
-- Reducido tamaño de datos del animal: `text-xs` → `text-[10px]`
-- Reducido altura de botones DER/IZQ: `h-10` → `h-8`
-- Reducido altura de input de peso: `h-16` → `h-12`
-- Reducido tamaño de fuente del peso: `text-3xl` → `text-2xl`
-- Reducido altura de botones de dentición: `h-9` → `h-7`
-- Reducido altura de botones de acción: `h-12` → `h-10`
-- Reducido separadores: `my-2` → `my-1.5`
-- Layout más compacto sin scroll vertical en pantalla principal
+- Reducido padding: `p-3` â `p-2`
+- Reducido tamaÃ±o de datos del animal: `text-xs` â `text-[10px]`
+- Reducido altura de botones DER/IZQ: `h-10` â `h-8`
+- Reducido altura de input de peso: `h-16` â `h-12`
+- Reducido tamaÃ±o de fuente del peso: `text-3xl` â `text-2xl`
+- Reducido altura de botones de denticiÃ³n: `h-9` â `h-7`
+- Reducido altura de botones de acciÃ³n: `h-12` â `h-10`
+- Reducido separadores: `my-2` â `my-1.5`
+- Layout mÃ¡s compacto sin scroll vertical en pantalla principal
 - Scroll solo en listado de garrones (panel lateral)
 
 Stage Summary:
-- **Rótulo pesaje individual corregido a 9x6cm** ✅
-- **Pantalla romaneo optimizada sin scroll vertical** ✅
-- **Layout compacto y funcional** ✅
-- **Lint sin errores en archivos modificados** ✅
+- **RÃ³tulo pesaje individual corregido a 9x6cm** â
+- **Pantalla romaneo optimizada sin scroll vertical** â
+- **Layout compacto y funcional** â
+- **Lint sin errores en archivos modificados** â
 
 ---
 Task ID: 1605
 Agent: main
-Task: Reorganizar rótulo ingreso hacienda e implementar EAN-128
+Task: Reorganizar rÃ³tulo ingreso hacienda e implementar EAN-128
 
 Work Log:
 
-#### 1. Reorganización del Rótulo de Ingreso de Hacienda
-**Problema:** El rótulo tenía 3 cuadros en la fila inferior (N° Animal | KG Vivos | Código), pero el código de barras no se imprimía correctamente
+#### 1. ReorganizaciÃ³n del RÃ³tulo de Ingreso de Hacienda
+**Problema:** El rÃ³tulo tenÃ­a 3 cuadros en la fila inferior (NÂ° Animal | KG Vivos | CÃ³digo), pero el cÃ³digo de barras no se imprimÃ­a correctamente
 
 **Nuevo Layout:**
 ```
-┌─────────────────────────────────────┐
-│ TROPA                        1234   │  ← Fila 1: Tropa (ancho completo)
-├──────────────────┬──────────────────┤
-│   N° Animal      │    KG Vivos      │  ← Fila 2: 2 cuadros
-│      001         │    450 kg        │
-├──────────────────┴──────────────────┤
-│    EAN-128 (GS1)                    │  ← Fila 3: Código de barras
-│    ▌▌▌▌▌▌▌▌▌▌▌▌▌▌▌▌                 │     (ancho completo)
-│    (10)Tropa (21)001 (3100)450kg    │
-└─────────────────────────────────────┘
+âââââââââââââââââââââââââââââââââââââââ
+â TROPA                        1234   â  â Fila 1: Tropa (ancho completo)
+ââââââââââââââââââââ¬âââââââââââââââââââ¤
+â   NÂ° Animal      â    KG Vivos      â  â Fila 2: 2 cuadros
+â      001         â    450 kg        â
+ââââââââââââââââââââ´âââââââââââââââââââ¤
+â    EAN-128 (GS1)                    â  â Fila 3: CÃ³digo de barras
+â    ââââââââââââââââ                 â     (ancho completo)
+â    (10)Tropa (21)001 (3100)450kg    â
+âââââââââââââââââââââââââââââââââââââââ
 ```
 
 **Archivos modificados:**
-- `src/components/pesaje-individual/rotuloPrint.ts` - Función `imprimirRotulo()` y `getRotuloPreviewHTML()`
+- `src/components/pesaje-individual/rotuloPrint.ts` - FunciÃ³n `imprimirRotulo()` y `getRotuloPreviewHTML()`
 
-#### 2. Implementación de EAN-128 (GS1-128)
+#### 2. ImplementaciÃ³n de EAN-128 (GS1-128)
 **Formato anterior:** Code 39 simple (fuente simulada)
 
-**Formato nuevo:** EAN-128 con Application Identifiers estándar GS1:
-- **(10)** - Número de lote/tropa
-- **(21)** - Número de serie/animal  
+**Formato nuevo:** EAN-128 con Application Identifiers estÃ¡ndar GS1:
+- **(10)** - NÃºmero de lote/tropa
+- **(21)** - NÃºmero de serie/animal  
 - **(3100)** - Peso neto en kg (sin decimales)
 
-**Estructura del código:**
+**Estructura del cÃ³digo:**
 ```
 10 + TROPA + 21 + NUMERO + 3100 + PESO
 Ejemplo: 10B202600100121001310000450
 ```
 
-**Tecnología:**
-- HTML: JsBarcode library para generar código de barras real en SVG
+**TecnologÃ­a:**
+- HTML: JsBarcode library para generar cÃ³digo de barras real en SVG
 - DPL: Comando `1e` para FNC1 (GS1-128) en Datamax Mark II
 
-#### 3. Actualización de Plantillas DPL
+#### 3. ActualizaciÃ³n de Plantillas DPL
 **Archivo:** `src/app/api/rotulos/init-dpl/route.ts`
 
-**Nuevos rótulos creados:**
+**Nuevos rÃ³tulos creados:**
 - `PESAJE_INDIVIDUAL_EAN128_V3` - Pesaje individual con EAN-128
 - `MEDIA_RES_EAN128_V3` - Media res con EAN-128
 
 **Variables actualizadas:**
-- `CODIGO_EAN128` - Código completo con AIs
-- `TROPA` - Número de tropa (sin espacios)
-- `NUMERO` - Número de animal (3 dígitos)
+- `CODIGO_EAN128` - CÃ³digo completo con AIs
+- `TROPA` - NÃºmero de tropa (sin espacios)
+- `NUMERO` - NÃºmero de animal (3 dÃ­gitos)
 - `PESO` - Peso en kg (sin decimales)
 
 Stage Summary:
-- **Rótulo reorganizado a 3 filas** ✅
-- **EAN-128 implementado con AIs estándar** ✅
-- **JsBarcode para código de barras real en HTML** ✅
-- **Plantillas DPL actualizadas para Datamax** ✅
-- **Versión actualizada a 3.7.27** ✅
+- **RÃ³tulo reorganizado a 3 filas** â
+- **EAN-128 implementado con AIs estÃ¡ndar** â
+- **JsBarcode para cÃ³digo de barras real en HTML** â
+- **Plantillas DPL actualizadas para Datamax** â
+- **VersiÃ³n actualizada a 3.7.27** â
 
 
 ---
@@ -3723,15 +3759,15 @@ Work Log:
 **Archivo:** `scripts/actualizar-desde-github.bat`
 - Script interactivo para Windows
 - Permite elegir entre repositorio DESARROLLO o PRODUCCION
-- Realiza backup automático antes de actualizar
-- Pasos: detener servidor → backup → fetch → reset → install → db:push
+- Realiza backup automÃ¡tico antes de actualizar
+- Pasos: detener servidor â backup â fetch â reset â install â db:push
 
-#### 2. Características del Script
-- Menú de selección de repositorio
-- Verificación de que git está instalado
-- Configuración automática de remotos si no existen
+#### 2. CaracterÃ­sticas del Script
+- MenÃº de selecciÃ³n de repositorio
+- VerificaciÃ³n de que git estÃ¡ instalado
+- ConfiguraciÃ³n automÃ¡tica de remotos si no existen
 - Stash de cambios locales antes de actualizar
-- Muestra versión actual al finalizar
+- Muestra versiÃ³n actual al finalizar
 
 #### 3. Repositorios Configurados
 | Remoto | URL | Uso |
@@ -3740,36 +3776,36 @@ Work Log:
 | produccion | https://github.com/aarescalvo/produccion1.git | PostgreSQL |
 
 Stage Summary:
-- **Script actualizar-desde-github.bat creado** ✅
+- **Script actualizar-desde-github.bat creado** â
 - **Push a ambos repositorios** (pendiente)
 
 
 ---
 Task ID: 1606
 Agent: main
-Task: Actualizar rótulo pesaje individual con layout de 3 filas y código de barras CODE128
+Task: Actualizar rÃ³tulo pesaje individual con layout de 3 filas y cÃ³digo de barras CODE128
 
 Work Log:
 
-#### 1. Layout Nuevo del Rótulo
+#### 1. Layout Nuevo del RÃ³tulo
 **Archivo:** `src/components/pesaje-individual-module.tsx`
 
 **Estructura anterior (incorrecta):**
 - Fila 1: Tropa
-- Fila 2: N° Animal | KG Vivos | Código (3 columnas)
+- Fila 2: NÂ° Animal | KG Vivos | CÃ³digo (3 columnas)
 
 **Estructura nueva (correcta):**
 - Fila 1: Tropa (ancho completo)
-- Fila 2: N° Animal | KG Vivos (2 columnas)
-- Fila 3: Código de barras CODE128 (ancho completo al pie)
+- Fila 2: NÂ° Animal | KG Vivos (2 columnas)
+- Fila 3: CÃ³digo de barras CODE128 (ancho completo al pie)
 
-#### 2. Código de Barras EAN-128/GS1-128
-- Usa biblioteca JsBarcode para generar código de barras real
+#### 2. CÃ³digo de Barras EAN-128/GS1-128
+- Usa biblioteca JsBarcode para generar cÃ³digo de barras real
 - Formato CODE128 (base de EAN-128)
-- Se genera un SVG con el código del animal
+- Se genera un SVG con el cÃ³digo del animal
 - Fallback a texto si JsBarcode falla
 
-#### 3. Comandos para Actualizar en Producción
+#### 3. Comandos para Actualizar en ProducciÃ³n
 ```powershell
 cd C:\TrazaSole
 git fetch produccion
@@ -3779,81 +3815,81 @@ bun run dev
 ```
 
 Stage Summary:
-- **Layout 3 filas implementado** ✅
-- **Código de barras CODE128 real** ✅
-- **Versión actualizada a 3.7.28** ✅
-- **Push a ambos repositorios** ✅
+- **Layout 3 filas implementado** â
+- **CÃ³digo de barras CODE128 real** â
+- **VersiÃ³n actualizada a 3.7.28** â
+- **Push a ambos repositorios** â
 
 ---
 Task ID: 1607
 Agent: main
-Task: Actualizar rótulo de media res en romaneo con código de barras CODE128
+Task: Actualizar rÃ³tulo de media res en romaneo con cÃ³digo de barras CODE128
 
 Work Log:
 
 #### 1. Problema Identificado
-- El rótulo de media res en el módulo de romaneo estaba hardcodeado en HTML
-- No tenía código de barras CODE128/EAN-128
+- El rÃ³tulo de media res en el mÃ³dulo de romaneo estaba hardcodeado en HTML
+- No tenÃ­a cÃ³digo de barras CODE128/EAN-128
 - Layout desordenado sin estructura clara
 
-#### 2. Nuevo Layout del Rótulo de Media Res
+#### 2. Nuevo Layout del RÃ³tulo de Media Res
 **Archivo:** `src/components/romaneo/index.tsx`
 
 **Estructura anterior:**
 - Header: SOLEMAR ALIMENTARIA
-- Múltiples campos en líneas separadas
-- Sin código de barras real
+- MÃºltiples campos en lÃ­neas separadas
+- Sin cÃ³digo de barras real
 
 **Estructura nueva (100x70mm):**
 ```
-┌─────────────────────────────────────┐
-│ TROPA                    A          │  ← Fila 1: Tropa + Sigla
-│ B202600100              Asado       │
-├──────────┬──────────┬───────────────┤
-│  Garrón  │   Lado   │     KG        │  ← Fila 2: 3 columnas
-│   001    │   DER    │    80.5       │
-├──────────┴──────────┴───────────────┤
-│    ▌▌▌▌▌▌▌▌▌▌▌▌▌▌▌▌                 │  ← Fila 3: CODE128
-│    B202600100-001-DER-A              │     (ancho completo)
-└─────────────────────────────────────┘
+âââââââââââââââââââââââââââââââââââââââ
+â TROPA                    A          â  â Fila 1: Tropa + Sigla
+â B202600100              Asado       â
+ââââââââââââ¬âââââââââââ¬ââââââââââââââââ¤
+â  GarrÃ³n  â   Lado   â     KG        â  â Fila 2: 3 columnas
+â   001    â   DER    â    80.5       â
+ââââââââââââ´âââââââââââ´ââââââââââââââââ¤
+â    ââââââââââââââââ                 â  â Fila 3: CODE128
+â    B202600100-001-DER-A              â     (ancho completo)
+âââââââââââââââââââââââââââââââââââââââ
 ```
 
-#### 3. Características Implementadas
-- **JsBarcode**: Genera código de barras CODE128 real en SVG
-- **3 rótulos por media**: A (Asado), T (Trasero), D (Delantero)
-- **Código de barras único**: TROPA-GARRON-LADO-SIGLA
+#### 3. CaracterÃ­sticas Implementadas
+- **JsBarcode**: Genera cÃ³digo de barras CODE128 real en SVG
+- **3 rÃ³tulos por media**: A (Asado), T (Trasero), D (Delantero)
+- **CÃ³digo de barras Ãºnico**: TROPA-GARRON-LADO-SIGLA
 - **Falla gracefully**: Si JsBarcode falla, muestra texto monoespaciado
 - **Colores por lado**: DER=azul, IZQ=rosa
 - **Peso destacado**: Fondo negro con texto blanco
 - **Soporte decomiso**: Banner rojo + fondo rosado
 
-#### 4. Formato del Código de Barras
+#### 4. Formato del CÃ³digo de Barras
 ```
 {TROPA}-{GARRON}-{LADO}-{SIGLA}
 Ejemplo: B202600100-001-DER-A
 ```
 
 Stage Summary:
-- **Rótulo media res rediseñado** ✅
-- **Código de barras CODE128 con JsBarcode** ✅
-- **Layout de 3 filas consistente** ✅
-- **Versión actualizada a 3.7.29** ✅
+- **RÃ³tulo media res rediseÃ±ado** â
+- **CÃ³digo de barras CODE128 con JsBarcode** â
+- **Layout de 3 filas consistente** â
+- **VersiÃ³n actualizada a 3.7.29** â
 
 ---
 Task ID: 1608
 Agent: main
-Task: Revertir cambios incorrectos al rótulo de media res en romaneo
+Task: Revertir cambios incorrectos al rÃ³tulo de media res en romaneo
 
 Work Log:
 
 #### 1. Error Cometido
-- Se modificó incorrectamente el rótulo de media res en romaneo con un layout similar al de pesaje individual
-- El usuario aclaró que son rótulos DIFERENTES con especificaciones distintas
-- El rótulo de pesaje individual DEBE QUEDAR COMO ESTÁ
+- Se modificÃ³ incorrectamente el rÃ³tulo de media res en romaneo con un layout similar al de pesaje individual
+- El usuario aclarÃ³ que son rÃ³tulos DIFERENTES con especificaciones distintas
+- El rÃ³tulo de pesaje individual DEBE QUEDAR COMO ESTÃ
 
-#### 2. Acción Tomada
-- Revertido `src/components/romaneo/index.tsx` a su versión original
-- El rótulo de pesaje individual NO fue modificado (correcto)
+#### 2. AcciÃ³n Tomada
+- Revertido `src/components/romaneo/index.tsx` a su versiÃ³n original
+- El rÃ³tulo de pesaje individual NO fue modificado (correcto)
 
 #### 3. Recursos Disponibles
 - Logos: `public/logos/logo-solemar.grf`, `logo-senasa.grf` (para ZPL)
@@ -3861,32 +3897,32 @@ Work Log:
 - Seed ZPL existente: `prisma/seed-rotulo-media-res.ts` (Zebra ZT230, 100x150mm)
 
 #### 4. Pendiente
-- Necesito que el usuario vuelva a pasar las especificaciones exactas del rótulo de media res
+- Necesito que el usuario vuelva a pasar las especificaciones exactas del rÃ³tulo de media res
 
 Stage Summary:
-- **Cambios revertidos** ✅
-- **Rótulo pesaje individual SIN modificar** ✅
-- **Versión actualizada a 3.7.30** ✅
+- **Cambios revertidos** â
+- **RÃ³tulo pesaje individual SIN modificar** â
+- **VersiÃ³n actualizada a 3.7.30** â
 - **Esperando especificaciones del usuario**
 
 ---
 Task ID: 1700
 Agent: main
-Task: Implementar r�tulo de media res con c�digo de barras CODE128
+Task: Implementar rótulo de media res con código de barras CODE128
 
 Work Log:
-- R�tulo de media res redise�ado seg�n especificaciones ZPL
-- Tama�o: 100mm � 150mm
+- Rótulo de media res rediseñado según especificaciones ZPL
+- Tamaño: 100mm × 150mm
 - Logos SOLEMAR y SENASA incluidos
-- C�digo de barras CODE128 con formato: TROPA-GARRON-LADO-SIGLA
-- 3 r�tulos por media res: A (Asado), D (Delantero), T (Trasero)
-- Fecha de vencimiento: +13 d�as
+- Código de barras CODE128 con formato: TROPA-GARRON-LADO-SIGLA
+- 3 rótulos por media res: A (Asado), D (Delantero), T (Trasero)
+- Fecha de vencimiento: +13 días
 - Datos SENASA incluidos
 
 Stage Summary:
-- R�tulo media res implementado ?
-- C�digo de barras CODE128 ?
-- Versi�n 3.7.31 ?
+- Rótulo media res implementado ?
+- Código de barras CODE128 ?
+- Versión 3.7.31 ?
 
 
 ---
@@ -3901,27 +3937,27 @@ Work Log:
 **Gap 1 - Missing Cuarto model:**
 - Agregado modelo `Cuarto` con campos: id, mediaResId, tipo (DELANTERO/TRASERO), peso, codigo, tropaCodigo, garron, sigla, camaraId, propietarioId, estado (EN_CAMARA/EN_DESPOSTADA/DESPACHADO), registroCuarteoId
 - Enums: `TipoCuarto`, `EstadoCuarto`
-- Relaciones: MediaRes → Cuarto[], Camara → Cuarto[], Cliente → Cuarto[] (CuartoPropietario)
+- Relaciones: MediaRes â Cuarto[], Camara â Cuarto[], Cliente â Cuarto[] (CuartoPropietario)
 
 **Gap 2 - Missing Decomiso model:**
 - Agregado modelo `Decomiso` con campos: id, garron, tipo (TOTAL/PARCIAL), tropaCodigo, motivo, pesoKg, observaciones, romaneoId, operadorId, fecha
 - Enums: `TipoDecomiso`
-- Relaciones: Romaneo → Decomiso[], Operador → Decomiso[]
+- Relaciones: Romaneo â Decomiso[], Operador â Decomiso[]
 
 **Gap 3 - Missing GrasaDressing model:**
 - Agregado modelo `GrasaDressing` con campos: id, tropaCodigo, garron, tipo (RENDERING/GRASA_DRESSING/GRASA_COMESTIBLE), pesoTotal, enStock, fechaFaena, destino, operadorId, observaciones
 - Enums: `TipoGrasa`
-- Relaciones: Operador → GrasaDressing[]
+- Relaciones: Operador â GrasaDressing[]
 
 **Gap 4 - Missing Pallet and CajaEmpaque models:**
 - Agregado modelo `Pallet`: id, numero, expedicionId, estado (ARMADO/EN_CAMARA/DESPACHADO), pesoTotal, cantidadCajas, camaraId, operadorId
 - Agregado modelo `CajaEmpaque`: id, numero, palletId, productoId, cuartoId, loteId, propietarioId, pesoBruto, pesoNeto, tara, tropaCodigo, estado (ARMADA/EN_PALLET/EN_CAMARA/DESPACHADA), codigoBarras
 - Enums: `EstadoPallet`, `EstadoCaja`
-- Relaciones: Camara → Pallet[], LoteDespostada → CajaEmpaque[], Producto → CajaEmpaque[], Cuarto → CajaEmpaque[], Cliente → CajaEmpaque[] (CajaPropietario)
+- Relaciones: Camara â Pallet[], LoteDespostada â CajaEmpaque[], Producto â CajaEmpaque[], Cuarto â CajaEmpaque[], Cliente â CajaEmpaque[] (CajaPropietario)
 
 **Gap 5 - Missing StockProducto model:**
 - Agregado modelo `StockProducto`: id, productoNombre, productoId, lote, tropaCodigo, camaraId, cantidad, pesoTotal, tipo, estado, fechaIngreso
-- Relaciones: Camara → StockProducto[], Producto → StockProducto[]
+- Relaciones: Camara â StockProducto[], Producto â StockProducto[]
 
 #### 2. Approved Reports Implemented (5 reports)
 
@@ -3946,9 +3982,9 @@ Work Log:
 
 **Report 4 - Tabs integrados en Centro de Reportes:**
 - Actualizado `src/components/reportes/index.tsx` con 3 nuevos tabs:
-  - "Balance Faena" → ReporteBalanceFaena
-  - "Rinde Tropa" → ReporteRindeTropa
-  - "Stock Productos" → ReporteStockProductos
+  - "Balance Faena" â ReporteBalanceFaena
+  - "Rinde Tropa" â ReporteRindeTropa
+  - "Stock Productos" â ReporteStockProductos
 - TabsList actualizado a grid-cols-13
 
 #### 3. Archivos Modificados/Creados
@@ -3980,22 +4016,22 @@ Stage Summary:
 ---
 Task ID: 1700
 Agent: main
-Task: Auditoría completa de APIs, permisos y seguridad - Sesiones múltiples
+Task: AuditorÃ­a completa de APIs, permisos y seguridad - Sesiones mÃºltiples
 
 Work Log:
 
-#### 1. Middleware de Rutas (CRÍTICO - creado desde cero)
+#### 1. Middleware de Rutas (CRÃTICO - creado desde cero)
 **Archivo:** `src/middleware.ts`
-- **Problema**: No existía middleware. Todas las rutas API eran completamente accesibles sin autenticación.
-- **Solución**: Creado middleware con:
-  - Rutas públicas: `/api/auth/*`, `/api/seed*`, `/api/migrar-usuarios`, `/api/sistema/status`, `/api/balanza/*`
+- **Problema**: No existÃ­a middleware. Todas las rutas API eran completamente accesibles sin autenticaciÃ³n.
+- **SoluciÃ³n**: Creado middleware con:
+  - Rutas pÃºblicas: `/api/auth/*`, `/api/seed*`, `/api/migrar-usuarios`, `/api/sistema/status`, `/api/balanza/*`
   - Rutas de solo lectura sin permiso especial: `/api/configuracion`, `/api/indicadores`, `/api/dashboard*`
-  - Mapeo de permisos por ruta para escritura (ROUTE_PERMISSIONS): facturación, configuración, stock, pesaje, etc.
-  - Propagación de `x-operador-id` desde query params a headers
+  - Mapeo de permisos por ruta para escritura (ROUTE_PERMISSIONS): facturaciÃ³n, configuraciÃ³n, stock, pesaje, etc.
+  - PropagaciÃ³n de `x-operador-id` desde query params a headers
 
 #### 2. Helper de Permisos Mejorado
 **Archivo:** `src/lib/auth-helpers.ts`
-- Agregada función `checkPermission(request, permiso)` que:
+- Agregada funciÃ³n `checkPermission(request, permiso)` que:
   - Extrae `operadorId` de header `x-operador-id` o query param
   - Valida permiso usando `validarPermiso()`
   - Retorna `NextResponse` de error (401/403) o `null` si autorizado
@@ -4006,7 +4042,7 @@ Work Log:
 - `clientes/route.ts` - puedeFacturacion
 - `precios/route.ts` - puedeFacturacion
 - `liquidaciones/route.ts` - puedeFacturacion
-- `operadores/route.ts` - puedeConfiguracion (CRÍTICO: antes cualquiera podía CRUD operadores)
+- `operadores/route.ts` - puedeConfiguracion (CRÃTICO: antes cualquiera podÃ­a CRUD operadores)
 - `configuracion/route.ts` - puedeConfiguracion
 - `usuarios/route.ts` - puedeConfiguracion
 - `facturacion/pdf/route.ts` - puedeFacturacion
@@ -4021,7 +4057,7 @@ Work Log:
 - `tipos-servicio/route.ts` - puedeFacturacion
 - `cuenta-corriente/route.ts` - puedeFacturacion
 
-#### 4. Rutas API con Permisos Agregados (Esta Sesión)
+#### 4. Rutas API con Permisos Agregados (Esta SesiÃ³n)
 - `admin/backups/route.ts` - puedeConfiguracion (GET/POST/DELETE)
 - `admin/restaurar/route.ts` - puedeConfiguracion (POST/GET)
 - `admin/exportar/route.ts` - puedeConfiguracion (GET)
@@ -4039,21 +4075,21 @@ Work Log:
 - `backup/historial/route.ts` - puedeConfiguracion (GET/DELETE)
 - `backup/configuracion/route.ts` - puedeConfiguracion (GET/PUT)
 
-#### 5. Bug IVA Frontend Corregido (Sesión Anterior)
-- **Problema**: Frontend usaba `.includes('RESPONSABLE')` pero la DB guarda códigos cortos ('RI', 'CF', 'MT', 'EX')
-- **Solución**: Cambiado para comparar con códigos cortos
+#### 5. Bug IVA Frontend Corregido (SesiÃ³n Anterior)
+- **Problema**: Frontend usaba `.includes('RESPONSABLE')` pero la DB guarda cÃ³digos cortos ('RI', 'CF', 'MT', 'EX')
+- **SoluciÃ³n**: Cambiado para comparar con cÃ³digos cortos
 - **Agregado**: Manejo de Factura C (consumidor final, sin IVA)
-- **Archivos**: Componente facturación y LiquidacionForm.tsx
+- **Archivos**: Componente facturaciÃ³n y LiquidacionForm.tsx
 
 #### 6. Build Verificado
 - `npx next build` exitoso sin errores
 - Todas las rutas API compiladas correctamente
 
 Stage Summary:
-- **Middleware de seguridad creado** (antes no existía) - CRÍTICO
+- **Middleware de seguridad creado** (antes no existÃ­a) - CRÃTICO
 - **35+ rutas API protegidas** con permisos granulares
 - **Helper checkPermission()** creado para uso uniforme en route handlers
 - **Rutas admin/seguridad/backup** ahora requieren puedeConfiguracion
 - **Bug IVA corregido** en frontend
 - **Build exitoso** sin errores
-- **Sistema mucho más seguro** contra acceso no autorizado
+- **Sistema mucho mÃ¡s seguro** contra acceso no autorizado
