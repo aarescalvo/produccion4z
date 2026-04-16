@@ -26,6 +26,10 @@ const MODULOS = [
   { id: 'puedeListaFaena', label: 'Lista Faena', icon: '📋', grupo: 'CICLO I' },
   { id: 'puedeIngresoCajon', label: 'Ingreso a Cajón', icon: '📦', grupo: 'CICLO I' },
   { id: 'puedeRomaneo', label: 'Romaneo', icon: '📊', grupo: 'CICLO I' },
+  { id: 'puedeCuarteo', label: 'Cuarteo', icon: '✂️', grupo: 'CICLO II' },
+  { id: 'puedeDesposte', label: 'Desposte', icon: '🥩', grupo: 'CICLO II' },
+  { id: 'puedeEmpaque', label: 'Empaque', icon: '📦', grupo: 'CICLO II' },
+  { id: 'puedeExpedicionC2', label: 'Expedición C2', icon: '🚚', grupo: 'CICLO II' },
   { id: 'puedeMenudencias', label: 'Menudencias', icon: '🫀', grupo: 'Subproductos' },
   { id: 'puedeStock', label: 'Stock Cámaras', icon: '🏭', grupo: 'Stock' },
   { id: 'puedeReportes', label: 'Reportes', icon: '📈', grupo: 'Reportes' },
@@ -48,6 +52,10 @@ interface OperadorItem {
   puedeListaFaena: boolean
   puedeIngresoCajon: boolean
   puedeRomaneo: boolean
+  puedeCuarteo: boolean
+  puedeDesposte: boolean
+  puedeEmpaque: boolean
+  puedeExpedicionC2: boolean
   puedeMenudencias: boolean
   puedeStock: boolean
   puedeReportes: boolean
@@ -85,6 +93,10 @@ export function ConfigOperadoresModule({ operador }: { operador: Operador }) {
     puedeListaFaena: false,
     puedeIngresoCajon: false,
     puedeRomaneo: false,
+    puedeCuarteo: false,
+    puedeDesposte: false,
+    puedeEmpaque: false,
+    puedeExpedicionC2: false,
     puedeMenudencias: false,
     puedeStock: false,
     puedeReportes: false,
@@ -127,6 +139,10 @@ export function ConfigOperadoresModule({ operador }: { operador: Operador }) {
       puedeListaFaena: false,
       puedeIngresoCajon: false,
       puedeRomaneo: false,
+      puedeCuarteo: false,
+      puedeDesposte: false,
+      puedeEmpaque: false,
+      puedeExpedicionC2: false,
       puedeMenudencias: false,
       puedeStock: false,
       puedeReportes: false,
@@ -152,6 +168,10 @@ export function ConfigOperadoresModule({ operador }: { operador: Operador }) {
       puedeListaFaena: op.puedeListaFaena,
       puedeIngresoCajon: op.puedeIngresoCajon,
       puedeRomaneo: op.puedeRomaneo,
+      puedeCuarteo: op.puedeCuarteo,
+      puedeDesposte: op.puedeDesposte,
+      puedeEmpaque: op.puedeEmpaque,
+      puedeExpedicionC2: op.puedeExpedicionC2,
       puedeMenudencias: op.puedeMenudencias,
       puedeStock: op.puedeStock,
       puedeReportes: op.puedeReportes,
@@ -266,6 +286,10 @@ export function ConfigOperadoresModule({ operador }: { operador: Operador }) {
         puedeListaFaena: true,
         puedeIngresoCajon: true,
         puedeRomaneo: true,
+        puedeCuarteo: true,
+        puedeDesposte: true,
+        puedeEmpaque: true,
+        puedeExpedicionC2: true,
         puedeMenudencias: true,
         puedeStock: true,
         puedeReportes: true,
@@ -283,6 +307,10 @@ export function ConfigOperadoresModule({ operador }: { operador: Operador }) {
         puedeListaFaena: true,
         puedeIngresoCajon: true,
         puedeRomaneo: true,
+        puedeCuarteo: true,
+        puedeDesposte: true,
+        puedeEmpaque: true,
+        puedeExpedicionC2: true,
         puedeMenudencias: true,
         puedeStock: true,
         puedeReportes: true,
@@ -644,7 +672,7 @@ export function ConfigOperadoresModule({ operador }: { operador: Operador }) {
                 )}
                 
                 {/* Grupos de permisos */}
-                {['CICLO I', 'Subproductos', 'Stock', 'Reportes', 'Documentación', 'Administración', 'Sistema'].map(grupo => {
+                {['CICLO I', 'CICLO II', 'Subproductos', 'Stock', 'Reportes', 'Documentación', 'Administración', 'Sistema'].map(grupo => {
                   const modulosGrupo = MODULOS.filter(m => m.grupo === grupo)
                   if (modulosGrupo.length === 0) return null
                   

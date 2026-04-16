@@ -21,6 +21,10 @@ interface Operador {
     puedeListaFaena: boolean
     puedeIngresoCajon: boolean
     puedeRomaneo: boolean
+    puedeCuarteo: boolean
+    puedeDesposte: boolean
+    puedeEmpaque: boolean
+    puedeExpedicionC2: boolean
     puedeMenudencias: boolean
     puedeStock: boolean
     puedeReportes: boolean

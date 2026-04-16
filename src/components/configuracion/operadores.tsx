@@ -21,18 +21,22 @@ const ROLES = [
 ]
 
 const MODULOS = [
-  { id: 'puedePesajeCamiones', label: 'Pesaje Camiones', icon: '🚛' },
-  { id: 'puedePesajeIndividual', label: 'Pesaje Individual', icon: '⚖️' },
-  { id: 'puedeMovimientoHacienda', label: 'Movimiento Hacienda', icon: '🐄' },
-  { id: 'puedeListaFaena', label: 'Lista Faena', icon: '📋' },
-  { id: 'puedeIngresoCajon', label: 'Ingreso Cajón', icon: '📦' },
-  { id: 'puedeRomaneo', label: 'Romaneo', icon: '📊' },
-  { id: 'puedeMenudencias', label: 'Menudencias', icon: '🫀' },
-  { id: 'puedeStock', label: 'Stock Cámaras', icon: '🏭' },
-  { id: 'puedeCCIR', label: 'CCIR', icon: '📄' },
-  { id: 'puedeFacturacion', label: 'Facturación', icon: '🧾' },
-  { id: 'puedeReportes', label: 'Reportes', icon: '📈' },
-  { id: 'puedeConfiguracion', label: 'Configuración', icon: '⚙️' },
+  { id: 'puedePesajeCamiones', label: 'Pesaje Camiones', icon: '🚛', grupo: 'CICLO I' },
+  { id: 'puedePesajeIndividual', label: 'Pesaje Individual', icon: '⚖️', grupo: 'CICLO I' },
+  { id: 'puedeMovimientoHacienda', label: 'Movimiento Hacienda', icon: '🐄', grupo: 'CICLO I' },
+  { id: 'puedeListaFaena', label: 'Lista Faena', icon: '📋', grupo: 'CICLO I' },
+  { id: 'puedeIngresoCajon', label: 'Ingreso Cajón', icon: '📦', grupo: 'CICLO I' },
+  { id: 'puedeRomaneo', label: 'Romaneo', icon: '📊', grupo: 'CICLO I' },
+  { id: 'puedeCuarteo', label: 'Cuarteo', icon: '✂️', grupo: 'CICLO II' },
+  { id: 'puedeDesposte', label: 'Desposte', icon: '🥩', grupo: 'CICLO II' },
+  { id: 'puedeEmpaque', label: 'Empaque', icon: '📦', grupo: 'CICLO II' },
+  { id: 'puedeExpedicionC2', label: 'Expedición C2', icon: '🚚', grupo: 'CICLO II' },
+  { id: 'puedeMenudencias', label: 'Menudencias', icon: '🫀', grupo: 'Subproductos' },
+  { id: 'puedeStock', label: 'Stock Cámaras', icon: '🏭', grupo: 'Stock' },
+  { id: 'puedeCCIR', label: 'CCIR', icon: '📄', grupo: 'Documentación' },
+  { id: 'puedeFacturacion', label: 'Facturación', icon: '🧾', grupo: 'Administración' },
+  { id: 'puedeReportes', label: 'Reportes', icon: '📈', grupo: 'Reportes' },
+  { id: 'puedeConfiguracion', label: 'Configuración', icon: '⚙️', grupo: 'Sistema' },
 ]
 
 interface OperadorItem {
@@ -49,6 +53,10 @@ interface OperadorItem {
   puedeListaFaena: boolean
   puedeIngresoCajon: boolean
   puedeRomaneo: boolean
+  puedeCuarteo: boolean
+  puedeDesposte: boolean
+  puedeEmpaque: boolean
+  puedeExpedicionC2: boolean
   puedeMenudencias: boolean
   puedeStock: boolean
   puedeCCIR: boolean
@@ -84,6 +92,10 @@ export function Operadores({ operador }: { operador: Operador }) {
     puedeListaFaena: false,
     puedeIngresoCajon: false,
     puedeRomaneo: false,
+    puedeCuarteo: false,
+    puedeDesposte: false,
+    puedeEmpaque: false,
+    puedeExpedicionC2: false,
     puedeMenudencias: false,
     puedeStock: false,
     puedeCCIR: false,
@@ -125,6 +137,10 @@ export function Operadores({ operador }: { operador: Operador }) {
       puedeListaFaena: false,
       puedeIngresoCajon: false,
       puedeRomaneo: false,
+      puedeCuarteo: false,
+      puedeDesposte: false,
+      puedeEmpaque: false,
+      puedeExpedicionC2: false,
       puedeMenudencias: false,
       puedeStock: false,
       puedeCCIR: false,
@@ -150,6 +166,10 @@ export function Operadores({ operador }: { operador: Operador }) {
       puedeListaFaena: op.puedeListaFaena,
       puedeIngresoCajon: op.puedeIngresoCajon,
       puedeRomaneo: op.puedeRomaneo,
+      puedeCuarteo: op.puedeCuarteo,
+      puedeDesposte: op.puedeDesposte,
+      puedeEmpaque: op.puedeEmpaque,
+      puedeExpedicionC2: op.puedeExpedicionC2,
       puedeMenudencias: op.puedeMenudencias,
       puedeStock: op.puedeStock,
       puedeCCIR: op.puedeCCIR,
@@ -263,6 +283,10 @@ export function Operadores({ operador }: { operador: Operador }) {
         puedeListaFaena: true,
         puedeIngresoCajon: true,
         puedeRomaneo: true,
+        puedeCuarteo: true,
+        puedeDesposte: true,
+        puedeEmpaque: true,
+        puedeExpedicionC2: true,
         puedeMenudencias: true,
         puedeStock: true,
         puedeCCIR: true,
@@ -279,6 +303,10 @@ export function Operadores({ operador }: { operador: Operador }) {
         puedeListaFaena: true,
         puedeIngresoCajon: true,
         puedeRomaneo: true,
+        puedeCuarteo: true,
+        puedeDesposte: true,
+        puedeEmpaque: true,
+        puedeExpedicionC2: true,
         puedeMenudencias: true,
         puedeStock: true,
         puedeCCIR: true,
@@ -501,24 +529,36 @@ export function Operadores({ operador }: { operador: Operador }) {
                 <Shield className="w-4 h-4" />
                 Permisos por Módulo
               </h4>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {MODULOS.map((m) => (
-                  <label 
-                    key={m.id} 
-                    className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-colors ${
-                      formData[m.id as keyof typeof formData] ? 'bg-amber-50 border-amber-200' : 'bg-white hover:bg-stone-50'
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formData[m.id as keyof typeof formData] as boolean}
-                      onChange={(e) => setFormData({ ...formData, [m.id]: e.target.checked })}
-                      className="rounded"
-                    />
-                    <span className="text-sm">{m.icon} {m.label}</span>
-                  </label>
-                ))}
-              </div>
+              {/* Grupos de permisos */}
+              {['CICLO I', 'CICLO II', 'Subproductos', 'Stock', 'Documentación', 'Administración', 'Reportes', 'Sistema'].map(grupo => {
+                const modulosGrupo = MODULOS.filter(m => m.grupo === grupo)
+                if (modulosGrupo.length === 0) return null
+                return (
+                  <div key={grupo} className="space-y-2">
+                    <p className="text-xs font-medium text-stone-500 uppercase tracking-wider">
+                      {grupo}
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      {modulosGrupo.map((m) => (
+                        <label 
+                          key={m.id} 
+                          className={`flex items-center gap-2 p-2.5 rounded-lg border cursor-pointer transition-colors ${
+                            formData[m.id as keyof typeof formData] ? 'bg-amber-50 border-amber-300' : 'bg-white hover:bg-stone-50 border-stone-200'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={formData[m.id as keyof typeof formData] as boolean}
+                            onChange={(e) => setFormData({ ...formData, [m.id]: e.target.checked })}
+                            className="rounded border-stone-300"
+                          />
+                          <span className="text-sm">{m.icon} {m.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
           <DialogFooter>

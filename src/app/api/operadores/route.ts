@@ -30,6 +30,10 @@ export async function GET(request: NextRequest) {
         puedeListaFaena: true,
         puedeIngresoCajon: true,
         puedeRomaneo: true,
+        puedeCuarteo: true,
+        puedeDesposte: true,
+        puedeEmpaque: true,
+        puedeExpedicionC2: true,
         puedeMenudencias: true,
         puedeStock: true,
         puedeCCIR: true,
@@ -77,6 +81,10 @@ export async function POST(request: NextRequest) {
       puedeListaFaena,
       puedeIngresoCajon,
       puedeRomaneo,
+      puedeCuarteo,
+      puedeDesposte,
+      puedeEmpaque,
+      puedeExpedicionC2,
       puedeMenudencias,
       puedeStock,
       puedeCCIR,
@@ -135,6 +143,10 @@ export async function POST(request: NextRequest) {
         puedeListaFaena: puedeListaFaena ?? false,
         puedeRomaneo: puedeRomaneo ?? false,
         puedeIngresoCajon: puedeIngresoCajon ?? false,
+        puedeCuarteo: puedeCuarteo ?? false,
+        puedeDesposte: puedeDesposte ?? false,
+        puedeEmpaque: puedeEmpaque ?? false,
+        puedeExpedicionC2: puedeExpedicionC2 ?? false,
         puedeMenudencias: puedeMenudencias ?? false,
         puedeStock: puedeStock ?? false,
         puedeCCIR: puedeCCIR ?? false,
@@ -187,6 +199,10 @@ export async function PUT(request: NextRequest) {
       puedeListaFaena,
       puedeIngresoCajon,
       puedeRomaneo,
+      puedeCuarteo,
+      puedeDesposte,
+      puedeEmpaque,
+      puedeExpedicionC2,
       puedeMenudencias,
       puedeStock,
       puedeCCIR,
@@ -212,6 +228,10 @@ export async function PUT(request: NextRequest) {
     if (puedeListaFaena !== undefined) updateData.puedeListaFaena = puedeListaFaena
     if (puedeRomaneo !== undefined) updateData.puedeRomaneo = puedeRomaneo
     if (puedeIngresoCajon !== undefined) updateData.puedeIngresoCajon = puedeIngresoCajon
+    if (puedeCuarteo !== undefined) updateData.puedeCuarteo = puedeCuarteo
+    if (puedeDesposte !== undefined) updateData.puedeDesposte = puedeDesposte
+    if (puedeEmpaque !== undefined) updateData.puedeEmpaque = puedeEmpaque
+    if (puedeExpedicionC2 !== undefined) updateData.puedeExpedicionC2 = puedeExpedicionC2
     if (puedeMenudencias !== undefined) updateData.puedeMenudencias = puedeMenudencias
     if (puedeStock !== undefined) updateData.puedeStock = puedeStock
     if (puedeCCIR !== undefined) updateData.puedeCCIR = puedeCCIR
